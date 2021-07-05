@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: thanos-object-storage
+  namespace: open-cluster-management-observability
+type: Opaque
+stringData:
+  thanos.yaml: |
+    type: s3
+    config:
+      bucket: acm-observability
+      endpoint: s3.openshift-storage.svc.cluster.local
+      insecure: true
+      access_key: WXEg8xUILXDLFtdriMLU
+      secret_key: wrnVKBM60pssGfq5jXLZ4pDGvYLcCIyb07PG6ECL

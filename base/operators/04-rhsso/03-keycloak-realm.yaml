@@ -1,0 +1,17 @@
+---
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakRealm
+metadata:
+  name: openshift-realm
+  namespace: openshift-sso
+  labels:
+    app: sso
+spec:
+  instanceSelector:
+    matchLabels:
+      app: sso
+  realm:
+    displayName: OpenShift
+    enabled: true
+    id: OpenShift
+    realm: OpenShift

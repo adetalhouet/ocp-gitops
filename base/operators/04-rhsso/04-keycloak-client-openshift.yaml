@@ -1,0 +1,24 @@
+---
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakClient
+metadata:
+  name: openshift-client
+  namespace: openshift-sso
+  labels:
+    app: sso
+spec:
+  client:
+    enabled: true
+    clientAuthenticatorType: client-secret
+    redirectUris:
+      - >-
+        https://oauth-openshift.apps.mgnt.adetalhouet.rhtelco.io/oauth2callback/keycloak
+    clientId: openshift
+    name: openshift
+    secret: client-secret
+    publicClient: false
+    standardFlowEnabled: true
+    directAccessGrantsEnabled: true
+  realmSelector:
+    matchLabels:
+      app: sso

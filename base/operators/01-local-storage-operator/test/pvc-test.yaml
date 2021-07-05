@@ -1,0 +1,40 @@
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: example-pvc-block
+spec:
+  accessModes:
+  - ReadWriteOnce
+  volumeMode: Block 
+  resources:
+    requests:
+      storage: 10Gi 
+  storageClassName: localvolume-block
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: simple-pod
+spec:
+  containers:
+  - name: simple-pod
+    image: registry.access.redhat.com/ubi8/ubi
+    resources:
+      requests:
+        memory: "64M"
+        cpu: "20m"
+      limits:
+        memory: "128M"
+        cpu: "50m"
+    command:
+    - /bin/bash
+    - -c
+    - sleep infinity
+    volumeDevices:
+    - devicePath: /dev/foo
+      name: localpvc
+  volumes:
+    - name: localpvc
+      persistentVolumeClaim:
+        claimName: example-pvc-block

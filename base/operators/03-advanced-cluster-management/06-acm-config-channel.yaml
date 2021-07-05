@@ -1,0 +1,19 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: acm-playground
+  labels:
+    openshift.io/cluster-monitoring: "true"
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: Channel
+metadata:
+  name: acm-playground-channel
+  namespace: acm-playground
+  annotations:
+    apps.open-cluster-management.io/reconcile-rate: high
+    apps.open-cluster-management.io/webhook-enabled: "true"
+spec:
+    type: Git
+    pathname: https://github.com/adetalhouet/acm-playground.git

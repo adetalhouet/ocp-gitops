@@ -1,0 +1,23 @@
+---
+apiVersion: local.storage.openshift.io/v1
+kind: LocalVolume
+metadata:
+  name: local-disks
+  namespace: openshift-local-storage
+spec:
+  managementState: Managed
+  nodeSelector:
+    nodeSelectorTerms:
+    - matchExpressions:
+        - key: ran.openshift.io/lso
+          operator: Exists
+  storageClassDevices:
+    - storageClassName: "localvolume-fs"
+      volumeMode: Filesystem
+      fsType: xfs
+      devicePaths:
+        - /dev/nvme0n1p4
+    - storageClassName: "localvolume-block"
+      volumeMode: Block
+      devicePaths:
+        - /dev/nvme0n1p3

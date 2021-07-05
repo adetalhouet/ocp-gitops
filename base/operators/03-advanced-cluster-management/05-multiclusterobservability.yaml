@@ -1,0 +1,29 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: open-cluster-management-observability
+  labels:
+    openshift.io/cluster-monitoring: "true"
+---
+apiVersion: observability.open-cluster-management.io/v1beta1
+kind: MultiClusterObservability
+metadata:
+  name: observability
+spec:
+spec:
+  availabilityConfig: High
+  imagePullPolicy: Always
+  imagePullSecret: multiclusterhub-operator-pull-secret
+  observabilityAddonSpec:
+    enableMetrics: true
+  retentionResolution1h: 30d
+  retentionResolution5m: 14d
+  retentionResolutionRaw: 5d
+  storageConfigObject:
+    metricObjectStorage:
+      key: thanos.yaml
+      name: thanos-object-storage
+    statefulSetSize: 10Gi
+    statefulSetStorageClass: ocs-storagecluster-ceph-rbd
+
