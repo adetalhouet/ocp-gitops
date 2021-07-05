@@ -4,6 +4,7 @@
 apiVersion: v1
 metadata:
   name: keycloack-openshit-client-secret
+  namespace: openshift-config
 data:
   clientSecret: Y2xpZW50LXNlY3JldAo=
 kind: Secret
