@@ -8,15 +8,6 @@ metadata:
   labels:
     openshift.io/cluster-monitoring: "true" 
 ---
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: openshift-logging
-  annotations:
-    openshift.io/node-selector: ""
-  labels:
-    openshift.io/cluster-monitoring: "true"
----
 apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:
