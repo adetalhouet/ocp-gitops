@@ -12,6 +12,7 @@ resources:
 
 configMapGenerator:
 - name: ca-config-map
+  namespace: openshift-config
   files:
   - ca.crt
 
