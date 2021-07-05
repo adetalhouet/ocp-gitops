@@ -19,4 +19,10 @@ spec:
       name: v4-0-config-user-idp-0-ca
       namespace: openshift-authentication
       jsonPointers:
-      - /
+      - / #ignore the whole file
+    - group: ""
+      kind: Secret
+      name: v4-0-config-user-idp-0-client-secret
+      namespace: openshift-authentication
+      jsonPointers:
+      - / #ignore the whole file
