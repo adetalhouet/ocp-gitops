@@ -5,3 +5,4 @@ kind: Kustomization
 resources:
 - 01-install.yaml
 - 02-cluster-logging.yaml
+- 03-cluster-log-fowarder.yaml
