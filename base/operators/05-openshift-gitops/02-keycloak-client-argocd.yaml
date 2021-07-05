@@ -1,0 +1,27 @@
+---
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakClient
+metadata:
+  name: argocd-client
+  namespace: openshift-sso
+  labels:
+    app: sso
+spec:
+  client:
+    enabled: true
+    clientAuthenticatorType: client-secret
+    baseUrl: /applications
+    rootUrl: >-
+      https://openshift-gitops-server-openshift-gitops.apps.mgnt.adetalhouet.rhtelco.io
+    redirectUris:
+      - >-
+        https://openshift-gitops-server-openshift-gitops.apps.mgnt.adetalhouet.rhtelco.io/auth/callback
+    clientId: argocd
+    name: argocd
+    secret: client-secret
+    publicClient: false
+    standardFlowEnabled: true
+    directAccessGrantsEnabled: true
+  realmSelector:
+    matchLabels:
+      app: sso
