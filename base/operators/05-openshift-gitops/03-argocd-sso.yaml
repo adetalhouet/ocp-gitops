@@ -34,7 +34,7 @@ spec:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: openshift-gitops
+  namespace: openshift-gitops
   name: argocd-rbac-cm
 data:
   policy.csv: |
