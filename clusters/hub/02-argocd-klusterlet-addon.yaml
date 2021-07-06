@@ -1,0 +1,8 @@
+apiVersion: agent.open-cluster-management.io/v1
+kind: KlusterletAddonConfig
+metadata:
+  name: apps-useast2-adetalhouet
+  namespace: apps-useast2-adetalhouet
+spec:
+  applicationManager:
+    argocdCluster: true

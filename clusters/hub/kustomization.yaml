@@ -20,3 +20,6 @@ bases:
   - ../../base/operators/05-openshift-gitops
   - ../../base/operators/06-openshift-elasticsearch
   - ../../base/operators/07-openshift-logging
+
+resources:
+- 02-argocd-klusterlet-addon.yaml
