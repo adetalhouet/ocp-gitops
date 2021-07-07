@@ -3,8 +3,6 @@ kind: ClusterLogForwarder
 metadata:
   name: instance
   namespace: openshift-logging
-  annotations:
-    argocd.argoproj.io/sync-wave: "10"
 spec:
   pipelines:
     - inputRefs:

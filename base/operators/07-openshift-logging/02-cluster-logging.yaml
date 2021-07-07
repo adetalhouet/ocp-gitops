@@ -4,8 +4,6 @@ kind: ClusterLogging
 metadata:
   namespace: openshift-logging
   name: instance
-  annotations:
-    argocd.argoproj.io/sync-wave: "10"
 spec:
   collection:
     logs:

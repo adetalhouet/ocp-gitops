@@ -11,6 +11,8 @@ commonAnnotations:
   # to avoid ArgoCD reporing out-of-sync
   argcd.argoproj.io/compare-options: IgnoreExtraneous
   argocd.argoproj.io/sync-options: Prune=false
+  # Avoid failing the sync when doing a dry run when CRD to be installed
+  # do not exist yet
   argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 
 bases:
