@@ -11,6 +11,7 @@ commonAnnotations:
   # to avoid ArgoCD reporing out-of-sync
   argcd.argoproj.io/compare-options: IgnoreExtraneous
   argocd.argoproj.io/sync-options: Prune=false
+  argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 
 bases:
   - ../../base/operators/01-local-storage-operator
