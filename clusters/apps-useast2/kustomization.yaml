@@ -14,3 +14,4 @@ commonAnnotations:
 
 bases:
   - ../../base/operators/01-local-storage-operator
+  - ../../base/operators/02-openshift-container-storage
