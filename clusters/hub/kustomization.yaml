@@ -7,8 +7,6 @@ commonLabels:
   topology.kubernetes.io/region: ca-central
 
 commonAnnotations:
-  # Annotations to work around automatically generated resources
-  # to avoid ArgoCD reporing out-of-sync
   argocd.argoproj.io/compare-options: IgnoreExtraneous
   argocd.argoproj.io/sync-options: Prune=false
 
