@@ -5,7 +5,7 @@ metadata:
   name: auto-discover-devices
   namespace: openshift-local-storage
   annotations:
-    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/sync-wave: "5"
 spec:
   nodeSelector: 
     nodeSelectorTerms:

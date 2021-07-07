@@ -18,6 +18,6 @@ spec:
       selfHeal: true 
       allowEmpty: true
     syncOptions:
-      - Validate=false
+      - Validate=true
       - CreateNamespace=true
       - ApplyOutOfSyncOnly=true
