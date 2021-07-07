@@ -13,12 +13,3 @@ spec:
     path: clusters/hub
     targetRevision: HEAD
     repoURL: 'https://github.com/adetalhouet/ocp-gitops.git'
-  ignoreDifferences:
-    - group: ""
-      kind: ConfigMap
-      name: v4-0-config-user-idp-0-ca
-      namespace: openshift-authentication
-    - group: ""
-      kind: Secret
-      name: v4-0-config-user-idp-0-client-secret
-      namespace: openshift-authentication
