@@ -13,6 +13,4 @@ commonAnnotations:
   argocd.argoproj.io/sync-options: Prune=false
 
 bases:
-  - ../../base/operators/06-openshift-elasticsearch
-  - ../../base/operators/07-openshift-logging
-  - ../../base/operators/09-quay-container-security
+  - ../../base/operators/01-local-storage-operator
