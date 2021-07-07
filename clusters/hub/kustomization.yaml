@@ -9,7 +9,7 @@ commonLabels:
 commonAnnotations:
   # Annotations to work around automatically generated resources
   # to avoid ArgoCD reporing out-of-sync
-  argcd.argoproj.io/compare-options: IgnoreExtraneous
+  argocd.argoproj.io/compare-options: IgnoreExtraneous
   argocd.argoproj.io/sync-options: Prune=false
 
 bases:
