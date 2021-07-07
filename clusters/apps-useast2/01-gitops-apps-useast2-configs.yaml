@@ -2,14 +2,19 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  namespace: openshift-gitops
-  name: 00-apps-useast2-cluster
+  name: apps-useast2-cluster
 spec:
   destination:
     namespace: ''
     server: 'https://api.apps-useast2-adetalhouet.rhtelco.io:6443'
-  project: default
   source:
     path: clusters/apps-useast2
-    targetRevision: HEAD
     repoURL: 'https://github.com/adetalhouet/ocp-gitops.git'
+    targetRevision: HEAD
+  project: default
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
