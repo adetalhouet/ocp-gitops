@@ -3,7 +3,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   namespace: openshift-gitops
-  name: 00-hub-cluster
+  name: 00-apps-useast2-cluster
 spec:
   destination:
     namespace: ''
