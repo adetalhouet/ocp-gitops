@@ -1,0 +1,18 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+commonLabels:
+  gitops/cluster-name: apps
+  topology.kubernetes.io/region: us-east-2
+
+commonAnnotations:
+  # Annotations to work around automatically generated resources
+  # to avoid ArgoCD reporing out-of-sync
+  argcd.argoproj.io/compare-options: IgnoreExtraneous
+  argocd.argoproj.io/sync-options: Prune=false
+
+bases:
+  - ../../base/operators/06-openshift-elasticsearch
+  - ../../base/operators/07-openshift-logging
+  - ../../base/operators/09-quay-container-security
