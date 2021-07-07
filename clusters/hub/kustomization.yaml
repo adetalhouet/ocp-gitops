@@ -21,6 +21,7 @@ bases:
   - ../../base/operators/06-openshift-elasticsearch
   - ../../base/operators/07-openshift-logging
   - ../../base/operators/08-ansible-automation-platform
+  - ../../base/operators/09-quay-container-security
 
 resources:
 - 02-argocd-klusterlet-addon.yaml
