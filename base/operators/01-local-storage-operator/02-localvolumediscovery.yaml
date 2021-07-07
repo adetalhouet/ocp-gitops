@@ -4,9 +4,7 @@ kind: LocalVolumeDiscovery
 metadata:
   name: auto-discover-devices
   namespace: openshift-local-storage
-  annotations:
-    argocd.argoproj.io/sync-wave: "5"
-spec:
+  spec:
   nodeSelector: 
     nodeSelectorTerms:
     - matchExpressions:
