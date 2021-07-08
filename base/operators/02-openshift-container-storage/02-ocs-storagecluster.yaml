@@ -1,3 +1,6 @@
+# make sure the nodes are first labeled with cluster.ocs.openshift.io/openshift-storage=''
+# ex: for i in `oc get nodes -l node-role.kubernetes.io/worker -o name`; do oc label $i cluster.ocs.openshift.io/openshift-storage=''; done
+---
 apiVersion: ocs.openshift.io/v1
 kind: StorageCluster
 metadata:

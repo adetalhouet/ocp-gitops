@@ -1,0 +1,32 @@
+# Add the openshift-storage label to node you'd like the 
+# Ceph cluster to be deployed on in order for OCS to target
+# them during the install
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+  name: presync-label-storage-node
+  namespace: openshift-gitops
+spec:
+  template:
+    spec:
+      containers:
+        - image: registry.redhat.io/openshift4/ose-cli:latest
+          command:
+            - /bin/bash
+            - -c
+            - |
+              for i in `oc get nodes -l node-role.kubernetes.io/worker -o name`; do
+                oc label $i cluster.ocs.openshift.io/openshift-storage=''
+                echo "Worker node $i is labeled with cluster.ocs.openshift.io/openshift-storage=''"
+              done
+          imagePullPolicy: IfNotPresent
+          name: presync-label-storage-node
+      dnsPolicy: ClusterFirst
+      restartPolicy: OnFailure
+      serviceAccount: cli-job-sa
+      serviceAccountName: cli-job-sa
+      terminationGracePeriodSeconds: 30
