@@ -19,3 +19,9 @@ spec:
       namespace: openshift-storage
       jsonPointers:
       - /spec/storageDeviceSets/count
+    - group: ""
+      kind: KeycloakUser
+      name: adetalhouet
+      namespace: openshift-sso
+      jsonPointers:
+      - /spec/user/credentials
