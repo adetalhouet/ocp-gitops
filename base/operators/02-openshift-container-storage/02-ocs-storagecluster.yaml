@@ -9,7 +9,6 @@ spec:
   storageDeviceSets:
     - name: ocs-deviceset-gp2
       dataPVCTemplate:
-        metadata: {}
         spec:
           accessModes:
             - ReadWriteOnce
@@ -20,5 +19,3 @@ spec:
           volumeMode: Block
       count: 1
       replica: 3
-      portable: true
-  version: 4.7.0
