@@ -1,3 +1,5 @@
+# This is meant to install the required permission for 
+# ArgoCD hook to perform CLI command on the cluster.
 ---
 apiVersion: v1
 kind: Namespace
@@ -13,25 +15,10 @@ metadata:
 rules:
   - apiGroups:
     - "*"
-    resources: ["*"]
+    resources: ["nodes"]
     verbs:
     - get
-    - list
-    - watch
-  - apiGroups:
-    - extensions
-    resources: ["*"]
-    verbs:
-    - get
-    - list
-    - watch
-  - apiGroups:
-    - apps
-    resources: ["*"]
-    verbs:
-    - get
-    - list
-    - watch
+    - update
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
