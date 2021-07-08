@@ -13,3 +13,9 @@ spec:
     path: clusters/hub
     targetRevision: HEAD
     repoURL: 'https://github.com/adetalhouet/ocp-gitops.git'
+    - group: ""
+      kind: StorageCluster
+      name: ocs-storagecluster
+      namespace: openshift-storage
+      jsonPointers:
+      - /spec/storageDeviceSets/count
