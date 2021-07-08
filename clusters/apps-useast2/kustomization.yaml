@@ -12,6 +12,6 @@ commonAnnotations:
   argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 
 bases:
-  - ../../base/config/common
+  # - ../../base/config/common
   - ../../base/operators/01-local-storage-operator
   - ../../base/operators/02-openshift-container-storage
