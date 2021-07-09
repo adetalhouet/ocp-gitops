@@ -10,7 +10,7 @@ spec:
   source:
     path: clusters/hub
     repoURL: https://github.com/adetalhouet/ocp-gitops.git
-    targetRevision: master
+    targetRevision: main
   syncPolicy:
     automated:
       prune: false
