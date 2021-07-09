@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: mgnt-cluster-manager
+  name: 00-mgnt-cluster-manager
   namespace: openshift-gitops
 spec:
   destination:
