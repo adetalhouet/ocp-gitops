@@ -7,7 +7,7 @@ changes:
     clientId: openshift-test
     secret: linux9!!hecl.4804.AD
     redirectUris:
-      - "https://oauth-openshift.apps.mgnt.adetalhouet.rhtelco.io/oauth2callback/keycloak"
+      - "https://oauth-openshift.apps.apps-useast2-adetalhouet.adetalhouet.rhtelco.io/oauth2callback/keycloak"
 - updateClient:
     clientId: openshift-test
     standardFlowEnabled: true
@@ -18,11 +18,11 @@ changes:
     clientId: argocd-test
     secret: linux9!!hecl.4804.AD
     redirectUris:
-      - "https://openshift-gitops-server-openshift-gitops.apps.mgnt.adetalhouet.rhtelco.io/auth/callback"
+      - "https://openshift-gitops-server-openshift-gitops.apps.apps-useast2-adetalhouet.adetalhouet.rhtelco.io/auth/callback"
 - updateClient:
     clientId: argocd-test
     standardFlowEnabled: true
     implicitFlowEnabled: false
     directAccessGrantEnabled: true
     baseUrl: /applications
-    rootUrl: https://openshift-gitops-server-openshift-gitops.apps.mgnt.adetalhouet.rhtelco.io
+    rootUrl: https://openshift-gitops-server-openshift-gitops.apps.apps-useast2-adetalhouet.adetalhouet.rhtelco.io

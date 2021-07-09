@@ -25,5 +25,5 @@ spec:
           name: keycloack-openshit-client-secret
         extraScopes: []
         issuer: >-
-          https://keycloak-openshift-sso.apps.mgnt.adetalhouet.rhtelco.io/auth/realms/openshift
+          https://keycloak-openshift-sso.apps.apps-useast2-adetalhouet.adetalhouet.rhtelco.io/auth/realms/openshift
       type: OpenID
