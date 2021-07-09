@@ -1,0 +1,12 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+commonLabels:
+  gitops/cluster-name: mgnt
+  topology.kubernetes.io/region: ca-central
+
+resources:
+- 01-sealed-secret-namespace.yaml
+- 02-sealed-secrets-secret.yaml
+# - 02-app-of-apps.yaml

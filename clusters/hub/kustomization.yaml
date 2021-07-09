@@ -11,6 +11,7 @@ commonAnnotations:
   argocd.argoproj.io/sync-options: Prune=false
 
 bases:
+  - ../../apps/00-sealed-secrets/argocd-app
   - ../../base/operators/01-local-storage-operator
   - ../../base/operators/02-openshift-container-storage
   - ../../base/operators/03-advanced-cluster-management
@@ -20,6 +21,3 @@ bases:
   - ../../base/operators/07-openshift-logging
   - ../../base/operators/08-ansible-automation-platform
   - ../../base/operators/09-quay-container-security
-
-resources:
-- 02-argocd-klusterlet-addon.yaml
