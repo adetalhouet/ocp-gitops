@@ -13,7 +13,7 @@ spec:
       - image: klg71/keycloakmigration
         env:
         - name: BASEURL
-          value: "https://keycloak-openshift-sso.apps.apps-useast2-adetalhouet.adetalhouet.rhtelco.io/auth"
+          value: "https://keycloak-openshift-sso.apps.apps-useast2-adetalhouet.rhtelco.io/auth"
         - name: CORRECT_HASHES
           value: "true"
         - name: ADMIN_USERNAME
