@@ -1,0 +1,39 @@
+apiVersion: v1
+data:
+  01-realms.yaml: |
+    aWQ6IGFkZC1yZWFsbXMKYXV0aG9yOiBhZGV0YWxob3VldApjaGFuZ2VzOgogIC0gYWRkUm
+    VhbG06CiAgICAgIG5hbWU6IG9wZW5zaGlmdA==
+  02-clients.yaml: |
+    aWQ6IGFkZC1vcGVuc2hpZnQtY2xpZW50CmF1dGhvcjogYWRldGFsaG91ZXQKcmVhbG06IG
+    9wZW5zaGlmdApjaGFuZ2VzOgojIE9wZW5TaGlmdCBjbGllbnQKLSBhZGRTaW1wbGVDbGll
+    bnQ6CiAgICBjbGllbnRJZDogb3BlbnNoaWZ0LXRlc3QKICAgIHNlY3JldDogbGludXg5IS
+    FoZWNsLjQ4MDQuQUQKICAgIHJlZGlyZWN0VXJpczoKICAgICAgLSAiaHR0cHM6Ly9vYXV0
+    aC1vcGVuc2hpZnQuYXBwcy5tZ250LmFkZXRhbGhvdWV0LnJodGVsY28uaW8vb2F1dGgyY2
+    FsbGJhY2sva2V5Y2xvYWsiCi0gdXBkYXRlQ2xpZW50OgogICAgY2xpZW50SWQ6IG9wZW5z
+    aGlmdC10ZXN0CiAgICBzdGFuZGFyZEZsb3dFbmFibGVkOiB0cnVlCiAgICBpbXBsaWNpdE
+    Zsb3dFbmFibGVkOiBmYWxzZQogICAgZGlyZWN0QWNjZXNzR3JhbnRFbmFibGVkOiB0cnVl
+    CiMgQXJnb2NkIGNsaWVudAotIGFkZFNpbXBsZUNsaWVudDoKICAgIGNsaWVudElkOiBhcm
+    dvY2QtdGVzdAogICAgc2VjcmV0OiBsaW51eDkhIWhlY2wuNDgwNC5BRAogICAgcmVkaXJl
+    Y3RVcmlzOgogICAgICAtICJodHRwczovL29wZW5zaGlmdC1naXRvcHMtc2VydmVyLW9wZW
+    5zaGlmdC1naXRvcHMuYXBwcy5tZ250LmFkZXRhbGhvdWV0LnJodGVsY28uaW8vYXV0aC9j
+    YWxsYmFjayIKLSB1cGRhdGVDbGllbnQ6CiAgICBjbGllbnRJZDogYXJnb2NkLXRlc3QKIC
+    AgIHN0YW5kYXJkRmxvd0VuYWJsZWQ6IHRydWUKICAgIGltcGxpY2l0Rmxvd0VuYWJsZWQ6
+    IGZhbHNlCiAgICBkaXJlY3RBY2Nlc3NHcmFudEVuYWJsZWQ6IHRydWUKICAgIGJhc2VVcm
+    w6IC9hcHBsaWNhdGlvbnMKICAgIHJvb3RVcmw6IGh0dHBzOi8vb3BlbnNoaWZ0LWdpdG9w
+    cy1zZXJ2ZXItb3BlbnNoaWZ0LWdpdG9wcy5hcHBzLm1nbnQuYWRldGFsaG91ZXQucmh0ZW
+    xjby5pbw==
+  03-users.yaml: |
+    aWQ6IGFkZC11c2VycwphdXRob3I6IGFkZXRhbGhvdWV0CmNoYW5nZXM6Ci0gYWRkVXNlcj
+    oKICAgIHJlYWxtOiBvcGVuc2hpZnQKICAgIG5hbWU6IGFkZXRhbGhvdWV0CiAgICBlbmFi
+    bGVkOiB0cnVlCiAgICBmaXJzdE5hbWU6IEFsZXhpcwogICAgbGFzdE5hbWU6IGRlIFRhbG
+    hvdcOrdAogICAgYXR0cmlidXRlczoKICAgICAgZ3JvdXBzOgogICAgICAgIC0gQXJnb0NE
+    QWRtaW5zCiAgLSB1cGRhdGVVc2VyUGFzc3dvcmQ6CiAgICAgIG5hbWU6IGFkZXRhbGhvdW
+    V0CiAgICAgIHBhc3N3b3JkOiBsaW51eDkhIQ==
+  changelog.yaml: |
+    aW5jbHVkZXM6CiAgLSBwYXRoOiAwMS1yZWFsbS55bWwKICAtIHBhdGg6IDAyLWNsaWVudH
+    MueW1sCiAgLSBwYXRoOiAwMy11c2Vycy55bWw=
+kind: Secret
+metadata:
+  name: keycloak-migration
+  namespace: openshift-sso
+type: Opaque

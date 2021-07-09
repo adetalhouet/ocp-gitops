@@ -1,13 +1,9 @@
-# Add the openshift-storage label to node you'd like the 
-# Ceph cluster to be deployed on in order for OCS to target
-# them during the install
 ---
 apiVersion: batch/v1
 kind: Job
 metadata:
   annotations:
     argocd.argoproj.io/hook: PreSync
-    argocd.argoproj.io/sync-wave: "5"
     argocd.argoproj.io/hook-delete-policy: HookSucceeded
   name: presync-label-storage-node
   namespace: openshift-gitops

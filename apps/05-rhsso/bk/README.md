@@ -1,0 +1,1 @@
+I was previously using rhsso-operator, but it is not very security friendly if combined with gitops. Dropping the use of its CRD for creation of realm, client and users for now.

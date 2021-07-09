@@ -1,0 +1,28 @@
+id: add-openshift-client
+author: adetalhouet
+realm: openshift
+changes:
+# OpenShift client
+- addSimpleClient:
+    clientId: openshift-test
+    secret: linux9!!hecl.4804.AD
+    redirectUris:
+      - "https://oauth-openshift.apps.mgnt.adetalhouet.rhtelco.io/oauth2callback/keycloak"
+- updateClient:
+    clientId: openshift-test
+    standardFlowEnabled: true
+    implicitFlowEnabled: false
+    directAccessGrantEnabled: true
+# Argocd client
+- addSimpleClient:
+    clientId: argocd-test
+    secret: linux9!!hecl.4804.AD
+    redirectUris:
+      - "https://openshift-gitops-server-openshift-gitops.apps.mgnt.adetalhouet.rhtelco.io/auth/callback"
+- updateClient:
+    clientId: argocd-test
+    standardFlowEnabled: true
+    implicitFlowEnabled: false
+    directAccessGrantEnabled: true
+    baseUrl: /applications
+    rootUrl: https://openshift-gitops-server-openshift-gitops.apps.mgnt.adetalhouet.rhtelco.io

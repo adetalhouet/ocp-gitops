@@ -3,6 +3,6 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-- 00-label-worker.yaml
+- 00-presync-label-worker-job.yaml
 - 01-install.yaml
 - 02-ocs-storagecluster.yaml

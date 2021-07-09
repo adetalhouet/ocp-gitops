@@ -6,6 +6,7 @@ metadata:
     rbac.authorization.kubernetes.io/autoupdate: "true"
   name: cli-job-sa-role
 rules:
+  # this is for the presync-label-storage-node job
   - apiGroups:
     - "*"
     resources: ["nodes"]
@@ -13,6 +14,15 @@ rules:
     - list
     - get
     - patch
+  - apiGroups:
+      - ""
+    resources:
+      - configmaps
+      - secrets
+    verbs:
+      - get
+      - list
+      - create
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding

@@ -1,0 +1,4 @@
+includes:
+  - path: 01-realm.yml
+  - path: 02-clients.yml
+  - path: 03-users.yml

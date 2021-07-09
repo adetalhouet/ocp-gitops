@@ -1,26 +1,17 @@
 ---
-# create the secret for the client
-# oc create secret generic keycloack-openshit-client-secret -n openshift-config --from-literal=clientSecret=<secret>
-apiVersion: v1
-metadata:
-  name: keycloack-openshit-client-secret
-  namespace: openshift-config
-data:
-  clientSecret: Y2xpZW50LXNlY3JldA==
-kind: Secret
-type: Opaque
----
 apiVersion: config.openshift.io/v1
 kind: OAuth
 metadata:
   name: cluster
+  annotations:
+    argocd.argoproj.io/hook: PostSync
 spec:
   identityProviders:
     - mappingMethod: claim
       name: keycloak
       openID:
         ca:
-          name: ca-config-map
+          name: openidcacrt
         claims:
           email:
             - email
@@ -34,5 +25,5 @@ spec:
           name: keycloack-openshit-client-secret
         extraScopes: []
         issuer: >-
-          https://keycloak-openshift-sso.apps.mgnt.adetalhouet.rhtelco.io/auth/realms/OpenShift
+          https://keycloak-openshift-sso.apps.mgnt.adetalhouet.rhtelco.io/auth/realms/openshift
       type: OpenID

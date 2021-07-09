@@ -1,0 +1,28 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: presync-create-cert-cm-job
+  namespace: openshift-gitops
+spec:
+  template:
+    spec:
+      containers:
+        - image: registry.redhat.io/openshift4/ose-cli:v4.4
+          command:
+            - /bin/bash
+            - -c
+            - |
+              echo "Create a ConfigMap named openidcrt in the openshift-config project."
+
+              # Get name of certs secret.  It can be router-certs or router-certs-default.
+              CERT_SECRET=$(oc get secrets -n openshift-ingress | grep 'router-certs\|ingress-certs\|-ingress' | cut -d ' ' -f1)
+
+              tlscert=`oc get secrets/$CERT_SECRET -o jsonpath={.data.'tls\.crt'} -n openshift-ingress | base64 --decode`
+              oc create configmap openidcacrt --from-literal ca.crt="$tlscert" -n openshift-config
+          imagePullPolicy: Always
+          name: presync-create-cert-cm-job
+      dnsPolicy: ClusterFirst
+      restartPolicy: OnFailure
+      serviceAccount: presync-create-cert-cm-job
+      serviceAccountName: presync-create-cert-cm-job
+      terminationGracePeriodSeconds: 30

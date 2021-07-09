@@ -3,7 +3,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 commonLabels:
-  gitops/cluster-name: hub
+  gitops/cluster-name: apps-useast2-adetalhouet
   topology.kubernetes.io/region: ca-central
 #
 # commonAnnotations:
@@ -15,6 +15,7 @@ bases:
   - ../../apps/02-sealed-secrets/argocd-app
   - ../../apps/03-local-storage-operator/argocd-app
   - ../../apps/04-openshift-container-storage/argocd-app
+  - ../../apps/05-rhsso/argocd-app
   # - ../../base/operators/01-local-storage-operator
   # - ../../base/operators/02-openshift-container-storage
   # - ../../base/operators/03-advanced-cluster-management
