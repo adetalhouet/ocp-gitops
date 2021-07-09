@@ -8,8 +8,4 @@ commonLabels:
 
 bases:
   - ../../apps/01-openshift-gitops/install
-
-resources:
-  - 01-sealed-secret-namespace.yaml
-  - 02-sealed-secrets-secret.yaml
-  - 03-app-of-apps.yaml
+  - ../../apps/02-sealed-secrets/install
