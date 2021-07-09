@@ -10,4 +10,4 @@ resources:
   - job-serviceaccount.yaml
   - rbac.yaml
   - job.yaml
-  - sealed-cloud-dns-credentials.yaml
+  - sealed-aws-credentials.yaml
