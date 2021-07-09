@@ -23,6 +23,6 @@ spec:
           name: presync-create-cert-cm-job
       dnsPolicy: ClusterFirst
       restartPolicy: OnFailure
-      serviceAccount: presync-create-cert-cm-job
-      serviceAccountName: presync-create-cert-cm-job
+      serviceAccount: cli-job-sa
+      serviceAccountName: cli-job-sa
       terminationGracePeriodSeconds: 30
