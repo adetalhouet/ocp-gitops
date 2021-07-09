@@ -5,19 +5,19 @@ kind: Kustomization
 commonLabels:
   gitops/cluster-name: hub
   topology.kubernetes.io/region: ca-central
-
-commonAnnotations:
-  argocd.argoproj.io/compare-options: IgnoreExtraneous
-  argocd.argoproj.io/sync-options: Prune=false
+#
+# commonAnnotations:
+#   argocd.argoproj.io/compare-options: IgnoreExtraneous
+#   argocd.argoproj.io/sync-options: Prune=false
 
 bases:
   - ../../apps/00-sealed-secrets/argocd-app
-  - ../../base/operators/01-local-storage-operator
-  - ../../base/operators/02-openshift-container-storage
-  - ../../base/operators/03-advanced-cluster-management
-  - ../../base/operators/04-rhsso
-  - ../../base/operators/05-openshift-gitops
-  - ../../base/operators/06-openshift-elasticsearch
-  - ../../base/operators/07-openshift-logging
-  - ../../base/operators/08-ansible-automation-platform
-  - ../../base/operators/09-quay-container-security
+  # - ../../base/operators/01-local-storage-operator
+  # - ../../base/operators/02-openshift-container-storage
+  # - ../../base/operators/03-advanced-cluster-management
+  # - ../../base/operators/04-rhsso
+  # - ../../base/operators/05-openshift-gitops
+  # - ../../base/operators/06-openshift-elasticsearch
+  # - ../../base/operators/07-openshift-logging
+  # - ../../base/operators/08-ansible-automation-platform
+  # - ../../base/operators/09-quay-container-security
