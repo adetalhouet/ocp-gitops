@@ -4,6 +4,5 @@ kind: Kustomization
 
 resources:
   - 01-install.yaml
-  - 04-cluster-admin-gitops.yaml
-  # - 02-keycloak-client-argocd.yaml
-  # - 03-argocd-sso.yaml
+  - 02-cli-job-sa-and-role.yaml
+  - 03-cluster-admin-gitops.yaml
