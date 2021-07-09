@@ -11,7 +11,7 @@ commonLabels:
 #   argocd.argoproj.io/sync-options: Prune=false
 
 bases:
-  - ../../apps/01-openshift-gitops/argocd-app
+  # - ../../apps/01-openshift-gitops/argocd-app
   - ../../apps/02-sealed-secrets/argocd-app
   - ../../apps/03-local-storage-operator/argocd-app
   - ../../apps/04-openshift-container-storage/argocd-app
