@@ -4,6 +4,8 @@ kind: LocalVolumeDiscovery
 metadata:
   name: auto-discover-devices
   namespace: openshift-local-storage
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   nodeSelector: 
     nodeSelectorTerms:

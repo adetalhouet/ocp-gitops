@@ -4,6 +4,8 @@ kind: Keycloak
 metadata:
   name: keycloak
   namespace: openshift-sso
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
   labels:
     app: sso
 spec:

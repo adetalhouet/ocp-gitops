@@ -4,6 +4,8 @@ kind: ClusterLogging
 metadata:
   namespace: openshift-logging
   name: instance
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   collection:
     logs:
