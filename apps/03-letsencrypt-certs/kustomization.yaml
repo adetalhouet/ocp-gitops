@@ -10,4 +10,4 @@ resources:
   - 02-job-serviceaccount.yaml
   - 03-rbac.yaml
   - 04-job.yaml
-  - 05sealed-aws-credentials.yaml
+  - 05-sealed-aws-credentials.yaml
