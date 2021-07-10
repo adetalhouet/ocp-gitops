@@ -12,17 +12,17 @@ spec:
         - cluster: app-us-east-2
           url: https://kubernetes.default.svc
           values:
-            name: 01-sealed-secrets
+            name: 01-argocd
             wave: '1'
+        - cluster: app-us-east-2
+          url: https://kubernetes.default.svc
+          values:
+            name: 02-sealed-secrets
+            wave: '2'
         # - cluster: app-us-east-2
         #   url: https://kubernetes.default.svc
         #   values:
-        #     name: 02-letsencrypt-certs
-        #     wave: '2'
-        # - cluster: app-us-east-2
-        #   url: https://kubernetes.default.svc
-        #   values:
-        #     name: 03-argocd
+        #     name: 03-letsencrypt-certs
         #     wave: '3'
         # - cluster: app-us-east-2
         #   url: https://kubernetes.default.svc
