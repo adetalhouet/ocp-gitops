@@ -5,6 +5,23 @@ metadata:
   name: openshift-gitops
   namespace: openshift-gitops
 spec:
+  resourceExclusions: |
+    - apiGroups:
+      - tekton.dev
+      clusters:
+      - '*'
+      kinds:
+      - TaskRun
+      - PipelineRun
+  oidcConfig: |
+    name: Keycloak
+    issuer: https://keycloak-openshift-sso.apps.apps-useast2-adetalhouet.rhtelco.io/auth/realms/openshift
+    clientID: argocd 
+    clientSecret: $oidc.keycloak.clientSecret 
+    requestedScopes: ["openid", "profile", "email", "groups"] 
+  server:
+    route:
+      enabled: true
   resourceCustomizations: |
     PersistentVolumeClaim:
       health.lua: |
@@ -26,3 +43,8 @@ spec:
         hs.status = "Progressing"
         hs.message = "Waiting for certificate"
         return hs
+  rbac:
+    defaultPolicy: role:readonly
+    policy:
+      g, ArgoCDAdmins, role:admin
+    scopes: "[groups]"
