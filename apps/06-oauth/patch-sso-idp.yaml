@@ -1,30 +1,31 @@
-- op: add
-  path: /spec/identityProviders/1
-  value:
-    mappingMethod: claim
-    name: keycloak
-    openID:
-      ca:
-        name: openidcacrt
-      claims:
-        email:
-          - email
-        name:
-          - name
-        preferredUsername:
-          - preferred_username
-          - username
-      clientID: openshift
-      clientSecret:
-        name: keycloack-openshit-client-secret
-      extraScopes: []
-      issuer: >-
-        https://keycloak-openshift-sso.apps.apps-useast2-adetalhouet.rhtelco.io/auth/realms/openshift
-    type: OpenID
-# - op: add
-#   path: /spec/templates
-#   value:
-#     login:
-#       name: matrix-login-template
-#     providerSelection:
-#       name: matrix-providers-template
+apiVersion: config.openshift.io/v1
+kind: OAuth
+metadata:
+  name: cluster
+spec:
+  identityProviders:
+    - mappingMethod: claim
+      name: keycloak
+      openID:
+        ca:
+          name: openidcacrt
+        claims:
+          email:
+            - email
+          name:
+            - name
+          preferredUsername:
+            - preferred_username
+            - username
+        clientID: openshift
+        clientSecret:
+          name: keycloack-openshit-client-secret
+        extraScopes: []
+        issuer: >-
+          https://keycloak-openshift-sso.apps.apps-useast2-adetalhouet.rhtelco.io/auth/realms/openshift
+      type: OpenID
+  templates:
+    login:
+      name: matrix-login-template
+    providerSelection:
+      name: matrix-providers-template

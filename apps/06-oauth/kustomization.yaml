@@ -9,13 +9,8 @@ commonAnnotations:
 resources:
 - 01-sealed-rhsso-client-secret.yaml
 
-patchesJson6902:
-  - path: patch-sso-idp.yaml
-    target:
-      group: config.openshift.io
-      kind: OAuth
-      name: cluster
-      version: v1
+patchesStrategicMerge:
+- patch-sso-idp.yaml
 
 namespace: openshift-config
 
