@@ -6,6 +6,7 @@ resources:
   - 01-cr-config.yaml
   - 02-cli-job-sa-and-role.yaml
   - 03-cluster-admin-gitops.yaml
+  - argocd-rbac-cm.yaml
 
 # TODO find a solution to provide argocd the client-secret
 # patchesStrategicMerge:

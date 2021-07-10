@@ -43,8 +43,3 @@ spec:
         hs.status = "Progressing"
         hs.message = "Waiting for certificate"
         return hs
-  rbac:
-    defaultPolicy: role:readonly
-    policy:
-      g, ArgoCDAdmins, role:admin
-    scopes: "[groups]"
