@@ -12,31 +12,31 @@ spec:
         - cluster: app-us-east-2
           url: https://kubernetes.default.svc
           values:
-            name: sealed-secrets
+            name: 01-sealed-secrets
             path: apps/01-sealed-secrets
             wave: '1'
         - cluster: app-us-east-2
           url: https://kubernetes.default.svc
           values:
-            name: letsencrypt-certs
+            name: 02-letsencrypt-certs
             path: apps/02-letsencrypt-certs
             wave: '2'
         - cluster: app-us-east-2
           url: https://kubernetes.default.svc
           values:
-            name: argocd
+            name: 03-argocd
             path: apps/03-openshift-gitops
             wave: '3'
         - cluster: app-us-east-2
           url: https://kubernetes.default.svc
           values:
-            name: local-storage-operator
+            name: 04-local-storage-operator
             path: apps/04-local-storage-operator
             wave: '4'
         - cluster: app-us-east-2
           url: https://kubernetes.default.svc
           values:
-            name: openshift-container-storage
+            name: 05-openshift-container-storage
             path: apps/05-openshift-container-storage
             wave: '5'
         - cluster: app-us-east-2
@@ -48,19 +48,19 @@ spec:
         - cluster: app-us-east-2
           url: https://kubernetes.default.svc
           values:
-            name: config-console-links
+            name: 07-oauth
             path: apps/07-oauth
             wave: '7'
         - cluster: app-us-east-2
           url: https://kubernetes.default.svc
           values:
-            name: openshift-elasticsearch
-            path: apps/05-openshift-container-storage
+            name: 08-openshift-elasticsearch
+            path: apps/08-openshift-elasticsearch
             wave: '8'
         - cluster: app-us-east-2
           url: https://kubernetes.default.svc
           values:
-            name: openshift-logging
+            name: 09-openshift-logging
             path: apps/09-openshift-logging
             wave: '9'
   template:
