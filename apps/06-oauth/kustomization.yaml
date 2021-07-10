@@ -12,7 +12,7 @@ resources:
 patchesStrategicMerge:
 - patch-sso-idp.yaml
 
-namespace: openshift-config
+# namespace: openshift-config
 
 secretGenerator:
 - name: matrix-login-template
