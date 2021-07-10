@@ -20,15 +20,15 @@ spec:
       nodeCount: 3
       redundancyPolicy: SingleRedundancy
       storage:
-        size: 200G
+        size: 50G
         storageClassName: ocs-storagecluster-ceph-rbd
     retentionPolicy:
       application:
         maxAge: 1d
       audit:
-        maxAge: 7d
+        maxAge: 1d
       infra:
-        maxAge: 7d
+        maxAge: 1d
     type: elasticsearch
   managementState: Managed
   visualization:
