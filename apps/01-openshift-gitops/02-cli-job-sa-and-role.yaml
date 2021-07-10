@@ -6,7 +6,7 @@ metadata:
     rbac.authorization.kubernetes.io/autoupdate: "true"
   name: cli-job-sa-role
 rules:
-  # this is for the presync-label-storage-node job
+  # this is for the 00-presync-label-worker-job job
   - apiGroups:
     - "*"
     resources: ["nodes"]
@@ -14,6 +14,7 @@ rules:
     - list
     - get
     - patch
+  # this is for the 00-presync-create-cert-cm-job
   - apiGroups:
       - ""
     resources:
