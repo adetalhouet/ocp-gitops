@@ -12,7 +12,7 @@ spec:
         - cluster: app-us-east-2
           url: https://kubernetes.default.svc
           values:
-            name: 01-argocd
+            name: 01-openshift-gitops
             wave: '1'
         - cluster: app-us-east-2
           url: https://kubernetes.default.svc
