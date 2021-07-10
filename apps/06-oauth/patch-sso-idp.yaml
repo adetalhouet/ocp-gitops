@@ -21,10 +21,10 @@
       issuer: >-
         https://keycloak-openshift-sso.apps.apps-useast2-adetalhouet.rhtelco.io/auth/realms/openshift
     type: OpenID
-- op: add
-  path: /spec/templates
-  value:
-    login:
-      name: matrix-login-template
-    providerSelection:
-      name: matrix-providers-template
+# - op: add
+#   path: /spec/templates
+#   value:
+#     login:
+#       name: matrix-login-template
+#     providerSelection:
+#       name: matrix-providers-template
