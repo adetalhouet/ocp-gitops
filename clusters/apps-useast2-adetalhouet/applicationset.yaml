@@ -45,15 +45,15 @@ spec:
     annotations:
       argocd.argoproj.io/sync-wave: '{{values.wave}}'
       argocd.argoproj.io/compare-options: '{{values.compareOptions}}'
-  spec:
-    project: default
-    source:
-      repoURL: https://github.com/adetalhouet/ocp-gitops.git
-      targetRevision: main
-      path: '{{values.path}}'
-    destination:
-      server: '{{url}}'
-    syncPolicy:
-      automated:
-        prune: false
-        selfHeal: true
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/adetalhouet/ocp-gitops.git
+        targetRevision: main
+        path: '{{values.path}}'
+      destination:
+        server: '{{url}}'
+      syncPolicy:
+        automated:
+          prune: false
+          selfHeal: true
