@@ -4,25 +4,6 @@ metadata:
  name: cluster-config
  namespace: openshift-gitops
 spec:
-  template:
-    metadata:
-      name: '{{name}}'
-      namespace: openshift-gitops
-    annotations:
-      argocd.argoproj.io/sync-wave: '{{wave}}'
-      argocd.argoproj.io/compare-options: '{{compareOptions}}'
-  spec:
-    project: default
-    source:
-      repoURL: https://github.com/adetalhouet/ocp-gitops.git
-      targetRevision: main
-      path: '{{path}}'
-    destination:
-      server: https://kubernetes.default.svc
-    syncPolicy:
-      automated:
-        prune: false
-        selfHeal: true
   generators:
   - list:
       elements:
@@ -54,3 +35,22 @@ spec:
       - name: openshift-logging
         path: apps/09-openshift-logging
         wave: '9'
+  template:
+    metadata:
+      name: '{{name}}'
+      namespace: openshift-gitops
+    annotations:
+      argocd.argoproj.io/sync-wave: '{{wave}}'
+      argocd.argoproj.io/compare-options: '{{compareOptions}}'
+  spec:
+    project: default
+    source:
+      repoURL: https://github.com/adetalhouet/ocp-gitops.git
+      targetRevision: main
+      path: '{{path}}'
+    destination:
+      server: https://kubernetes.default.svc
+    syncPolicy:
+      automated:
+        prune: false
+        selfHeal: true
