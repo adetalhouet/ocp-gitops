@@ -9,4 +9,3 @@ resources:
 - 03-sealed-rhsso-config.yaml
 - 04-sealed-rhsso-client-secret.yaml
 - 05-postsync-keycloak-migration.yaml
-# - 06-oauth.yaml

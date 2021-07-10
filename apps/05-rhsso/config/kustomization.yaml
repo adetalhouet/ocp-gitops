@@ -9,7 +9,7 @@ generatorOptions:
 secretGenerator:
 - name: keycloak-migration
   files:
-  - changelog.yaml
+  - keycloak-changelog.yml
   - 01-realms.yaml
   - 02-clients.yaml
   - 03-users.yaml
