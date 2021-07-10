@@ -6,3 +6,4 @@ resources:
   - 01-cr-config.yaml
   - 02-cli-job-sa-and-role.yaml
   - 03-cluster-admin-gitops.yaml
+  - 04-sealed-rhsso-client-secret.yaml
