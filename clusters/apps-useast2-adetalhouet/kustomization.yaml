@@ -17,6 +17,7 @@ bases:
   - ../../apps/03-local-storage-operator/argocd-app
   - ../../apps/04-openshift-container-storage/argocd-app
   - ../../apps/05-rhsso/argocd-app
+  - ../../apps/06-oauth/argocd-app
   # - ../../base/operators/01-local-storage-operator
   # - ../../base/operators/02-openshift-container-storage
   # - ../../base/operators/03-advanced-cluster-management
