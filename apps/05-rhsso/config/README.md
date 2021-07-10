@@ -9,7 +9,3 @@ __Generate RH SSO config changelog secret__
 __Seal the RH SSO changelog secret__
 
 `kubeseal --cert ~/.bitnami/tls.crt --format yaml < rhsso-config.yaml > ../03-sealed-rhsso-config.yaml`
-
-__Create the RH SSO client secret__
-
-`kubeseal --cert ~/.bitnami/tls.crt --format yaml < rhsso-client-secret.yaml > ../04-sealed-rhsso-client-secret.yaml`

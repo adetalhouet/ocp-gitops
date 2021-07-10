@@ -7,5 +7,4 @@ resources:
 - 01-install.yaml
 - 02-keycloak.yaml
 - 03-sealed-rhsso-config.yaml
-- 04-sealed-rhsso-client-secret.yaml
-- 05-postsync-keycloak-migration.yaml
+- 04-postsync-keycloak-migration.yaml
