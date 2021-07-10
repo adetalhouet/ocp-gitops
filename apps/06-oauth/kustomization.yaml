@@ -8,6 +8,8 @@ commonAnnotations:
 
 resources:
 - 01-sealed-rhsso-client-secret.yaml
+
+patchesStrategicMerge:
 - 02-oauth.yaml
 
 namespace: openshift-config
