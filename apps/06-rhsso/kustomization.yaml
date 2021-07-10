@@ -8,5 +8,6 @@ resources:
 - 02-keycloak.yaml
 - 03-sealed-rhsso-config.yaml
 - 04-postsync-keycloak-migration.yaml
+- 05-console-link.yaml
 - 06-argocdadmins-group-base.yaml
 - 07-cluster-admin-users-rolebinding.yaml
