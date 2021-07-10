@@ -7,5 +7,6 @@ resources:
   - 02-cli-job-sa-and-role.yaml
   - 03-cluster-admin-gitops.yaml
 
-patchesStrategicMerge:
-  - 04-sealed-rhsso-client-secret.yaml
+# TODO find a solution to provide argocd the client-secret
+# patchesStrategicMerge:
+  # - 04-sealed-rhsso-client-secret.yaml
