@@ -9,5 +9,5 @@ spec:
   resources:
     requests:
       storage: 30Gi
-  storageClassName: gp2
+  storageClassName: ocs-storagecluster-ceph-rbd
   volumeMode: Filesystem
