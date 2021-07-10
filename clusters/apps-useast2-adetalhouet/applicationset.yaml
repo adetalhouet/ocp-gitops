@@ -1,0 +1,56 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+ name: cluster-config
+ namespace: openshift-gitops
+spec:
+  template:
+    metadata:
+      name: '{{name}}'
+      namespace: openshift-gitops
+    annotations:
+      argocd.argoproj.io/sync-wave: '{{wave}}'
+      argocd.argoproj.io/compare-options: '{{compareOptions}}'
+  spec:
+    project: default
+    source:
+      repoURL: https://github.com/adetalhouet/ocp-gitops.git
+      targetRevision: main
+      path: '{{path}}'
+    destination:
+      server: https://kubernetes.default.svc
+    syncPolicy:
+      automated:
+        prune: false
+        selfHeal: true
+  generators:
+  - list:
+      elements:
+      - name: sealed-secrets
+        path: apps/01-sealed-secrets
+        wave: '1'
+      - name: letsencrypt-certs
+        path: apps/02-letsencrypt-certs
+        wave: '2'
+      - name: argocd
+        path: apps/03-openshift-gitops
+        wave: '3'
+      - name: local-storage-operator
+        path: apps/04-local-storage-operator
+        wave: '4'
+      - name: openshift-container-storage
+        path: apps/05-openshift-container-storage
+        wave: '5'
+      - name: 06-rhsso
+        path: apps/06-rhsso
+        wave: '6'
+        compareOptions: IgnoreExtraneous
+      - name: config-console-links
+        path: apps/07-oauth
+        wave: '7'
+      - name: openshift-elasticsearch
+        path: apps/05-openshift-container-storage
+        wave: '8'
+      - name: openshift-logging
+        path: apps/09-openshift-logging
+        wave: '9'

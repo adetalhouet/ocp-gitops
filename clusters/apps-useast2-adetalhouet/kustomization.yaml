@@ -4,26 +4,7 @@ kind: Kustomization
 
 commonLabels:
   gitops/cluster-name: apps-useast2-adetalhouet
-  topology.kubernetes.io/region: ca-central
-#
-# commonAnnotations:
-#   argocd.argoproj.io/compare-options: IgnoreExtraneous
-#   argocd.argoproj.io/sync-options: Prune=false
+  topology.kubernetes.io/region: us-east-2
 
-bases:
-  - ../../apps/00-letsencrypt-certs/argocd-app
-  - ../../apps/01-openshift-gitops/argocd-app
-  - ../../apps/02-sealed-secrets/argocd-app
-  - ../../apps/03-local-storage-operator/argocd-app
-  - ../../apps/04-openshift-container-storage/argocd-app
-  - ../../apps/05-rhsso/argocd-app
-  - ../../apps/06-oauth/argocd-app
-  # - ../../base/operators/01-local-storage-operator
-  # - ../../base/operators/02-openshift-container-storage
-  # - ../../base/operators/03-advanced-cluster-management
-  # - ../../base/operators/04-rhsso
-  # - ../../base/operators/05-openshift-gitops
-  # - ../../base/operators/06-openshift-elasticsearch
-  # - ../../base/operators/07-openshift-logging
-  # - ../../base/operators/08-ansible-automation-platform
-  # - ../../base/operators/09-quay-container-security
+resources:
+  - applicationset.yaml

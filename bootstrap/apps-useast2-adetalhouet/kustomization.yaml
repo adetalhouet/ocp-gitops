@@ -4,8 +4,8 @@ kind: Kustomization
 
 commonLabels:
   gitops/cluster-name: mgnt
-  topology.kubernetes.io/region: ca-central
+  topology.kubernetes.io/region: us-east-2
 
 bases:
-  - ../../apps/01-openshift-gitops/install
-  - ../../apps/02-sealed-secrets/install
+  - ../../apps/01-sealed-secrets/bootstrap
+  - ../../apps/03-openshift-gitops/bootstrap
