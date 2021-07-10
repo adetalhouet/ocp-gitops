@@ -9,19 +9,24 @@ commonAnnotations:
 resources:
 - 01-sealed-rhsso-client-secret.yaml
 
-patchesStrategicMerge:
-- patch-sso-idp.yaml
+patchesJson6902:
+  - path: patch-sso-idp.yaml
+    target:
+      group: config.openshift.io
+      kind: OAuth
+      name: cluster
+      version: v1
 
 # namespace: openshift-config
-
-secretGenerator:
-- name: matrix-login-template
-  options:
-    disableNameSuffixHash: true
-  files:
-    - config/login/login.html
-- name: matrix-providers-template
-  options:
-    disableNameSuffixHash: true
-  files:
-    - config/login/providers.html 
+#
+# secretGenerator:
+# - name: matrix-login-template
+#   options:
+#     disableNameSuffixHash: true
+#   files:
+#     - config/login/login.html
+# - name: matrix-providers-template
+#   options:
+#     disableNameSuffixHash: true
+#   files:
+#     - config/login/providers.html
