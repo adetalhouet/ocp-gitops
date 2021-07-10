@@ -6,7 +6,7 @@ metadata:
 spec:
   generators:
   - list:
-      elements:
+      items:
       - name: sealed-secrets
         path: apps/01-sealed-secrets
         wave: '1'
