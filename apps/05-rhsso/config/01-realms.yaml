@@ -1,5 +1,5 @@
 id: add-realms
 author: adetalhouet
 changes:
-  - addRealm:
-      name: openshift
+- addRealm:
+    name: openshift
