@@ -29,7 +29,7 @@ data:
     hvdcOrdAogICAgYXR0cmlidXRlczoKICAgICAgZ3JvdXBzOgogICAgICAgIC0gQXJnb0NE
     QWRtaW5zCiAgLSB1cGRhdGVVc2VyUGFzc3dvcmQ6CiAgICAgIG5hbWU6IGFkZXRhbGhvdW
     V0CiAgICAgIHBhc3N3b3JkOiBsaW51eDkhIQ==
-  changelog.yaml: |
+  keycloak-changelog.yml: |
     aW5jbHVkZXM6CiAgLSBwYXRoOiAwMS1yZWFsbS55bWwKICAtIHBhdGg6IDAyLWNsaWVudH
     MueW1sCiAgLSBwYXRoOiAwMy11c2Vycy55bWw=
 kind: Secret
