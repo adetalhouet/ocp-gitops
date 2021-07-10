@@ -1,5 +1,5 @@
 - op: add
-  path: /spec/identityProviders/1
+  path: /spec/identityProviders/-
   value:
     mappingMethod: claim
     name: keycloak
