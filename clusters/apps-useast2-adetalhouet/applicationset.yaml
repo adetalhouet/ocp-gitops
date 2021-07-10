@@ -42,9 +42,9 @@ spec:
     metadata:
       name: '{{values.name}}'
       namespace: openshift-gitops
-    annotations:
-      argocd.argoproj.io/sync-wave: '{{values.wave}}'
-      argocd.argoproj.io/compare-options: '{{values.compareOptions}}'
+      annotations:
+        argocd.argoproj.io/sync-wave: '{{values.wave}}'
+        argocd.argoproj.io/compare-options: '{{values.compareOptions}}'
     spec:
       project: default
       source:
