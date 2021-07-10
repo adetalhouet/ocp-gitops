@@ -66,7 +66,7 @@ spec:
       source:
         repoURL: https://github.com/adetalhouet/ocp-gitops.git
         targetRevision: main
-        path: apps/'{{values.name}}'
+        path: 'apps/{{values.name}}'
       destination:
         server: '{{url}}'
       syncPolicy:
