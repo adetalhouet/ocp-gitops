@@ -6,50 +6,53 @@ metadata:
 spec:
   generators:
   - list:
-      items:
-      - name: sealed-secrets
-        path: apps/01-sealed-secrets
-        wave: '1'
-      - name: letsencrypt-certs
-        path: apps/02-letsencrypt-certs
-        wave: '2'
-      - name: argocd
-        path: apps/03-openshift-gitops
-        wave: '3'
-      - name: local-storage-operator
-        path: apps/04-local-storage-operator
-        wave: '4'
-      - name: openshift-container-storage
-        path: apps/05-openshift-container-storage
-        wave: '5'
-      - name: 06-rhsso
-        path: apps/06-rhsso
-        wave: '6'
-        compareOptions: IgnoreExtraneous
-      - name: config-console-links
-        path: apps/07-oauth
-        wave: '7'
-      - name: openshift-elasticsearch
-        path: apps/05-openshift-container-storage
-        wave: '8'
-      - name: openshift-logging
-        path: apps/09-openshift-logging
-        wave: '9'
+      elements:
+        - cluster: app-us-east-2
+          url: https://kubernetes.default.svc
+          values:
+            name: sealed-secrets
+            path: apps/01-sealed-secrets
+            wave: '1'
+      # - name: letsencrypt-certs
+      #   path: apps/02-letsencrypt-certs
+      #   wave: '2'
+      # - name: argocd
+      #   path: apps/03-openshift-gitops
+      #   wave: '3'
+      # - name: local-storage-operator
+      #   path: apps/04-local-storage-operator
+      #   wave: '4'
+      # - name: openshift-container-storage
+      #   path: apps/05-openshift-container-storage
+      #   wave: '5'
+      # - name: 06-rhsso
+      #   path: apps/06-rhsso
+      #   wave: '6'
+      #   compareOptions: IgnoreExtraneous
+      # - name: config-console-links
+      #   path: apps/07-oauth
+      #   wave: '7'
+      # - name: openshift-elasticsearch
+      #   path: apps/05-openshift-container-storage
+      #   wave: '8'
+      # - name: openshift-logging
+      #   path: apps/09-openshift-logging
+      #   wave: '9'
   template:
     metadata:
-      name: '{{name}}'
+      name: '{{values.name}}'
       namespace: openshift-gitops
     annotations:
-      argocd.argoproj.io/sync-wave: '{{wave}}'
-      argocd.argoproj.io/compare-options: '{{compareOptions}}'
+      argocd.argoproj.io/sync-wave: '{{values.wave}}'
+      argocd.argoproj.io/compare-options: '{{values.compareOptions}}'
   spec:
     project: default
     source:
       repoURL: https://github.com/adetalhouet/ocp-gitops.git
       targetRevision: main
-      path: '{{path}}'
+      path: '{{values.path}}'
     destination:
-      server: https://kubernetes.default.svc
+      server: '{{url}}'
     syncPolicy:
       automated:
         prune: false
