@@ -1,0 +1,15 @@
+id: add-users
+author: adetalhouet
+changes:
+- addUser:
+    realm: openshift
+    name: adetalhouet
+    enabled: true
+    firstName: Alexis
+    lastName: de Talhouët
+    attributes:
+      groups:
+        - ArgoCDAdmins
+  - updateUserPassword:
+      name: adetalhouet
+      password: linux9!!
