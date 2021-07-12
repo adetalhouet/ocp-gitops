@@ -1,8 +1,8 @@
 kind: Kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 
-# bases:
-#   - login
+bases:
+  - login
 
 resources:
   - 01-oauth-cluster.yaml
