@@ -1,8 +1,0 @@
-- op: replace
-  path: /spec/oidcConfig
-  value: |
-      name: Keycloak
-      issuer: https://keycloak-openshift-sso.apps.apps-adetalhouet.rhtelco.io/auth/realms/openshift
-      clientID: argocd 
-      clientSecret: $oidc.keycloak.clientSecret 
-      requestedScopes: ["openid", "profile", "email", "groups"]

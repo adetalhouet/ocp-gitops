@@ -59,4 +59,4 @@ __Generate RH SSO config changelog secret__
 
 __Seal the RH SSO changelog secret__
 
-`kubeseal --cert ~/.bitnami/tls.crt --format yaml < rhsso-config.yaml > ../03-sealed-rhsso-config.yaml`
+`kubeseal --cert ~/.bitnami/tls.crt --format yaml < rhsso-config.yaml > ../01-sealed-rhsso-config.yaml`

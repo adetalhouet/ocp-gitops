@@ -7,5 +7,6 @@ resources:
   - 03-cli-job-sa-and-role.yaml
   - 04-cluster-admin-gitops.yaml
   - 05-argocd-rbac-cm.yaml
-  - 06-sealed-rhsso-client-secret.yaml
+  - 06-argocdadmins-group-base.yaml
+  - 07-sealed-rhsso-client-secret.yaml
   - 08-posstsync-patch-argocd-secret.yaml

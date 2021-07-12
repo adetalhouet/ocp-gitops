@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
- name: cluster-config
+ name: 00-hub-cluster-config
  namespace: openshift-gitops
 spec:
   generators:
@@ -9,61 +9,72 @@ spec:
 # should be fixed by https://github.com/argoproj-labs/applicationset/issues/162
   - list:
       elements:
-        - cluster: app-us-east-2
+        - cluster: hub
           url: https://kubernetes.default.svc
           values:
             name: 01-openshift-gitops
             wave: '1'
-        - cluster: app-us-east-2
+            path: apps/01-openshift-gitops/overlay/hub
+        - cluster: hub
           url: https://kubernetes.default.svc
           values:
             name: 02-sealed-secrets
             wave: '2'
-        - cluster: app-us-east-2
+            path: apps/02-sealed-secrets
+        - cluster: hub
           url: https://kubernetes.default.svc
           values:
             name: 03-letsencrypt-certs
             wave: '3'
-        - cluster: app-us-east-2
+            path: apps/03-letsencrypt-certs
+        - cluster: hub
           url: https://kubernetes.default.svc
           values:
             name: 04-local-storage-operator
             wave: '4'
-        - cluster: app-us-east-2
+            path: apps/04-local-storage-operator
+        - cluster: hub
           url: https://kubernetes.default.svc
           values:
             name: 05-openshift-container-storage
             wave: '5'
-        - cluster: app-us-east-2
+            path: apps/05-openshift-container-storage
+        - cluster: hub
           url: https://kubernetes.default.svc
           values:
             name: 06-rhsso
             wave: '6'
-        - cluster: app-us-east-2
+            path: apps/06-rhsso/overlay/hub
+        - cluster: hub
           url: https://kubernetes.default.svc
           values:
             name: 07-oauth
             wave: '7'
-        - cluster: app-us-east-2
+            path: apps/07-oauth/overlay/hub
+        - cluster: hub
           url: https://kubernetes.default.svc
           values:
             name: 08-openshift-elasticsearch
             wave: '8'
-        - cluster: app-us-east-2
+            path: apps/08-openshift-elasticsearch
+        - cluster: hub
           url: https://kubernetes.default.svc
           values:
             name: 09-openshift-logging
             wave: '9'
-        - cluster: app-us-east-2
+            path: apps/09-openshift-logging
+        - cluster: hub
           url: https://kubernetes.default.svc
           values:
             name: 10-ansible-automation-platform
             wave: '10'
-        - cluster: app-us-east-2
+            path: apps/10-ansible-automation-platform/overlay/hub
+        - cluster: hub
           url: https://kubernetes.default.svc
           values:
             name: 11-quay-container-security
             wave: '11'
+            path: apps/11-quay-container-security
   template:
     metadata:
       name: '{{values.name}}'
@@ -76,7 +87,7 @@ spec:
       source:
         repoURL: https://github.com/adetalhouet/ocp-gitops.git
         targetRevision: main
-        path: 'apps/{{values.name}}'
+        path: '{{path}}'
       destination:
         server: '{{url}}'
       syncPolicy:

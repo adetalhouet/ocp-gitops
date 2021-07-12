@@ -1,0 +1,11 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- 00-presync-create-cert-cm-job.yaml
+- 01-install.yaml
+- 02-keycloak.yaml
+- 03-postsync-keycloak-migration.yaml
+- 04-console-link.yaml
+- 05-cluster-admin-users-rolebinding.yaml

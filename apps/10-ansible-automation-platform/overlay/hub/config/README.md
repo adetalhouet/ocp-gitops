@@ -8,4 +8,4 @@ __Generate Ansible Tower inventory secret__
 
 __Seal the Ansible Tower secret__
 
-`kubeseal --cert ~/.bitnami/tls.crt --format yaml < ansible-tower-inventory.yaml > ../05-sealed-ansible-tower-inventory.yaml`
+`kubeseal --cert ~/.bitnami/tls.crt --format yaml < ansible-tower-inventory.yaml > ../06-sealed-ansible-tower-inventory.yaml`

@@ -15,7 +15,7 @@ spec:
       - PipelineRun
   oidcConfig: |
     name: Keycloak
-    issuer: https://keycloak-openshift-sso.apps.mgnt.rhtelco.io/auth/realms/openshift
+    issuer: https://keycloak-openshift-sso.apps.hub.rhtelco.io/auth/realms/openshift
     clientID: argocd 
     clientSecret: $oidc.keycloak.clientSecret 
     requestedScopes: ["openid", "profile", "email", "groups"] 
