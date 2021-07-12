@@ -1,5 +1,15 @@
-oc edit cephfilesystem.ceph.rook.io/ocs-storagecluster-cephfilesystem -n openshift-storage
-oc edit cephblockpool.ceph.rook.io/ocs-storagecluster-cephblockpool -n openshift-storage
+oc patch cephfilesystem.ceph.rook.io/ocs-storagecluster-cephfilesystem -n openshift-storage -p '{"metadata":{"finalizers":null}}' --type=merge
+oc delete cephfilesystem.ceph.rook.io/ocs-storagecluster-cephfilesystem -n openshift-storage
+oc patch cephblockpool.ceph.rook.io/ocs-storagecluster-cephblockpool -n openshift-storage -p '{"metadata":{"finalizers":null}}' --type=merge
+oc delete  cephblockpool.ceph.rook.io/ocs-storagecluster-cephblockpool -n openshift-storage
+oc patch noobaa.noobaa.io/noobaa -n openshift-storage -p '{"metadata":{"finalizers":null}}' --type=merge
+oc delete noobaa.noobaa.io/noobaa -n openshift-storage
+oc patch backingstore.noobaa.io/noobaa-default-backing-store -n openshift-storage -p '{"metadata":{"finalizers":null}}' --type=merge
+oc delete backingstore.noobaa.io/noobaa-default-backing-store -n openshift-storage
+oc patch bucketclass.noobaa.io/noobaa-default-bucket-class -n openshift-storage -p '{"metadata":{"finalizers":null}}' --type=merge
+oc delete bucketclass.noobaa.io/noobaa-default-bucket-class -n openshift-storage
+oc patch storagecluster.ocs.openshift.io/ocs-storagecluster -n openshift-storage -p '{"metadata":{"finalizers":null}}' --type=merge
+oc delete storagecluster.ocs.openshift.io/ocs-storagecluster -n openshift-storage
 
 kubectl api-resources --verbs=list --namespaced -o name | grep "ceph\|nooba" \
   | xargs -n 1 kubectl get --show-kind --ignore-not-found -n  openshift-storage
