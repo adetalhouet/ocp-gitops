@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Install Argo, create sealed-secret namespace, and add sealed-secret-key
-oc kustomize bootstrap/hub | oc apply -f-
+oc kustomize hub | oc apply -f-
 
 # Wait for ArgoCD to be ready
 SLEEP=3
@@ -13,4 +13,4 @@ while [ "$CSV_STATUS" != "Succeeded" ]; do
 done
 
 #Then apply the app-of-apps that will control everything
-oc apply -f bootstrap/hub/app-of-apps.yaml
+oc apply -f hub/app-of-apps.yaml

@@ -87,7 +87,7 @@ spec:
       source:
         repoURL: https://github.com/adetalhouet/ocp-gitops.git
         targetRevision: main
-        path: '{{path}}'
+        path: '{{values.path}}'
       destination:
         server: '{{url}}'
       syncPolicy:
