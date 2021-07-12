@@ -22,4 +22,4 @@ patches:
    patch: |-
     - op: replace
       path:  /spec/template/spec/containers/0/env/0/value
-      value: 'https://keycloak-openshift-sso.apps.hub-adetalhouet.hub.rhtelco.io/auth/'
+      value: 'https://keycloak-openshift-sso.apps.hub-adetalhouet.rhtelco.io/auth/'
