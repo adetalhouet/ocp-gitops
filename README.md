@@ -13,8 +13,8 @@ Required customization:
     - In order to update the cluster certificate, provide your AWS creds as explained [here](https://github.com/adetalhouet/ocp-gitops/blob/main/apps/03-letsencrypt-certs/README.md). 
     - See GitHub: [OpenShift Let's Encrypt Job](https://github.com/pittar/ocp-letsencrypt-job) project reference.
 - rhsso
-    - Create the realms, clients and users according to your desire setup. Look [here](https://github.com/adetalhouet/ocp-gitops/blob/main/apps/06-rhsso/config/README.md) for example on how to then seal the information
+    - Create the realms, clients and users according to your desire setup. Look [here](https://github.com/adetalhouet/ocp-gitops/blob/main/apps/06-rhsso/overlay/hub/config/README.md) for example on how to then seal the information
 - oauth
-    - Create the RH SSO client-secret, and seal it, as explained [here](https://github.com/adetalhouet/ocp-gitops/blob/main/apps/07-oauth/config/README.md)
+    - Create the RH SSO client-secret, and seal it, as explained [here](https://github.com/adetalhouet/ocp-gitops/blob/main/apps/07-oauth/base/README.md)
 - ansible-automation-platform
-    - Create the inventory file and then seal it. More information [here](https://github.com/adetalhouet/ocp-gitops/blob/main/apps/10-ansible-automation-platform/config/README.md)
+    - Create the inventory file and then seal it. More information [here](https://github.com/adetalhouet/ocp-gitops/blob/main/apps/10-ansible-automation-platform/overlay/hub/config/README.md)
