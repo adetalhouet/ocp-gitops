@@ -2,6 +2,57 @@ __Using Keycloack Migration tool for the configurating__
 
 Find [here](https://mayope.github.io/keycloakmigration/) how to use it and build your manifest
 
+_Create Client_
+
+~~~
+id: add-openshift-client
+author: adetalhouet
+realm: openshift
+changes:
+# OpenShift client
+- addSimpleClient:
+    clientId: openshift
+    secret: "blah" # change client secret accordingly in oauth app
+    redirectUris:
+      - "https://oauth-openshift.apps.apps-useast2-adetalhouet.rhtelco.io/oauth2callback/keycloak"
+- updateClient:
+    clientId: openshift
+    standardFlowEnabled: true
+    implicitFlowEnabled: false
+    directAccessGrantEnabled: true
+# Argocd client
+- addSimpleClient:
+    clientId: argocd
+    secret: "blah" # change client secret accordingly in argocd app
+    redirectUris:
+      - "https://openshift-gitops-server-openshift-gitops.apps.apps-useast2-adetalhouet.rhtelco.io/auth/callback"
+- updateClient:
+    clientId: argocd
+    standardFlowEnabled: true
+    implicitFlowEnabled: false
+    directAccessGrantEnabled: true
+    baseUrl: /applications
+    rootUrl: https://openshift-gitops-server-openshift-gitops.apps.apps-useast2-adetalhouet.rhtelco.io
+~~~
+
+_Create Users_
+
+~~~
+id: add-users
+author: adetalhouet
+changes:
+- addUser:
+    realm: openshift
+    name: adetalhouet
+    enabled: true
+    firstName: Alexis
+    lastName: de Talhouët
+- updateUserPassword:
+    realm: openshift
+    name: adetalhouet
+    password: "blah"
+~~~
+
 __Generate RH SSO config changelog secret__
 
 `kustomize build ./ > rhsso-config.yaml`
