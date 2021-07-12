@@ -1,0 +1,10 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - 02-cr-config.yaml
+  - 03-cli-job-sa-and-role.yaml
+  - 04-cluster-admin-gitops.yaml
+  - 05-argocd-rbac-cm.yaml
+  - 08-posstsync-patch-argocd-secret.yaml
