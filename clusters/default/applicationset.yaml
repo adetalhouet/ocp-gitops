@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
- name: 00-hub-cluster-config
+ name: 00-default-cluster-config
  namespace: openshift-gitops
 spec:
   generators:
@@ -9,67 +9,67 @@ spec:
 # should be fixed by https://github.com/argoproj-labs/applicationset/issues/162
   - list:
       elements:
-        - cluster: hub
+        - cluster: default
           url: https://kubernetes.default.svc
           values:
             name: 01-openshift-gitops
             wave: '1'
-            path: apps/01-openshift-gitops/overlay/hub
-        - cluster: hub
+            path: apps/01-openshift-gitops/overlay/default
+        - cluster: default
           url: https://kubernetes.default.svc
           values:
             name: 02-sealed-secrets
             wave: '2'
             path: apps/02-sealed-secrets
-        - cluster: hub
+        - cluster: default
           url: https://kubernetes.default.svc
           values:
             name: 03-letsencrypt-certs
             wave: '3'
             path: apps/03-letsencrypt-certs
-        - cluster: hub
+        - cluster: default
           url: https://kubernetes.default.svc
           values:
             name: 04-local-storage-operator
             wave: '4'
             path: apps/04-local-storage-operator
-        - cluster: hub
+        - cluster: default
           url: https://kubernetes.default.svc
           values:
             name: 05-openshift-container-storage
             wave: '5'
             path: apps/05-openshift-container-storage
-        - cluster: hub
+        - cluster: default
           url: https://kubernetes.default.svc
           values:
             name: 06-rhsso
             wave: '6'
-            path: apps/06-rhsso/overlay/hub
-        - cluster: hub
+            path: apps/06-rhsso/overlay/default
+        - cluster: default
           url: https://kubernetes.default.svc
           values:
             name: 07-oauth
             wave: '7'
-            path: apps/07-oauth/overlay/hub
-        - cluster: hub
+            path: apps/07-oauth/overlay/default
+        - cluster: default
           url: https://kubernetes.default.svc
           values:
             name: 08-openshift-elasticsearch
             wave: '8'
             path: apps/08-openshift-elasticsearch
-        - cluster: hub
+        - cluster: default
           url: https://kubernetes.default.svc
           values:
             name: 09-openshift-logging
             wave: '9'
             path: apps/09-openshift-logging
-        - cluster: hub
+        - cluster: default
           url: https://kubernetes.default.svc
           values:
             name: 10-ansible-automation-platform
             wave: '10'
-            path: apps/10-ansible-automation-platform/overlay/hub
-        - cluster: hub
+            path: apps/10-ansible-automation-platform/overlay/default
+        - cluster: default
           url: https://kubernetes.default.svc
           values:
             name: 11-quay-container-security
