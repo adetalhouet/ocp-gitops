@@ -29,11 +29,24 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: cli-job-sa-rolebinding
+  name: gitops-rolebinding
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: cli-job-sa-role
+subjects:
+  - kind: ServiceAccount
+    name: cli-job-sa
+    namespace: openshift-gitops
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: gitops-cluster-admin
+roleRef: # hack for job ansible to run... FIXME
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
 subjects:
   - kind: ServiceAccount
     name: cli-job-sa
