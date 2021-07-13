@@ -1,0 +1,9 @@
+id: assign-group
+author: adetalhouet
+changes:
+  - addGroup:
+      name: ArgoCDAdmins
+  - assignGroup:
+      realm: openshift
+      user: adetalhouet
+      group: ArgoCDAdmins

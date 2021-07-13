@@ -12,9 +12,10 @@ changes:
 # OpenShift client
 - addSimpleClient:
     clientId: openshift
-    secret: "blah" # change client secret accordingly in oauth app
+    publicClient: false
+    secret: YOUR_PASSWORD # change client secret accordingly in oauth app
     redirectUris:
-      - "https://oauth-openshift.apps.apps-useast2-adetalhouet.rhtelco.io/oauth2callback/keycloak"
+      - "https://oauth-openshift.apps.hub-adetalhouet.rhtelco.io/oauth2callback/keycloak"
 - updateClient:
     clientId: openshift
     standardFlowEnabled: true
@@ -23,16 +24,27 @@ changes:
 # Argocd client
 - addSimpleClient:
     clientId: argocd
-    secret: "blah" # change client secret accordingly in argocd app
+    publicClient: false
+    secret: YOUR_PASSWORD # change client secret accordingly in argocd app
     redirectUris:
-      - "https://openshift-gitops-server-openshift-gitops.apps.apps-useast2-adetalhouet.rhtelco.io/auth/callback"
+      - "https://openshift-gitops-server-openshift-gitops.apps.hub-adetalhouet.rhtelco.io/auth/callback"
 - updateClient:
     clientId: argocd
     standardFlowEnabled: true
     implicitFlowEnabled: false
     directAccessGrantEnabled: true
     baseUrl: /applications
-    rootUrl: https://openshift-gitops-server-openshift-gitops.apps.apps-useast2-adetalhouet.rhtelco.io
+    rootUrl: https://openshift-gitops-server-openshift-gitops.apps.hub-adetalhouet.rhtelco.io
+- addClientScope:
+    name: groups
+- addGroupMembershipMapper:
+    clientId: argocd
+    name: groups
+    addToAccessToken: true
+    claimName: groups
+- assignDefaultClientScope:
+    clientId: argocd
+    clientScopeName: groups
 ~~~
 
 _Create Users_
