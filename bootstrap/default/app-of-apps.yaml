@@ -8,7 +8,7 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: clusters/hub
+    path: clusters/default
     repoURL: https://github.com/adetalhouet/ocp-gitops.git
     targetRevision: main
   syncPolicy:
