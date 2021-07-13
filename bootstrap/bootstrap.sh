@@ -9,7 +9,7 @@ if [[ z$CLUSTER_NAME == z ]]; then
 fi
 
 # Install Argo, create sealed-secret namespace, and add sealed-secret-key
-oc kustomize $CLUSTER_NAME | oc apply -f-
+oc kustomize bootstrap/$CLUSTER_NAME | oc apply -f-
 
 # Wait for ArgoCD to be ready
 SLEEP=3
@@ -21,4 +21,4 @@ while [ "$CSV_STATUS" != "Succeeded" ]; do
 done
 
 #Then apply the app-of-apps that will control everything
-oc apply -f $CLUSTER_NAME/app-of-apps.yaml
+oc apply -f bootstrap/$CLUSTER_NAME/app-of-apps.yaml
