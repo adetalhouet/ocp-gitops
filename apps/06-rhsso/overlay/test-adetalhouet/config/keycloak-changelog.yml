@@ -1,0 +1,5 @@
+includes:
+  - path: 01-realms.yaml
+  - path: 02-clients.yaml
+  - path: 03-users.yaml
+  - path: 04-groups.yaml
