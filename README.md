@@ -1,4 +1,18 @@
-# Work in Progress
+__Deploy__
+
+~~~
+./build-cluster-config.sh $CLUSTER_NAME
+./bootstrap/bootstrap.sh $CLUSTER_NAME
+~~~
+
+The first script is to generate new overlay folders based on the existing ones, and adjust:
+- the FDQN in the various configuration to reflect that new cluster name
+The FQDN is as follow: $CLUSTER_NAME.rhtelco.io
+- the cluster name in the applicationset
+
+The second script deploys [few key elements](https://github.com/adetalhouet/ocp-gitops/blob/main/bootstrap/README.md) in the cluster and then, once ready, deploy the ArgoCD appliction acting as an apps-of-app.
+
+__Notes__
 
 Required customization:
 
