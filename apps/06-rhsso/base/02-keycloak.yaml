@@ -12,4 +12,4 @@ spec:
   externalAccess:
     enabled: true
   instances: 1
-  storageClassName: ocs-storagecluster-ceph-rbd
+  storageClassName: gp2
