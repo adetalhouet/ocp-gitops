@@ -33,18 +33,18 @@ spec:
             name: 04-local-storage-operator
             wave: '4'
             path: apps/04-local-storage-operator
-        # - cluster: default
-        #   url: https://kubernetes.default.svc
-        #   values:
-        #     name: 05-openshift-container-storage
-        #     wave: '5'
-        #     path: apps/05-openshift-container-storage
-        # - cluster: default
-        #   url: https://kubernetes.default.svc
-        #   values:
-        #     name: 06-rhsso
-        #     wave: '6'
-        #     path: apps/06-rhsso/overlay/default
+        - cluster: default
+          url: https://kubernetes.default.svc
+          values:
+            name: 05-openshift-container-storage
+            wave: '5'
+            path: apps/05-openshift-container-storage
+        - cluster: default
+          url: https://kubernetes.default.svc
+          values:
+            name: 06-rhsso
+            wave: '6'
+            path: apps/06-rhsso/overlay/default
         - cluster: default
           url: https://kubernetes.default.svc
           values:
