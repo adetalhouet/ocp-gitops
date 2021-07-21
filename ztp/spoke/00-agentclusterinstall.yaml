@@ -1,0 +1,22 @@
+---
+apiVersion: extensions.hive.openshift.io/v1beta1
+kind: AgentClusterInstall
+metadata:
+  name: lab-cluster-aci
+  namespace: open-cluster-management
+spec:
+  clusterDeploymentRef:
+    name: lab-cluster
+  imageSetRef:
+    name: openshift-v4.8.0
+  networking:
+    clusterNetwork:
+      - cidr: "10.128.0.0/14"
+        hostPrefix: 23
+    serviceNetwork:
+      - "172.30.0.0/16"
+    machineNetwork:
+      - cidr: "192.168.123.0/24"
+  provisionRequirements:
+    controlPlaneAgents: 1
+  sshPublicKey: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPwyNH/qkYcqkKk5MiNjKHxnoadME6crIJ8aIs3R6TZQ root@lab.adetalhouet"

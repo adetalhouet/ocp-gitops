@@ -1,0 +1,28 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: sno-secret
+  namespace: open-cluster-management
+data:
+  password: YWxrbm9wZmxlcgo=
+  username: YW1vcmdhbnQK
+type: Opaque
+---
+apiVersion: metal3.io/v1alpha1
+kind: BareMetalHost
+metadata:
+  name: sno
+  namespace: open-cluster-management
+  labels:
+    infraenvs.agent-install.openshift.io: "lab-env"
+  annotations:
+    inspect.metal3.io: disabled
+spec:
+  online: true
+  bmc:
+    address: redfish-virtualmedia+http://148.251.12.17:8000/redfish/v1/Systems/8edf6ceb-cc40-48d7-862c-f6ec986c5769
+    credentialsName: sno-secret
+    disableCertificateVerification: true
+  bootMACAddress: 02:01:00:00:00:66
+  automatedCleaningMode: disabled

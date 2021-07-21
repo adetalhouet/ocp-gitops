@@ -1,0 +1,20 @@
+---
+apiVersion: agent-install.openshift.io/v1beta1
+kind: InfraEnv
+metadata:
+  name: lab-env
+  namespace: open-cluster-management
+spec:
+  clusterRef:
+    name: lab-cluster
+    namespace: open-cluster-management
+  sshAuthorizedKey: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPwyNH/qkYcqkKk5MiNjKHxnoadME6crIJ8aIs3R6TZQ root@lab.adetalhouet"
+  agentLabelSelector:
+    matchLabels:
+      deploy-mode: "ztp"
+  pullSecretRef:
+    name: assisted-deployment-pull-secret
+  # ignitionConfigOverride: '{"ignition": {"version": "3.1.0"}, "storage": {"files": [{"path": "/etc/someconfig", "contents": {"source": "data:text/plain;base64,aGVscGltdHJhcHBlZGluYXN3YWdnZXJzcGVj"}}]}}'
+  nmStateConfigLabelSelector:
+    matchLabels:
+      cluster-name: lab-spoke-adetalhouet

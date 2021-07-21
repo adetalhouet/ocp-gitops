@@ -1,0 +1,24 @@
+---
+apiVersion: hive.openshift.io/v1
+kind: ClusterDeployment
+metadata:
+  name: lab-cluster
+  namespace: open-cluster-management
+spec:
+  baseDomain: rhtelco.io
+  clusterName: lab-spoke-adetalhouet
+  controlPlaneConfig:
+    servingCertificates: {}
+  installed: false
+  clusterInstallRef:
+    group: extensions.hive.openshift.io
+    kind: AgentClusterInstall
+    name: lab-cluster-aci
+    version: v1beta1
+  platform:
+    agentBareMetal:
+      agentSelector:
+        matchLabels:
+          deploy-mode: "ztp"
+  pullSecretRef:
+    name: assisted-deployment-pull-secret
