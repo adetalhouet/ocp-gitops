@@ -40,7 +40,7 @@ host-record=host.lab.adetalhouet,192.168.122.1' > /etc/NetworkManager/dnsmasq.d/
 
 #### KVM playground
 
-sudo virsh net-define /tmp/ocp-dev-net.xml
+sudo virsh net-define net.xml
 sudo virsh net-start ocp
 sudo virsh net-autostart ocp
 
@@ -58,7 +58,7 @@ virt-install \
 --disk /tmp/sno/sno-ai-discovery.iso,device=cdrom \
 --os-variant=fedora-coreos-stable \
 --noautoconsole \
---print-xml > sno.xml
+--print-xml > vm.xml
 
 --disk /tmp/sno/cidata.iso,device=cdrom \
 
