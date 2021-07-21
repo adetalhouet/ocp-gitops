@@ -4,5 +4,5 @@ Blog post used as reference: https://www.openshift.com/blog/telco-5g-zero-touch-
 
 Here is the workflow followed for the spoke cluster provisioning.
 
-[ZTP Workflow](https://assets.openshift.com/hubfs/kidding.png)
+![ZTP Workflow](https://assets.openshift.com/hubfs/kidding.png)
 
