@@ -63,5 +63,18 @@ virt-install \
 --disk /tmp/sno/cidata.iso,device=cdrom \
 
 
+###### hack fwd traffic to cluster
+podman run --name 443-proxy -p 443:443 -d nginx
+
+###### when the host is stopped
+/sbin/iptables -D FORWARD -o virbr1 -p tcp -d 192.168.123.5 --dport 443 -j ACCEPT
+/sbin/iptables -t nat -D PREROUTING -p tcp --dport 443 -j DNAT --to 192.168.123.5:443
+
+###### when is host is up
+/sbin/iptables -I FORWARD -o virbr1 -p tcp -d 192.168.123.5 --dport 443 -j ACCEPT
+/sbin/iptables -t nat -I PREROUTING -p tcp --dport 443 -j DNAT --to 192.168.123.5:443
+
 ##### backup
 https://www.cyberciti.biz/faq/how-to-install-kvm-on-centos-8-headless-server/
+
+https://wiki.libvirt.org/page/Networking#Forwarding_Incoming_Connections
