@@ -16,19 +16,39 @@ Let's align on the Zero Touch Provisioning expectation:
 - the overall libvirt environment will be setup manually (although it could easily be automated).
 - once the environment is correctly setup, we will apply the manifests that will automate the cluster creation.
 
+1. [Pre-requisites](#prerequisites)
+2. [ZTP flow overview](#ztpflow)
+3. [Install requirements on the hub cluster](#hubcluster)
+	- [Assisted Service](#assistedservice)
+	- [Ironic & Metal3](#bmo)
+4. [Install requirements on the spoke server](#spokecluster)
+	- [Install libvirt](#libvirtinstall)
+	- [Install and configure Sushy service](#sushy)
+	- [Libvirt setup](#libvirtsetup)
+	- - [Create a storage pool](#storage)
+	- - [Create a network](#net)
+  - - [Create the disk](#disk)
+  - - [Create the  VM / libvirt domain](#vm)
+5. [Let's deploy the spoke](#spoke)
+  - - [Few debugging tips](#debug)
+  - - [Accessing your cluster](#access)
 
-## Pre-requisite
+## Pre-requisite <a name="prerequisites"></a>
 
 - Red Hat OpenShift Container Platform __4.8__ for the hub cluster- see [here](https://access.redhat.com/documentation/en-us/openshift_container_platform/4.8/html/installing/index) on how to deploy
 - Red Hat Advanced Cluster Management __2.3__ installed on the hub cluster- see [here](https://github.com/open-cluster-management/deploy#prepare-to-deploy-open-cluster-management-instance-only-do-once) on how to deploy
 - A server with at least 32GB of RAM, 8 CPUs and 120 GB of disk - this is the machine we will use for the spoke. Mine is setup with CentOS 8.4
 - Clone the git repo: `git clone https://github.com/adetalhouet/ocp-gitops`
 
-## Install requirements the hub cluster
+## ZTP flow overview <a name="ztpflow"></a>
+
+TBD
+
+## Install requirements on the hub cluster <a name="hubcluster"></a>
 The assumption is the cluster is __not__ deployed on bare metal. If that's the case, then this blog isn't for you.
 In my case, my hub cluster is deployed in AWS. As it isn't a bare metal cluster, you don't have the Ironic and Metal3 pieces, so we will deploy them ourselves.
 
-### Install the Assisted Service
+### Install the Assisted Service <a name="assistedservice"></a>
 
 The related manifest to install this are located in `ocp-gitops/ztp/hub`. The main manifest is the one with the `AgentServiceConfig` definition, which define the base RHCOS image to use to the node install.
 
@@ -42,7 +62,7 @@ NAME                                READY   STATUS    RESTARTS   AGE
 assisted-service-5df8bd68d8-b4qpw   2/2     Running   9          12d
 ~~~
 
-### Install Ironic and Metal3
+### Install Ironic and Metal3 <a name="bmo"></a>
 
 TBD - As a heads-up, that was one of the hardest part, because it's not very well explain how all that works.
 
@@ -58,10 +78,10 @@ That CRD is the one responsible for the ZTP flow.
 oc create ns sno-ztp
 ~~~
 
-## Install requirements on the spoke cluster
+## Install requirements on the spoke server <a name="spokecluster"></a>
 I'm assuming you have a blank server, running CentOS 8.4.
 
-### Install libvirt
+### Install libvirt <a name="libvirtinstall"></a>
 Install the required dependencies.
 
 ~~~
@@ -71,7 +91,7 @@ dnf install virt-install -y
 systemctl enable libvirtd --now
 ~~~
 
-### Install and configure Sushy service
+### Install and configure Sushy service <a name="sushy"></a>
 Sushy service is a Virtual Redfish BMC emulator for libvirt or OpenStack virtualization. In our case, we will use it for libvirt, in order to add BMC capabilities to libvirt domain. That will enable remote control of the VMs.
 
 ~~~
@@ -131,9 +151,9 @@ systemctl start firewalld
 firewall-cmd --add-port=8000/tcp
 ~~~
 
-### Libvirt setup
+### Libvirt setup <a name="libvirtsetup"></a>
 
-#### Create a pool
+#### Create a pool <a name="storage"></a>
 
 When Ironic will use our virtual BMC, emulated by sushy-tools, to load the ISO in the server (VM in our case), sushy-tools will host that image in the `default` storage pool, so we need to create it accordingly. (I couldn't find a way, yet, to configure the storage pool to use.)
 ~~~
@@ -143,7 +163,7 @@ virsh pool-start default
 virsh pool-autostart default
 ~~~
 
-#### Create a network
+#### Create a network <a name="net"></a>
 
 OpenShift Bare Metal install has the following requirements:
 
@@ -194,7 +214,7 @@ virsh net-start sno
 virsh net-autostart sno
 ~~~
 
-#### Create the disk
+#### Create the disk <a name="disk"></a>
 
 In order for Assisted Installer to allow the installation of the Single Node OpenShift to happen, one of the requirement is the disk size: it must be at least of 120GB. When creating a disk of 120GB, or even 150GB, for some reason I had issues and the Assisted Service wouldn't allow the installation complaining about the disk size requirepement not being met.
 So let's create a disk of 200 GB to be sure.
@@ -202,7 +222,7 @@ So let's create a disk of 200 GB to be sure.
 qemu-img create -f qcow2 /var/lib/libvirt/sno-ztp/sno2.qcow2 200G
 ~~~
 
-#### Create the  VM / libvirt domain
+#### Create the  VM / libvirt domain <a name="vm"></a>
 
 While creating the VM, make sure to adjust RAM and CPU, as well as the network and disk if you've made modification.
 The interface configured in the domain is the one we pre-defined in the network definition, and we will identify the interface by its mac address. When the VM will boot, it will be able to resolve its hostname through the DNS entry.
@@ -298,7 +318,7 @@ Do not start the VM by yourself, it will be done later in the process, automatic
 
 Now the environment is ready, let's create an Single Node OpenShift cluster automagically.
 
-## Let's deploy the spoke
+## Let's deploy the spoke <a name="spoke"></a>
 
 We will use all the manifests in the `ocp-gitops/ztp/spoke-sno/` folder. Simply apply the following command:
 ~~~
@@ -308,7 +328,7 @@ oc create -f ocp-gitops/ztp/spoke-sno/
 It will take on average 60-ish minutes for the cluster to be ready.
 That said, to validate the cluster will get deployed properly, few tests you can do.
 
-### Few debugging tips
+### Few debugging tips <a name="debug"></a>
 ###### Storage
 First, look at the storage pool folder; sometimes ISO upload isn't working properly, and the resulting ISO doesn't have all the data. See the size of both ISO; the expected size, based on my experience, is `105811968`. So if the file is not in that range, the VM won't boot properly.
 
@@ -567,7 +587,7 @@ Events:                 <none>
 ~~~
 </details>
 
-### Accessing your cluster
+### Accessing your cluster <a name="access"></a>
 
 After enough time, your cluster should be deployed. In order to get the kubeconfig / kubeadmin password, look at the `ClusterDeployment` CR, it will contain the secret name where to find the information.
 Note: the information will be populated only uppon successul deployment.
@@ -780,5 +800,7 @@ As I have a server with only one Interface and no console port access, I couldn'
 
 ##### backup
 https://www.cyberciti.biz/faq/how-to-install-kvm-on-centos-8-headless-server/
+
 https://wiki.libvirt.org/page/Networking#Forwarding_Incoming_Connections
+
 https://www.itix.fr/blog/deploy-openshift-single-node-in-kvm/
