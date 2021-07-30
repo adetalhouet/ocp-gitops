@@ -46,6 +46,12 @@ assisted-service-5df8bd68d8-b4qpw   2/2     Running   9          12d
 
 TBD - As a heads-up, that was one of the hardest part, because it's not very well explain how all that works.
 
+It starts with
+
+~~~
+git clone https://github.com/metal3-io/baremetal-operator
+~~~
+
 ### Create the namespace in which we will install our `BareMetalHost` manifests
 That CRD is the one responsible for the ZTP flow.
 ~~~
@@ -150,8 +156,8 @@ So we will configure them accordingly in the libvirt network definition, using t
 Here is my network definition (`ocp-gitops/libvirt/sno/net.xml`)
 <details>
 <summary>ocp-gitops/libvirt/sno/net.xml</summary>
-~~~
 
+~~~
 <network xmlns:dnsmasq="http://libvirt.org/schemas/network/dnsmasq/1.0">
   <name>sno</name>
   <forward mode='nat'>
@@ -194,7 +200,6 @@ In order for Assisted Installer to allow the installation of the Single Node Ope
 So let's create a disk of 200 GB to be sure.
 ~~~
 qemu-img create -f qcow2 /var/lib/libvirt/sno-ztp/sno2.qcow2 200G
-
 ~~~
 
 #### Create the  VM / libvirt domain
@@ -564,7 +569,7 @@ Events:                 <none>
 
 ### Accessing your cluster
 
-After enough time, your cluster should be deploy. In order to get the kubeconfig / kubeadmin password, look at the `ClusterDeployment` CR, it will contain the secret name where to find the information.
+After enough time, your cluster should be deployed. In order to get the kubeconfig / kubeadmin password, look at the `ClusterDeployment` CR, it will contain the secret name where to find the information.
 Note: the information will be populated only uppon successul deployment.
 
 <details>
@@ -757,7 +762,7 @@ Events:                       <none>
 </details>
 
 ## Some post deploy action
-As we have a server with only one Interface and no console port access, I couldn't create a bridge interface for libvirt. So the poor man solution is to use iptables to forward the traffic hitting my public IP port 443 to my private VM IP.
+As I have a server with only one Interface and no console port access, I couldn't create a bridge interface for libvirt. So the poor man solution is to use iptables to forward the traffic hitting my public IP port 443 to my private VM IP.
 
 [They are more facing way to do this.](https://wiki.libvirt.org/page/Networking#Forwarding_Incoming_Connections)
 
