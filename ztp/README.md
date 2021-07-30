@@ -44,6 +44,7 @@ assisted-service-5df8bd68d8-b4qpw   2/2     Running   9          12d
 
 ### Install Ironic and Metal3
 
+TBD - As a heads-up, that was one of the hardest part, because it's not very well explain how all that works.
 
 ### Create the namespace in which we will install our `BareMetalHost` manifests
 That CRD is the one responsible for the ZTP flow.
@@ -149,7 +150,8 @@ So we will configure them accordingly in the libvirt network definition, using t
 Here is my network definition (`ocp-gitops/libvirt/sno/net.xml`)
 <details>
 <summary>ocp-gitops/libvirt/sno/net.xml</summary>
-```
+~~~
+
 <network xmlns:dnsmasq="http://libvirt.org/schemas/network/dnsmasq/1.0">
   <name>sno</name>
   <forward mode='nat'>
@@ -174,10 +176,11 @@ Here is my network definition (`ocp-gitops/libvirt/sno/net.xml`)
     <dnsmasq:option value="cname=*.apps.sno.lab.adetalhouet,lb.sno.lab.adetalhouet"/>
   </dnsmasq:options>
 </network>
-```
+~~~
 </details>
 
 Now let's define and start our network
+
 ~~~
 # create the file net.xml with the content above
 virsh net-define net.xml
@@ -204,7 +207,8 @@ The interface configured in the domain is the one we pre-defined in the network 
 Here is my VM definition (`ocp-gitops/libvirt/sno/vm.xml`)
 <details>
 <summary>ocp-gitops/libvirt/sno/vm.xml</summary>
-```
+
+~~~
 <domain type="kvm">
   <name>sno</name>
   <uuid>b6c92bbb-1e87-4972-b17a-12def3948890</uuid>
@@ -276,9 +280,10 @@ Here is my VM definition (`ocp-gitops/libvirt/sno/vm.xml`)
     </rng>
   </devices>
 </domain>
-```
+~~~
 </details>
 Now let's define our domain.
+
 ~~~
 # create the file vm.xml with the content above
 virsh define vm.xml
@@ -341,7 +346,8 @@ Assuming the above worked, then I suggest you monitor the `Agent` that was creat
 
 <details>
 <summary>oc get Agent -n sno-ztp</summary>
-```
+
+~~~
 oc get Agent -n sno-ztp
 NAME                                   CLUSTER            APPROVED   ROLE     STAGE
 b6c92bbb-1e87-4972-b17a-12def3948890   sno-ztp-cluster    true       master   Done
@@ -553,11 +559,202 @@ Status:
     Stage Update Time:  2021-07-30T02:59:30Z
   Role:                 master
 Events:                 <none>
-```
+~~~
 </details>
 
-### After enough time, the cluster should be deployed, and the information to access it are contained within the `ClusterDeployment`
+### Accessing your cluster
 
+After enough time, your cluster should be deploy. In order to get the kubeconfig / kubeadmin password, look at the `ClusterDeployment` CR, it will contain the secret name where to find the information.
+Note: the information will be populated only uppon successul deployment.
+
+<details>
+<summary>oc get ClusterDeployments -n sno-ztp</summary>
+
+~~~
+$ oc get ClusterDeployments -n sno-ztp
+NAME               PLATFORM          REGION   CLUSTERTYPE   INSTALLED   INFRAID                                VERSION   POWERSTATE    AGE
+sno-ztp-cluster    agent-baremetal                          true        e85bc2e6-ea53-4e0a-8e68-8922307a0159             Unsupported   59m
+
+$ oc describe ClusterDeployments sno-ztp-cluster -n sno-ztp
+Name:         sno-ztp-cluster
+Namespace:    sno-ztp
+Labels:       hive.openshift.io/cluster-platform=agent-baremetal
+Annotations:  open-cluster-management.io/user-group: c3lzdGVtOm1hc3RlcnMsc3lzdGVtOmF1dGhlbnRpY2F0ZWQ=
+              open-cluster-management.io/user-identity: c3lzdGVtOmFkbWlu
+API Version:  hive.openshift.io/v1
+Kind:         ClusterDeployment
+Metadata:
+  Creation Timestamp:  2021-07-30T02:32:25Z
+  Finalizers:
+    hive.openshift.io/deprovision
+    clusterdeployments.agent-install.openshift.io/ai-deprovision
+Spec:
+  Base Domain:  rhtelco.io
+  Cluster Install Ref:
+    Group:    extensions.hive.openshift.io
+    Kind:     AgentClusterInstall
+    Name:     sno-ztp-clusteragent
+    Version:  v1beta1
+  Cluster Metadata:
+    Admin Kubeconfig Secret Ref:
+      Name:  sno-ztp-cluster-admin-kubeconfig
+    Admin Password Secret Ref:
+      Name:      sno-ztp-cluster-admin-password
+    Cluster ID:  82f49c11-7fb0-4185-82eb-0eab243fbfd2
+    Infra ID:    e85bc2e6-ea53-4e0a-8e68-8922307a0159
+  Cluster Name:  lab-spoke-adetalhouet
+  Control Plane Config:
+    Serving Certificates:
+  Installed:  true
+  Platform:
+    Agent Bare Metal:
+      Agent Selector:
+        Match Labels:
+          Location:  eu/fi
+  Pull Secret Ref:
+    Name:  assisted-deployment-pull-secret
+Status:
+  Cli Image:  quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:5917b18697edb46458d9fd39cefab191c8324561fa83da160f6fdd0b90c55fe0
+  Conditions:
+    Last Probe Time:          2021-07-30T03:25:00Z
+    Last Transition Time:     2021-07-30T02:32:37Z
+    Message:                  The installation is in progress: Finalizing cluster installation. Cluster version status: available, message: Done applying 4.8.0
+    Reason:                   InstallationInProgress
+    Status:                   False
+    Type:                     ClusterInstallCompleted
+    Last Probe Time:          2021-07-30T03:28:01Z
+    Last Transition Time:     2021-07-30T03:28:01Z
+    Message:                  Unsupported platform: no actuator to handle it
+    Reason:                   Unsupported
+    Status:                   False
+    Type:                     Hibernating
+    Last Probe Time:          2021-07-30T03:28:01Z
+    Last Transition Time:     2021-07-30T03:28:01Z
+    Message:                  ClusterSync has not yet been created
+    Reason:                   MissingClusterSync
+    Status:                   True
+    Type:                     SyncSetFailed
+    Last Probe Time:          2021-07-30T03:28:01Z
+    Last Transition Time:     2021-07-30T03:28:01Z
+    Message:                  Get "https://api.lab-spoke-adetalhouet.rhtelco.io:6443/api?timeout=32s": dial tcp 148.251.12.17:6443: connect: connection refused
+    Reason:                   ErrorConnectingToCluster
+    Status:                   True
+    Type:                     Unreachable
+    Last Probe Time:          2021-07-30T02:32:25Z
+    Last Transition Time:     2021-07-30T02:32:25Z
+    Message:                  Platform credentials passed authentication check
+    Reason:                   PlatformAuthSuccess
+    Status:                   False
+    Type:                     AuthenticationFailure
+    Last Probe Time:          2021-07-30T02:32:37Z
+    Last Transition Time:     2021-07-30T02:32:37Z
+    Message:                  The installation has not failed
+    Reason:                   InstallationNotFailed
+    Status:                   False
+    Type:                     ClusterInstallFailed
+    Last Probe Time:          2021-07-30T02:41:00Z
+    Last Transition Time:     2021-07-30T02:41:00Z
+    Message:                  The cluster requirements are met
+    Reason:                   ClusterAlreadyInstalling
+    Status:                   True
+    Type:                     ClusterInstallRequirementsMet
+    Last Probe Time:          2021-07-30T02:32:37Z
+    Last Transition Time:     2021-07-30T02:32:37Z
+    Message:                  The installation is waiting to start or in progress
+    Reason:                   InstallationNotStopped
+    Status:                   False
+    Type:                     ClusterInstallStopped
+    Last Probe Time:          2021-07-30T03:28:01Z
+    Last Transition Time:     2021-07-30T03:28:01Z
+    Message:                  Control plane certificates are present
+    Reason:                   ControlPlaneCertificatesFound
+    Status:                   False
+    Type:                     ControlPlaneCertificateNotFound
+    Last Probe Time:          2021-07-30T02:32:37Z
+    Last Transition Time:     2021-07-30T02:32:37Z
+    Message:                  Images required for cluster deployment installations are resolved
+    Reason:                   ImagesResolved
+    Status:                   False
+    Type:                     InstallImagesNotResolved
+    Last Probe Time:          2021-07-30T02:32:37Z
+    Last Transition Time:     2021-07-30T02:32:37Z
+    Message:                  InstallerImage is resolved.
+    Reason:                   InstallerImageResolved
+    Status:                   False
+    Type:                     InstallerImageResolutionFailed
+    Last Probe Time:          2021-07-30T02:32:37Z
+    Last Transition Time:     2021-07-30T02:32:37Z
+    Message:                  The installation has not failed
+    Reason:                   InstallationNotFailed
+    Status:                   False
+    Type:                     ProvisionFailed
+    Last Probe Time:          2021-07-30T02:32:37Z
+    Last Transition Time:     2021-07-30T02:32:37Z
+    Message:                  The installation is waiting to start or in progress
+    Reason:                   InstallationNotStopped
+    Status:                   False
+    Type:                     ProvisionStopped
+    Last Probe Time:          2021-07-30T02:32:25Z
+    Last Transition Time:     2021-07-30T02:32:25Z
+    Message:                  no ClusterRelocates match
+    Reason:                   NoMatchingRelocates
+    Status:                   False
+    Type:                     RelocationFailed
+    Last Probe Time:          2021-07-30T02:32:25Z
+    Last Transition Time:     2021-07-30T02:32:25Z
+    Message:                  Condition Initialized
+    Reason:                   Initialized
+    Status:                   Unknown
+    Type:                     AWSPrivateLinkFailed
+    Last Probe Time:          2021-07-30T02:32:25Z
+    Last Transition Time:     2021-07-30T02:32:25Z
+    Message:                  Condition Initialized
+    Reason:                   Initialized
+    Status:                   Unknown
+    Type:                     AWSPrivateLinkReady
+    Last Probe Time:          2021-07-30T02:32:25Z
+    Last Transition Time:     2021-07-30T02:32:25Z
+    Message:                  Condition Initialized
+    Reason:                   Initialized
+    Status:                   Unknown
+    Type:                     ActiveAPIURLOverride
+    Last Probe Time:          2021-07-30T02:32:25Z
+    Last Transition Time:     2021-07-30T02:32:25Z
+    Message:                  Condition Initialized
+    Reason:                   Initialized
+    Status:                   Unknown
+    Type:                     DNSNotReady
+    Last Probe Time:          2021-07-30T02:32:25Z
+    Last Transition Time:     2021-07-30T02:32:25Z
+    Message:                  Condition Initialized
+    Reason:                   Initialized
+    Status:                   Unknown
+    Type:                     DeprovisionLaunchError
+    Last Probe Time:          2021-07-30T02:32:25Z
+    Last Transition Time:     2021-07-30T02:32:25Z
+    Message:                  Condition Initialized
+    Reason:                   Initialized
+    Status:                   Unknown
+    Type:                     IngressCertificateNotFound
+    Last Probe Time:          2021-07-30T02:32:25Z
+    Last Transition Time:     2021-07-30T02:32:25Z
+    Message:                  Condition Initialized
+    Reason:                   Initialized
+    Status:                   Unknown
+    Type:                     InstallLaunchError
+    Last Probe Time:          2021-07-30T02:32:25Z
+    Last Transition Time:     2021-07-30T02:32:25Z
+    Message:                  Condition Initialized
+    Reason:                   Initialized
+    Status:                   Unknown
+    Type:                     RequirementsMet
+  Install Started Timestamp:  2021-07-30T02:41:00Z
+  Install Version:            4.8.0
+  Installed Timestamp:        2021-07-30T02:41:00Z
+  Installer Image:            quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:eb3e6c54c4e2e07f95a9af44a5a1839df562a843b4ac9e1d5fb5bb4df4b4f7d6
+Events:                       <none>
+~~~
+</details>
 
 ## Some post deploy action
 As we have a server with only one Interface and no console port access, I couldn't create a bridge interface for libvirt. So the poor man solution is to use iptables to forward the traffic hitting my public IP port 443 to my private VM IP.
