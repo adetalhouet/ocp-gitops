@@ -25,13 +25,13 @@ Let's align on the Zero Touch Provisioning expectation:
 	- [Install libvirt](#libvirtinstall)
 	- [Install and configure Sushy service](#sushy)
 	- [Libvirt setup](#libvirtsetup)
-	- - [Create a storage pool](#storage)
-	- - [Create a network](#net)
-  - - [Create the disk](#disk)
-  - - [Create the  VM / libvirt domain](#vm)
+	  - [Create a storage pool](#storage)
+	  - [Create a network](#net)
+    - [Create the disk](#disk)
+    - [Create the  VM / libvirt domain](#vm)
 5. [Let's deploy the spoke](#spoke)
-  - - [Few debugging tips](#debug)
-  - - [Accessing your cluster](#access)
+  - [Few debugging tips](#debug)
+  - [Accessing your cluster](#access)
 
 ## Pre-requisite <a name="prerequisites"></a>
 
