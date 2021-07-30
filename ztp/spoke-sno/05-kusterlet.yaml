@@ -1,0 +1,21 @@
+apiVersion: agent.open-cluster-management.io/v1
+kind: KlusterletAddonConfig
+metadata:
+  name: lab-spoke-adetalhouet
+  namespace: sno-ztp
+spec:
+  clusterName: lab-spoke-adetalhouet
+  clusterNamespace: sno-ztp
+  clusterLabels:
+    cloud: auto-detect
+    vendor: auto-detect
+  applicationManager:
+    enabled: true
+  certPolicyController:
+    enabled: true
+  iamPolicyController:
+    enabled: true
+  policyController:
+    enabled: true
+  searchCollector:
+    enabled: false

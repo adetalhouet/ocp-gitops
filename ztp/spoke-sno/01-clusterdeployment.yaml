@@ -1,0 +1,24 @@
+---
+apiVersion: hive.openshift.io/v1
+kind: ClusterDeployment
+metadata:
+  name: sno-ztp-cluster
+  namespace: sno-ztp
+spec:
+  baseDomain: rhtelco.io
+  clusterName: lab-spoke-adetalhouet
+  controlPlaneConfig:
+    servingCertificates: {}
+  installed: false
+  clusterInstallRef:
+    group: extensions.hive.openshift.io
+    kind: AgentClusterInstall
+    name: sno-ztp-clusteragent
+    version: v1beta1
+  platform:
+    agentBareMetal:
+      agentSelector:
+        matchLabels:
+          location: "eu/fi"
+  pullSecretRef:
+    name: assisted-deployment-pull-secret

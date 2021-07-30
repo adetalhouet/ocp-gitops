@@ -1,0 +1,21 @@
+---
+apiVersion: agent-install.openshift.io/v1beta1
+kind: InfraEnv
+metadata:
+  name: sno-ztp-infraenv
+  namespace: sno-ztp
+spec:
+  additionalNTPSources:
+    - 2.rhel.pool.ntp.org
+  clusterRef:
+    name: sno-ztp-cluster
+    namespace: sno-ztp
+  sshAuthorizedKey: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPwyNH/qkYcqkKk5MiNjKHxnoadME6crIJ8aIs3R6TZQ root@lab.adetalhouet"
+  agentLabelSelector:
+    matchLabels:
+      location: "eu/fi"
+  pullSecretRef:
+    name: assisted-deployment-pull-secret
+  nmStateConfigLabelSelector:
+    matchLabels:
+      cluster-name: lab-spoke-adetalhouet

@@ -1,5 +1,5 @@
 <network xmlns:dnsmasq="http://libvirt.org/schemas/network/dnsmasq/1.0">
-  <name>ocp</name>
+  <name>sno</name>
   <forward mode='nat'>
     <nat>
       <port start='1024' end='65535'/>
@@ -9,7 +9,7 @@
   <ip address='192.168.123.1' netmask='255.255.255.0'>
     <dhcp>
       <range start='192.168.123.2' end='192.168.123.254'/>
-      <host mac="02:01:00:00:00:66" name="sno.lab.adetalhouet" ip="192.168.123.5"/>
+      <host mac="02:04:00:00:00:66" name="sno.lab.adetalhouet" ip="192.168.123.5"/>
     </dhcp>
   </ip>
   <dns>

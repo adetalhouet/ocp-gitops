@@ -1,4 +1,14 @@
 ---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: assisted-service-config
+  namespace: open-cluster-management
+  labels:
+    app: assisted-service
+data:
+  LOG_LEVEL: "debug"
+---
 apiVersion: agent-install.openshift.io/v1beta1
 kind: AgentServiceConfig
 metadata:
@@ -21,7 +31,6 @@ spec:
         storage: 40Gi
   osImages:
     - openshiftVersion: "4.8"
-      # While pre-release, the latest public LiveISO and rootfs is from 4.7.13
-      version: "47.83.202103251640-0"
-      url: "https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.7/4.7.13/rhcos-4.7.13-x86_64-live.x86_64.iso"
-      rootFSUrl: "https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.7/4.7.13/rhcos-live-rootfs.x86_64.img"
+      version: "48.84.202107202156-0"
+      url: "https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.8/4.8.2/rhcos-4.8.2-x86_64-live.x86_64.iso"
+      rootFSUrl: "https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.8/4.8.2/rhcos-4.8.2-x86_64-live-rootfs.x86_64.img"
