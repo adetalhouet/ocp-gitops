@@ -48,7 +48,7 @@ Let's align on the Zero Touch Provisioning expectation:
 TBD
 
 ## Requirements on the hub cluster <a name="hubcluster"></a>
-The assumption is the cluster is __not__ deployed on bare metal. If that's the case, then this blog isn't for you.
+The assumption is the cluster is __not__ deployed on bare metal. If that's the case skip the Ironic and Metal3 portion.
 
 In my case, my hub cluster is deployed in AWS. As it isn't a bare metal cluster, you don't have the Ironic and Metal3 pieces, so we will deploy them ourselves.
 
@@ -81,9 +81,9 @@ So, I pulled all the manifests required for the install, and put them in the `me
 As Ironic will be the component instructing the remote server to download the ISO, it needs to be configured properly so the remote server can reach back to the underlying Ironic's HTTP server.
 
 The `02-ironic.yaml` manifest provides a `Service` and `Route` to expose the various services. And it also contains a `ConfigMap` called `ironic-bmo-configmap` containing all the configuration bits required for Ironic to work properly.
-These elements points to my environment, so you need to customize them accordingly, by adjusting the $CLUSTER_NAME.DOMAIN_NAME in the `Route` definition and in the `ironic-bmo-configmap` ConfigMap.
+These elements points to my environment, so you need to customize them accordingly, by adjusting the $CLUSTER_NAME.$DOMAIN_NAME in the `Route` definition and in the `ironic-bmo-configmap` ConfigMap.
 
-In my case `$CLUSTER_NAME.DOMAIN_NAME = hub-adetalhouet.rhlteco.io`
+In my case `$CLUSTER_NAME.$DOMAIN_NAME = hub-adetalhouet.rhlteco.io`
 
 Here is a command to help make that change; make sure to replace `$CLUSTER_NAME.$DOMAIN_NAME` with yours.
 
@@ -94,7 +94,7 @@ sed -i "s/hub-adetalhouet.rhtelco.io/$CLUSTER_NAME.$DOMAIN_NAME/g" metal-provisi
 Also, based on the upstream Ironic image, I had to adjust the start command of the `ironic-api` and `ironic-conductor` to alter their `ironic.conf` configuration so it would consume the exposed `Route` rather than the internal IP.
 In both of these containers, the `/etc/ironic/ironic.conf` configuration is created at runtime, based on the Jinja template `/etc/ironic/ironic.conf.j2`; so I modify the template to have the resulting generated config as expected.
 
-Finally, Ironic uses host network (although not required in our case), so I have granted the `metal-provisioner` ServiceAccount `privileged` SCC. And in the `ironic-bmo-configmap` you need to update the `PROVISIONING_INTERFACE` to reflect your node interface. This is stupid, because we don't care about this at all in our case, but Ironic will basically take the IP from this interface and use it at many places. Actually, some of the place where it uses the host ip are the placed where we made the change in the `ironic.conf` in the previous section.
+Finally, Ironic uses host network (although not required in our case), so I have granted the `metal-provisioner` ServiceAccount `privileged` SCC. And in the `ironic-bmo-configmap` you need to update the `PROVISIONING_INTERFACE` to reflect your node interface. This is stupid, because we don't care about this at all in our case, but Ironic will basically take the IP from this interface and use it at many places. Actually, some of the place where it uses the host ip are the places where we made the change in the `ironic.conf` in the previous section.
 
 Keep in mind, the initial intention of this `bare-metal-operator` is to work in a `BareMetal` environment, where it is assumed the `PROVISIONING_INTERFACE` is on a network that can reach the nodes you would want to either add in the cluster, or provisioned with OpenShift using the ZTP flow.
 
