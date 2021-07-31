@@ -1,9 +1,10 @@
 # Using GitOps to deploy a Single Node OpenShift on libvirt using RHACM ZTP capabilities
 
 The goal is to leverage the latest capabilities from Red Hat Advanced Cluster Management (RHACM) 2.3 to deploy an Single Node OpenShift cluster using the Zero Touch Provisioning on an emulated bare metal environment.
-The typical Zero Touch Provisioning flow is meant to work for bare metal environment; but if like me, you don't have a bare metal environment handy, or want to optimize the only server you have, that blog is for you.
- RHACM works in a hub and spoke manner. So the goal here is to deploy a spoke from the hub cluster.
 
+The typical Zero Touch Provisioning flow is meant to work for bare metal environment; but if like me, you don't have a bare metal environment handy, or want to optimize the only server you have, that blog is for you.
+
+ RHACM works in a hub and spoke manner. So the goal here is to deploy a spoke from the hub cluster.
 
 The overall setup requires the following components:
 
@@ -16,19 +17,21 @@ Let's align on the Zero Touch Provisioning expectation:
 - the overall libvirt environment will be setup manually (although it could easily be automated).
 - once the environment is correctly setup, we will apply the manifests that will automate the cluster creation.
 
+### Table of Content
+
 1. [Pre-requisites](#prerequisites)
 2. [ZTP flow overview](#ztpflow)
 3. [Install requirements on the hub cluster](#hubcluster)
-	- [Assisted Service](#assistedservice)
-	- [Ironic & Metal3](#bmo)
+  - [Assisted Service](#assistedservice)
+  - [Ironic & Metal3](#bmo)
 4. [Install requirements on the spoke server](#spokecluster)
-	- [Install libvirt](#libvirtinstall)
-	- [Install and configure Sushy service](#sushy)
-	- [Libvirt setup](#libvirtsetup)
-	  - [Create a storage pool](#storage)
-	  - [Create a network](#net)
-	  - [Create the disk](#disk)
-	  - [Create the VM / libvirt domain](#vm)
+  - [Install libvirt](#libvirtinstall)
+  - [Install and configure Sushy service](#sushy)
+  - [Libvirt setup](#libvirtsetup)
+    - [Create a storage pool](#storage)
+    - [Create a network](#net)
+    - [Create the disk](#disk)
+    - [Create the VM / libvirt domain](#vm)
 5. [Let's deploy the spoke](#spoke)
   - [Few debugging tips](#debug)
   - [Accessing your cluster](#access)
@@ -44,33 +47,91 @@ Let's align on the Zero Touch Provisioning expectation:
 
 TBD
 
-## Install requirements on the hub cluster <a name="hubcluster"></a>
+## Requirements on the hub cluster <a name="hubcluster"></a>
 The assumption is the cluster is __not__ deployed on bare metal. If that's the case, then this blog isn't for you.
+
 In my case, my hub cluster is deployed in AWS. As it isn't a bare metal cluster, you don't have the Ironic and Metal3 pieces, so we will deploy them ourselves.
 
 ### Install the Assisted Service <a name="assistedservice"></a>
 
-The related manifest to install this are located in `ocp-gitops/ztp/hub`. The main manifest is the one with the `AgentServiceConfig` definition, which define the base RHCOS image to use to the node install.
+The related manifest for the install are located in the `hub` folder. The main manifest is `02-assistedserviceconfig.yaml` specifying the `AgentServiceConfig` definition, which defines the base RHCOS image to use for the server installation.
 
-Add your private key in the `ocp-gitops/ztp/hub/03-assisted-deployment-ssh-private-key.yaml` file, and then apply the folder. The private key will be in the resulting VM, and you will use the corresponding public key to ssh, if needed.
+We also create a `ClusterImageSet` to refer to OpenShift 4.8 version. This will be referenced by the spoke manifest to define what version of OpenShift to install.
+
+Add your private key in the `hub/03-assisted-deployment-ssh-private-key.yaml` file (us the example), and then apply the folder. The private key will be in the resulting VM, and you will use the corresponding public key to ssh, if needed.
+
+Everything will be installed in the `open-cluster-management` namespace.
+
 ~~~
-oc apply -k ocp-gitops/ztp/hub
+oc apply -k hub
+~~~
 
-# after view seconds or minutes, check the pod is there and running
+After view second, check the assisted service has been created
+
+~~~
 oc get pod -n open-cluster-management -l app=assisted-service
-NAME                                READY   STATUS    RESTARTS   AGE
-assisted-service-5df8bd68d8-b4qpw   2/2     Running   9          12d
 ~~~
 
 ### Install Ironic and Metal3 <a name="bmo"></a>
 
-TBD - As a heads-up, that was one of the hardest part, because it's not very well explain how all that works.
+Both Ironic and Metal3 can be installed from the [baremetal-operator ](https://github.com/metal3-io/baremetal-operator) but experience has proven it is a very opinionated install, and out of the box, doesn't work in my environment, and probably will not work in yours.
 
-It starts with
+So, I pulled all the manifests required for the install, and put them in the `metal-provisioner` folder.
+
+As Ironic will be the component instructing the remote server to download the ISO, it needs to be configured properly so the remote server can reach back to the underlying Ironic's HTTP server.
+
+The `02-ironic.yaml` manifest provides a `Service` and `Route` to expose the various services. And it also contains a `ConfigMap` called `ironic-bmo-configmap` containing all the configuration bits required for Ironic to work properly.
+These elements points to my environment, so you need to customize them accordingly, by adjusting the $CLUSTER_NAME.DOMAIN_NAME in the `Route` definition and in the `ironic-bmo-configmap` ConfigMap.
+
+In my case `$CLUSTER_NAME.DOMAIN_NAME = hub-adetalhouet.rhlteco.io`
+
+Here is a command to help make that change; make sure to replace `$CLUSTER_NAME.$DOMAIN_NAME` with yours.
 
 ~~~
-git clone https://github.com/metal3-io/baremetal-operator
+sed -i "s/hub-adetalhouet.rhtelco.io/$CLUSTER_NAME.$DOMAIN_NAME/g" metal-provisioner/02-ironic.yaml
 ~~~
+
+Also, based on the upstream Ironic image, I had to adjust the start command of the `ironic-api` and `ironic-conductor` to alter their `ironic.conf` configuration so it would consume the exposed `Route` rather than the internal IP.
+In both of these containers, the `/etc/ironic/ironic.conf` configuration is created at runtime, based on the Jinja template `/etc/ironic/ironic.conf.j2`; so I modify the template to have the resulting generated config as expected.
+
+Finally, Ironic uses host network (although not required in our case), so I have granted the `metal-provisioner` ServiceAccount `privileged` SCC.
+
+Have a review of the manifest, and when confident, apply them
+
+~~~
+oc apply -k metal-provisioner
+~~~
+
+Here is an output of what you should expect
+
+<details>
+<summary>oc get all -n metal-provisioner</summary>
+
+~~~
+$ oc get all -n metal-provisioner
+
+NAME                                                         READY   STATUS    RESTARTS   AGE
+pod/baremetal-operator-controller-manager-7477d5cd57-2cbmj   2/2     Running   0          20m
+pod/capm3-ironic-6cc84ff99c-l5bpt                            5/5     Running   0          20m
+
+NAME             TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)                    AGE
+service/ironic   ClusterIP   172.30.59.7   <none>        5050/TCP,6385/TCP,80/TCP   20m
+
+NAME                                                    READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/baremetal-operator-controller-manager   1/1     1            1           20m
+deployment.apps/capm3-ironic                            1/1     1            1           20m
+
+NAME                                                               DESIRED   CURRENT   READY   AGE
+replicaset.apps/baremetal-operator-controller-manager-7477d5cd57   1         1         1       20m
+replicaset.apps/capm3-ironic-6cc84ff99c                            1         1         1       20m
+
+NAME                                        HOST/PORT                                                            PATH   SERVICES   PORT        TERMINATION   WILDCARD
+route.route.openshift.io/ironic-api         ironic-api-metal-provisioner.apps.hub-adetalhouet.rhtelco.io                ironic     api                       None
+route.route.openshift.io/ironic-http        ironic-http-metal-provisioner.apps.hub-adetalhouet.rhtelco.io               ironic     httpd                     None
+route.route.openshift.io/ironic-inspector   ironic-inspector-metal-provisioner.apps.hub-adetalhouet.rhtelco.io          ironic     inspector                 None
+~~~
+</details>
+
 
 ### Create the namespace in which we will install our `BareMetalHost` manifests
 That CRD is the one responsible for the ZTP flow.
@@ -78,7 +139,7 @@ That CRD is the one responsible for the ZTP flow.
 oc create ns sno-ztp
 ~~~
 
-## Install requirements on the spoke server <a name="spokecluster"></a>
+## Requirements on the spoke server <a name="spokecluster"></a>
 I'm assuming you have a blank server, running CentOS 8.4.
 
 ### Install libvirt <a name="libvirtinstall"></a>
@@ -121,8 +182,8 @@ SUSHY_EMULATOR_BOOT_LOADER_MAP = {
 }" > /etc/sushy.conf
 ~~~
 
-There is currently an [issue](https://bugzilla.redhat.com/show_bug.cgi?id=1906500) with libvirt that basically forces the use of secure boot. Theoritically this can be disable, but the feature isn't working properly since RHEL 8.3 (so it's the same in CentOS that I'm using).
-In order to mask the secure feature boot vars, [the following solution has been suggested](https://bugzilla.redhat.com/show_bug.cgi?id=1906500#c23):
+There is currently an [issue](https://bugzilla.redhat.com/show_bug.cgi?id=1906500) with libvirt that basically forces the use of secure boot. Theoritically this can be disabled, but the feature isn't working properly since RHEL 8.3 (so it's the same in CentOS that I'm using).
+In order to mask the secure feature boot vars, to allow a non-secure boot, [the following solution has been suggested](https://bugzilla.redhat.com/show_bug.cgi?id=1906500#c23):
 
 ~~~
 mkdir -p /etc/qemu/firmware
@@ -173,9 +234,9 @@ OpenShift Bare Metal install has the following requirements:
 
 So we will configure them accordingly in the libvirt network definition, using the built-in dnsmaq capability of libvirt network.
 
-Here is my network definition (`ocp-gitops/libvirt/sno/net.xml`)
+Here is my network definition (`libvirt/sno/net.xml`)
 <details>
-<summary>ocp-gitops/libvirt/sno/net.xml</summary>
+<summary>libvirt/sno/net.xml</summary>
 
 ~~~
 <network xmlns:dnsmasq="http://libvirt.org/schemas/network/dnsmasq/1.0">
@@ -219,7 +280,7 @@ virsh net-autostart sno
 In order for Assisted Installer to allow the installation of the Single Node OpenShift to happen, one of the requirement is the disk size: it must be at least of 120GB. When creating a disk of 120GB, or even 150GB, for some reason I had issues and the Assisted Service wouldn't allow the installation complaining about the disk size requirepement not being met.
 So let's create a disk of 200 GB to be sure.
 ~~~
-qemu-img create -f qcow2 /var/lib/libvirt/sno-ztp/sno2.qcow2 200G
+qemu-img create -f qcow2 /var/lib/libvirt/sno-sno2.qcow2 200G
 ~~~
 
 #### Create the  VM / libvirt domain <a name="vm"></a>
@@ -229,9 +290,9 @@ The interface configured in the domain is the one we pre-defined in the network 
 
 (FYI - I spent hours trying to nail down the proper xml definition, more importantly the `os` bits. When the Assisted Asservice will start the provisioning, it will first start the VM, load the discovery.iso and then restart the VM to boot from the newly added disc. After the restart, the `os` section will be modified, as Assisted Service will configure an UEFI boot.)
 
-Here is my VM definition (`ocp-gitops/libvirt/sno/vm.xml`)
+Here is my VM definition (`libvirt/sno/vm.xml`)
 <details>
-<summary>ocp-gitops/libvirt/sno/vm.xml</summary>
+<summary>libvirt/sno/vm.xml</summary>
 
 ~~~
 <domain type="kvm">
@@ -272,7 +333,7 @@ Here is my VM definition (`ocp-gitops/libvirt/sno/vm.xml`)
     <emulator>/usr/libexec/qemu-kvm</emulator>
     <disk type="file" device="disk">
       <driver name="qemu" type="qcow2"/>
-      <source file="/var/lib/libvirt/sno-ztp/sno.qcow2"/>
+      <source file="/var/lib/libvirt/sno-sno.qcow2"/>
       <target dev="vda" bus="virtio"/>
     </disk>
     <controller type="usb" index="0" model="qemu-xhci" ports="15"/>
@@ -320,9 +381,9 @@ Now the environment is ready, let's create an Single Node OpenShift cluster auto
 
 ## Let's deploy the spoke <a name="spoke"></a>
 
-We will use all the manifests in the `ocp-gitops/ztp/spoke-sno/` folder. Simply apply the following command:
+We will use all the manifests in the `spoke-sno/` folder. Simply apply the following command:
 ~~~
-oc create -f ocp-gitops/ztp/spoke-sno/
+oc apply -k spoke-sno/
 ~~~
 
 It will take on average 60-ish minutes for the cluster to be ready.
@@ -333,7 +394,7 @@ That said, to validate the cluster will get deployed properly, few tests you can
 First, look at the storage pool folder; sometimes ISO upload isn't working properly, and the resulting ISO doesn't have all the data. See the size of both ISO; the expected size, based on my experience, is `105811968`. So if the file is not in that range, the VM won't boot properly.
 
 ~~~
-[root@lab ai-ztp]# ls -ls /var/lib/libvirt/sno-ztp/
+[root@lab ai-ztp]# ls -ls /var/lib/libvirt/sno-
 total 103536
      4 -rw------- 1 qemu qemu      3265 Jul 29 04:04 boot-072b3441-2bd9-4aaf-939c-7e4640e38935-iso-79ad9824-8110-4570-83e3-a8cd6ae9d435.img
 103332 -rw------- 1 qemu qemu 105811968 Jul 29 04:07 boot-e1fcd81d-899c-47be-9c95-f6ff77c44f79-iso-79ad9824-8110-4570-83e3-a8cd6ae9d435.img
