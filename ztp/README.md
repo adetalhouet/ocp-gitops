@@ -1,4 +1,4 @@
-# Using GitOps to deploy a Single Node OpenShift on libvirt using RHACM ZTP capabilities
+# Deploy a Single Node OpenShift on libvirt using RHACM ZTP capabilities
 
 The goal is to leverage the latest capabilities from Red Hat Advanced Cluster Management (RHACM) 2.3 to deploy an Single Node OpenShift cluster using the Zero Touch Provisioning on an emulated bare metal environment.
 
@@ -22,19 +22,19 @@ Let's align on the Zero Touch Provisioning expectation:
 1. [Pre-requisites](#prerequisites)
 2. [ZTP flow overview](#ztpflow)
 3. [Install requirements on the hub cluster](#hubcluster)
-  - [Assisted Service](#assistedservice)
-  - [Ironic & Metal3](#bmo)
+    - [Assisted Service](#assistedservice)
+    - [Ironic & Metal3](#bmo)
 4. [Install requirements on the spoke server](#spokecluster)
-  - [Install libvirt](#libvirtinstall)
-  - [Install and configure Sushy service](#sushy)
-  - [Libvirt setup](#libvirtsetup)
-    - [Create a storage pool](#storage)
-    - [Create a network](#net)
-    - [Create the disk](#disk)
-    - [Create the VM / libvirt domain](#vm)
+    - [Install libvirt](#libvirtinstall)
+    - [Install and configure Sushy service](#sushy)
+    - [Libvirt setup](#libvirtsetup)
+      - [Create a storage pool](#storage)
+      - [Create a network](#net)
+      - [Create the disk](#disk)
+      - [Create the VM / libvirt domain](#vm)
 5. [Let's deploy the spoke](#spoke)
-  - [Few debugging tips](#debug)
-  - [Accessing your cluster](#access)
+    - [Few debugging tips](#debug)
+    - [Accessing your cluster](#access)
 
 ## Pre-requisite <a name="prerequisites"></a>
 
