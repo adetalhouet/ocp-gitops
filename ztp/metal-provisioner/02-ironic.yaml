@@ -273,11 +273,11 @@ data:
   DEPLOY_KERNEL_URL: ironic-http-metal-provisioner.apps.hub-adetalhouet.rhtelco.io/images/ironic-python-agent.kernel
   RESTART_CONTAINER_CERTIFICATE_UPDATED: 'false'
   INSPECTOR_REVERSE_PROXY_SETUP: 'false'
-  PROVISIONING_INTERFACE: ens5
+  PROVISIONING_INTERFACE: ens5 # this is the interface on the host node - as Ironic is provide hostnetwork privilege, it will look for this interface to get its IP. Make sure it to update as per your environment.
   IRONIC_INSPECTOR_URL: ironic-inspector-metal-provisioner.apps.hub-adetalhouet.rhtelco.io
   IRONIC_KERNEL_PARAMS: console=ttyS0
   IRONIC_API_URL: ironic-api-metal-provisioner.apps.hub-adetalhouet.rhtelco.io
-  DHCP_RANGE: '172.22.0.10,172.22.0.100'
+  DHCP_RANGE: '172.22.0.10,172.22.0.100' # not needed in our case but required by Ironic
   IRONIC_INSPECTOR_VLAN_INTERFACES: all
   IRONIC_ENDPOINT: ironic-api-metal-provisioner.apps.hub-adetalhouet.rhtelco.io/v1/
   DEPLOY_RAMDISK_URL: ironic-http-metal-provisioner.apps.hub-adetalhouet.rhtelco.io/images/ironic-python-agent.initramfs
