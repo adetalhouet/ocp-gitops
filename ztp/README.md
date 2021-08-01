@@ -1,6 +1,6 @@
 # Deploy a Single Node OpenShift on libvirt using RHACM ZTP capabilities
 
-The goal is to leverage the latest capabilities from Red Hat Advanced Cluster Management (RHACM) 2.3 to deploy an Single Node OpenShift cluster using the Zero Touch Provisioning on an emulated bare metal environment.
+The goal is to leverage the latest capabilities from Red Hat Advanced Cluster Management (RHACM) 2.3 to deploy a Single Node OpenShift cluster using the Zero Touch Provisioning on an emulated bare metal environment.
 
 The typical Zero Touch Provisioning flow is meant to work for bare metal environment; but if like me, you don't have a bare metal environment handy, or want to optimize the only server you have, that blog is for you.
 
@@ -15,7 +15,7 @@ The overall setup requires the following components:
 Let's align on the Zero Touch Provisioning expectation:
 
 - the overall libvirt environment will be setup manually (although it could easily be automated).
-- once the environment is correctly setup, we will apply the manifests that will automate the cluster creation.
+- once the environment is correctly setup, we will apply the manifests that will automate the spoke cluster creation.
 
 ### Table of Content
 
