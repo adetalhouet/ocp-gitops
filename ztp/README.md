@@ -424,7 +424,15 @@ Now the environment is ready, let's create an Single Node OpenShift cluster auto
 
 We will use all the manifests in the `spoke-sno/` folder. Simply apply the following command:
 ~~~
-oc apply -k spoke-sno/
+$ oc apply -k spoke-sno/
+namespace/sno-ztp created
+secret/assisted-deployment-pull-secret created
+secret/sno-secret created
+infraenv.agent-install.openshift.io/sno-ztp-infraenv created
+klusterletaddonconfig.agent.open-cluster-management.io/lab-spoke-adetalhouet created
+agentclusterinstall.extensions.hive.openshift.io/sno-ztp-clusteragent created
+clusterdeployment.hive.openshift.io/sno-ztp-cluster created
+baremetalhost.metal3.io/sno-ztp-bmh created
 ~~~
 
 It will take on average 60-ish minutes for the cluster to be ready.
@@ -930,7 +938,7 @@ Events:                       <none>
 ## Some post deploy action
 As I have a server with only one Interface and no console port access, I couldn't create a bridge interface for libvirt. So the poor man solution is to use iptables to forward the traffic hitting my public IP port 443 to my private VM IP.
 
-[They are more facing way to do this.](https://wiki.libvirt.org/page/Networking#Forwarding_Incoming_Connections)
+[They are more fancing way to do this.](https://wiki.libvirt.org/page/Networking#Forwarding_Incoming_Connections)
 
 ###### when the host is stopped
 ~~~
