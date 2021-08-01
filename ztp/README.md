@@ -45,7 +45,7 @@ Let's align on the Zero Touch Provisioning expectation:
 
 ## Architecture <a name="ztpflow"></a>
 
-![Architecture](https://github.com/adetalhouet/ocp-gitops/raw/master/ztp/doc/resources/ocp-ztp.png)
+![Architecture](https://raw.githubusercontent.com/adetalhouet/ocp-gitops/main/ztp/doc/resources/ocp-ztp.png)
 
 ## Requirements on the hub cluster <a name="hubcluster"></a>
 The assumption is the cluster is __not__ deployed on bare metal. If that's the case skip the Ironic and Metal3 portion.
