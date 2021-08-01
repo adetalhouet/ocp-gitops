@@ -288,7 +288,7 @@ virsh net-autostart sno
 In order for Assisted Installer to allow the installation of the Single Node OpenShift to happen, one of the requirement is the disk size: it must be at least of 120GB. When creating a disk of 120GB, or even 150GB, for some reason I had issues and the Assisted Service wouldn't allow the installation complaining about the disk size requirepement not being met.
 So let's create a disk of 200 GB to be sure.
 ~~~
-qemu-img create -f qcow2 /var/lib/libvirt/sno-sno2.qcow2 200G
+qemu-img create -f qcow2 /var/lib/libvirt/sno-ztp/sno.qcow2 200G
 ~~~
 
 #### Create the  VM / libvirt domain <a name="vm"></a>
