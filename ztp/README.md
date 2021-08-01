@@ -63,13 +63,17 @@ Add your private key in the `hub/03-assisted-deployment-ssh-private-key.yaml` fi
 Everything will be installed in the `open-cluster-management` namespace.
 
 ~~~
-oc apply -k hub
+$ oc apply -k hub
+configmap "assisted-service-config" deleted
+secret "assisted-deployment-ssh-private-key" deleted
+agentserviceconfig.agent-install.openshift.io "agent" deleted
+clusterimageset.hive.openshift.io "openshift-v4.8.0" deleted
 ~~~
 
 After view second, check the assisted service has been created
 
 ~~~
-oc get pod -n open-cluster-management -l app=assisted-service
+$ oc get pod -n open-cluster-management -l app=assisted-service
 ~~~
 
 ### Install Ironic and Metal3 <a name="bmo"></a>
@@ -88,7 +92,7 @@ In my case `$CLUSTER_NAME.$DOMAIN_NAME = hub-adetalhouet.rhlteco.io`
 Here is a command to help make that change; make sure to replace `$CLUSTER_NAME.$DOMAIN_NAME` with yours. If you're on a mac, using `gsed` instead of `sed` to use the GNU sed binary.
 
 ~~~
-sed -i "s/hub-adetalhouet.rhtelco.io/$CLUSTER_NAME.$DOMAIN_NAME/g" metal-provisioner/02-ironic.yaml
+$ sed -i "s/hub-adetalhouet.rhtelco.io/$CLUSTER_NAME.$DOMAIN_NAME/g" metal-provisioner/02-ironic.yaml
 ~~~
 
 Based on the upstream Ironic image, I had to adjust the start command of the `ironic-api` and `ironic-conductor` containers to alter their `ironic.conf` configuration so it would consume the exposed `Route` rather than the internal IP. When Ironic using the BMC to configure the server, it will instruct the server to load the boot ISO image from its http server; the Ironic http server must be reachable from the spoke server. In my case, given the hub and the spoke only share public internet as a common network, I had to expose Ironic http server. If you have a private network, the setup would work the same.
@@ -96,8 +100,8 @@ Based on the upstream Ironic image, I had to adjust the start command of the `ir
 In both of these containers, the `/etc/ironic/ironic.conf` configuration is created at runtime, based on the Jinja template `/etc/ironic/ironic.conf.j2`; so I modify the template to have the resulting generated config as expected.
 
 ~~~
-sed -i "s/{{ env.IRONIC_URL_HOST }}:{{ env.HTTP_PORT }}/{{ env.IRONIC_HTTP_URL }}/g" /etc/ironic/ironic.conf.j2
-sed -i "s/host = {{ env.IRONIC_URL_HOST }}/host = {{ env.IRONIC_HTTP_URL }}/g" /etc/ironic/ironic.conf.j2
+$ sed -i "s/{{ env.IRONIC_URL_HOST }}:{{ env.HTTP_PORT }}/{{ env.IRONIC_HTTP_URL }}/g" /etc/ironic/ironic.conf.j2
+$ sed -i "s/host = {{ env.IRONIC_URL_HOST }}/host = {{ env.IRONIC_HTTP_URL }}/g" /etc/ironic/ironic.conf.j2
 ~~~
 
 Finally, Ironic uses host network (although not required in our case), so I have granted the `metal-provisioner` ServiceAccount `privileged` SCC. And in the `ironic-bmo-configmap` you need to update the `PROVISIONING_INTERFACE` to reflect your node interface. This is stupid, because we don't care about this at all in our case, but Ironic will basically take the IP from this interface and use it at many places. Actually, some of the place where it uses the host ip are the places where we made the change in the `ironic.conf` in the previous section.
@@ -107,7 +111,29 @@ Keep in mind, the initial intention of this `bare-metal-operator` is to work in 
 Have a review of the manifest, and when confident, apply them
 
 ~~~
-oc apply -k metal-provisioner
+$ oc apply -k metal-provisioner
+namespace/metal-provisioner created
+serviceaccount/metal-provisioner created
+clusterrole.rbac.authorization.k8s.io/baremetalhost-role created
+clusterrole.rbac.authorization.k8s.io/ironic-scc created
+clusterrolebinding.rbac.authorization.k8s.io/baremetalhost-rolebinding created
+clusterrolebinding.rbac.authorization.k8s.io/ironic-rolebinding created
+configmap/baremetal-operator-ironic created
+configmap/ironic-bmo-configmap created
+configmap/ironic-htpasswd created
+configmap/ironic-inspector-htpasswd created
+secret/ironic-auth-config created
+secret/ironic-credentials created
+secret/ironic-inspector-auth-config created
+secret/ironic-inspector-credentials created
+secret/ironic-rpc-auth-config created
+secret/mariadb-password created
+service/ironic created
+deployment.apps/baremetal-operator-controller-manager created
+deployment.apps/capm3-ironic created
+route.route.openshift.io/ironic-api created
+route.route.openshift.io/ironic-http created
+route.route.openshift.io/ironic-inspector created
 ~~~
 
 Here is an output of what you should expect
@@ -139,13 +165,6 @@ route.route.openshift.io/ironic-http        ironic-http-metal-provisioner.apps.h
 route.route.openshift.io/ironic-inspector   ironic-inspector-metal-provisioner.apps.hub-adetalhouet.rhtelco.io          ironic     inspector                 None
 ~~~
 </details>
-
-
-### Create the namespace in which we will install our `BareMetalHost` manifests
-That CRD is the one responsible for the ZTP flow.
-~~~
-oc create ns sno-ztp
-~~~
 
 ## Requirements on the spoke server <a name="spokecluster"></a>
 I'm assuming you have a blank server, running CentOS 8.4, and login as `root`.
@@ -226,10 +245,17 @@ firewall-cmd --add-port=8000/tcp
 
 When Ironic will use our virtual BMC, emulated by sushy-tools, to load the ISO in the server (VM in our case), sushy-tools will host that image in the `default` storage pool, so we need to create it accordingly. (I couldn't find a way, yet, to configure the storage pool to use.)
 ~~~
-mkdir -p /var/lib/libvirt/sno-ztp
-virsh pool-define-as default --type dir --target /var/lib/libvirt/sno-ztp
-virsh pool-start default
-virsh pool-autostart default
+$ mkdir -p /var/lib/libvirt/sno-ztp
+$ virsh pool-define-as default --type dir --target /var/lib/libvirt/sno-ztp
+$ virsh pool-start default
+$ virsh pool-autostart default
+
+$ virsh pool-list
+ Name      State    Autostart
+-------------------------------
+ boot      active   yes
+ default   active   yes
+ images    active   yes
 ~~~
 
 #### Create a network <a name="net"></a>
@@ -278,9 +304,15 @@ Now let's define and start our network
 
 ~~~
 # create the file net.xml with the content above
-virsh net-define net.xml
-virsh net-start sno
-virsh net-autostart sno
+$ virsh net-define net.xml
+$ virsh net-start sno
+$ virsh net-autostart sno
+
+$ virsh net-list
+ Name      State    Autostart   Persistent
+--------------------------------------------
+ default   active   yes         yes
+ sno       active   no          yes
 ~~~
 
 #### Create the disk <a name="disk"></a>
@@ -288,7 +320,8 @@ virsh net-autostart sno
 In order for Assisted Installer to allow the installation of the Single Node OpenShift to happen, one of the requirement is the disk size: it must be at least of 120GB. When creating a disk of 120GB, or even 150GB, for some reason I had issues and the Assisted Service wouldn't allow the installation complaining about the disk size requirepement not being met.
 So let's create a disk of 200 GB to be sure.
 ~~~
-qemu-img create -f qcow2 /var/lib/libvirt/sno-ztp/sno.qcow2 200G
+$ qemu-img create -f qcow2 /var/lib/libvirt/sno-ztp/sno.qcow2 200G
+Formatting '/var/lib/libvirt/sno-ztp/sno.qcow2', fmt=qcow2 size=214748364800 cluster_size=65536 lazy_refcounts=off refcount_bits=16
 ~~~
 
 #### Create the  VM / libvirt domain <a name="vm"></a>
@@ -416,14 +449,14 @@ __Let's review the manifests:__
 
 ### Few debugging tips <a name="debug"></a>
 ###### Storage
-First, look at the storage pool folder; sometimes ISO upload isn't working properly, and the resulting ISO doesn't have all the data. See the size of both ISO; the expected size, based on my experience, is `105811968`. So if the file is not in that range, the VM won't boot properly.
+First, look at the storage pool folder; sometimes ISO upload isn't working properly, and the resulting ISO doesn't have all the data. See the size of both ISO; the expected size, based on my experience, is `107884544`. So if the file is not in that range, the VM won't boot properly.
 
 ~~~
-[root@lab ai-ztp]# ls -ls /var/lib/libvirt/sno-
-total 103536
-     4 -rw------- 1 qemu qemu      3265 Jul 29 04:04 boot-072b3441-2bd9-4aaf-939c-7e4640e38935-iso-79ad9824-8110-4570-83e3-a8cd6ae9d435.img
-103332 -rw------- 1 qemu qemu 105811968 Jul 29 04:07 boot-e1fcd81d-899c-47be-9c95-f6ff77c44f79-iso-79ad9824-8110-4570-83e3-a8cd6ae9d435.img
-   200 -rw-r--r-- 1 qemu qemu    196616 Jul 29 03:26 sno.qcow2
+[root@lab sno]# ls -ls /var/lib/libvirt/sno-ztp/
+total 25639776
+       4 -rw------- 1 qemu qemu        3265 Jul 29 04:04 boot-072b3441-2bd9-4aaf-939c-7e4640e38935-iso-79ad9824-8110-4570-83e3-a8cd6ae9d435.img
+  105356 -rw------- 1 qemu qemu   107884544 Aug  1 20:48 boot-961b4d9e-1766-4e38-8a6d-8de54c7a836b-iso-b6c92bbb-1e87-4972-b17a-12def3948890.img
+25534416 -rw-r--r-- 1 root root 26146963456 Jul 30 14:36 sno2.qcow2
 ~~~
 ###### Network
 After a few minutes of having your VM running, it should get its IP from the network. Two ways to validate:
@@ -432,16 +465,16 @@ Check the network `dhcp-leases` and ensure the IP has been assigned
 [root@lab sno]# virsh net-dhcp-leases sno
  Expiry Time           MAC address         Protocol   IP address         Hostname   Client ID or DUID
 ----------------------------------------------------------------------------------------------------------
- 2021-07-30 05:52:28   02:04:00:00:00:66   ipv4       192.168.123.5/24   sno        01:02:04:00:00:00:66
+ 2021-08-01 22:05:02   02:04:00:00:00:66   ipv4       192.168.123.5/24   sno        01:02:04:00:00:00:66
  ~~~
 If so, attempt to SSH using the public key that goes with the private key you configure while installing the Assisted Service. You should be able to ssh properly.
 ~~~
 [root@lab sno]# ssh core@192.168.123.5
 The authenticity of host '192.168.123.5 (192.168.123.5)' can't be established.
-ECDSA key fingerprint is SHA256:RlXx0uz3Hm87wxFrgW/gPddCTslb7WhXmm/1SbLjmcU.
+ECDSA key fingerprint is SHA256:N6wy/bQ5YeL01LsLci+IVztzRs8XFVeU4rYJIDGD8SU.
 Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
 Warning: Permanently added '192.168.123.5' (ECDSA) to the list of known hosts.
-Red Hat Enterprise Linux CoreOS 48.84.202107040900-0
+Red Hat Enterprise Linux CoreOS 48.84.202107202156-0
   Part of OpenShift 4.8, RHCOS is a Kubernetes native operating system
   managed by the Machine Config Operator (`clusteroperator/machine-config`).
 
@@ -452,18 +485,21 @@ make configuration changes via `machineconfig` objects:
 ---
 [core@sno ~]$
 ~~~
+
 ###### Monitor the `Agent`
 Assuming the above worked, then I suggest you monitor the `Agent` that was created for your cluster deployment. This will give you an URL you can use to follow the events occuring in your cluster.
+
+The `Agent` is the bare metal installer agent, it will provide info regarding the bare metal install provisioning.
 
 <details>
 <summary>oc get Agent -n sno-ztp</summary>
 
 ~~~
-oc get Agent -n sno-ztp
+$ oc get Agent -n sno-ztp
 NAME                                   CLUSTER            APPROVED   ROLE     STAGE
-b6c92bbb-1e87-4972-b17a-12def3948890   sno-ztp-cluster    true       master   Done
+b6c92bbb-1e87-4972-b17a-12def3948890   sno-ztp-cluster   true       master   Done
 
-oc describe Agent b6c92bbb-1e87-4972-b17a-12def3948890 -n sno-ztp
+$ oc describe Agent b6c92bbb-1e87-4972-b17a-12def3948890 -n sno-ztp
 Name:         b6c92bbb-1e87-4972-b17a-12def3948890
 Namespace:    sno-ztp
 Labels:       agent-install.openshift.io/bmh=sno-ztp-bmh
@@ -472,12 +508,12 @@ Annotations:  <none>
 API Version:  agent-install.openshift.io/v1beta1
 Kind:         Agent
 Metadata:
-  Creation Timestamp:  2021-07-30T02:40:46Z
+  Creation Timestamp:  2021-08-01T18:52:44Z
   Finalizers:
     agent.agent-install.openshift.io/ai-deprovision
   Generation:  2
-  Resource Version:  22242465
-  UID:               27e7bd79-0b28-4e66-906f-3d1c0db5e809
+  Resource Version:  27926035
+  UID:               a91ff59c-a08c-41ac-9603-1981bec69f70
 Spec:
   Approved:  true
   Cluster Deployment Name:
@@ -487,33 +523,33 @@ Spec:
 Status:
   Bootstrap:  true
   Conditions:
-    Last Transition Time:  2021-07-30T02:40:46Z
+    Last Transition Time:  2021-08-01T18:52:44Z
     Message:               The Spec has been successfully applied
     Reason:                SyncOK
     Status:                True
     Type:                  SpecSynced
-    Last Transition Time:  2021-07-30T02:40:46Z
+    Last Transition Time:  2021-08-01T18:52:44Z
     Message:               The agent's connection to the installation service is unimpaired
     Reason:                AgentIsConnected
     Status:                True
     Type:                  Connected
-    Last Transition Time:  2021-07-30T02:40:52Z
+    Last Transition Time:  2021-08-01T18:52:52Z
     Message:               The agent installation stopped
     Reason:                AgentInstallationStopped
     Status:                True
     Type:                  RequirementsMet
-    Last Transition Time:  2021-07-30T02:40:52Z
+    Last Transition Time:  2021-08-01T18:52:52Z
     Message:               The agent's validations are passing
     Reason:                ValidationsPassing
     Status:                True
     Type:                  Validated
-    Last Transition Time:  2021-07-30T02:59:30Z
+    Last Transition Time:  2021-08-01T19:09:59Z
     Message:               The installation has completed: Done
     Reason:                InstallationCompleted
     Status:                True
     Type:                  Installed
   Debug Info:
-    Events URL:  https://assisted-service-open-cluster-management.apps.hub-adetalhouet.rhtelco.io/api/assisted-install/v1/clusters/e85bc2e6-ea53-4e0a-8e68-8922307a0159/events?api_key=eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbHVzdGVyX2lkIjoiZTg1YmMyZTYtZWE1My00ZTBhLThlNjgtODkyMjMwN2EwMTU5In0.IYV4maUrNxJBkNMkWqYU9m5IZKcai4PP21ECehjH0hnIG5OaI_2elhHp_-kFjvC7Px710y2UAdoyb_doSE88OA&host_id=b6c92bbb-1e87-4972-b17a-12def3948890
+    Events URL:  https://assisted-service-open-cluster-management.apps.hub-adetalhouet.rhtelco.io/api/assisted-install/v1/clusters/064d8242-e63a-4ba9-9eb4-aaaa773cdf32/events?api_key=eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbHVzdGVyX2lkIjoiMDY0ZDgyNDItZTYzYS00YmE5LTllYjQtYWFhYTc3M2NkZjMyIn0.zWoiIcDcDGY3XfTDij3AktHCocRjNbmB1XFhXJjMrhBO_yZypNRp1OCfKwjuSSkpLGmkhEiZrVAKGrZA7QtA0A&host_id=b6c92bbb-1e87-4972-b17a-12def3948890
     State:       installed
     State Info:  Done
   Inventory:
@@ -618,15 +654,15 @@ Status:
       Installation Eligibility:
         Not Eligible Reasons:
           Disk is removable
-          Disk is too small (disk only has 106 MB, but 120 GB are required)
+          Disk is too small (disk only has 108 MB, but 120 GB are required)
           Drive type is ODD, it must be one of HDD, SSD.
       Io Perf:
       Model:       QEMU_DVD-ROM
       Name:        sr0
       Path:        /dev/sr0
       Serial:      QM00001
-      Size Bytes:  105811968
-      Smart:       {"json_format_version":[1,0],"smartctl":{"version":[7,1],"svn_revision":"5022","platform_info":"x86_64-linux-4.18.0-240.22.1.el8_3.x86_64","build_info":"(local build)","argv":["smartctl","--xall","--json=c","/dev/sr0"],"exit_status":4},"device":{"name":"/dev/sr0","info_name":"/dev/sr0","type":"scsi","protocol":"SCSI"},"vendor":"QEMU","product":"QEMU DVD-ROM","model_name":"QEMU QEMU DVD-ROM","revision":"2.5+","scsi_version":"SPC-3","device_type":{"scsi_value":5,"name":"CD/DVD"},"local_time":{"time_t":1627613330,"asctime":"Fri Jul 30 02:48:50 2021 UTC"},"temperature":{"current":0,"drive_trip":0}}
+      Size Bytes:  107884544
+      Smart:       {"json_format_version":[1,0],"smartctl":{"version":[7,1],"svn_revision":"5022","platform_info":"x86_64-linux-4.18.0-305.10.2.el8_4.x86_64","build_info":"(local build)","argv":["smartctl","--xall","--json=c","/dev/sr0"],"exit_status":4},"device":{"name":"/dev/sr0","info_name":"/dev/sr0","type":"scsi","protocol":"SCSI"},"vendor":"QEMU","product":"QEMU DVD-ROM","model_name":"QEMU QEMU DVD-ROM","revision":"2.5+","scsi_version":"SPC-3","device_type":{"scsi_value":5,"name":"CD/DVD"},"local_time":{"time_t":1627844447,"asctime":"Sun Aug  1 19:00:47 2021 UTC"},"temperature":{"current":0,"drive_trip":0}}
       Vendor:      QEMU
       Bootable:    true
       By Path:     /dev/disk/by-path/pci-0000:04:00.0
@@ -639,7 +675,7 @@ Status:
       Name:        vda
       Path:        /dev/vda
       Size Bytes:  214748364800
-      Smart:       {"json_format_version":[1,0],"smartctl":{"version":[7,1],"svn_revision":"5022","platform_info":"x86_64-linux-4.18.0-240.22.1.el8_3.x86_64","build_info":"(local build)","argv":["smartctl","--xall","--json=c","/dev/vda"],"messages":[{"string":"/dev/vda: Unable to detect device type","severity":"error"}],"exit_status":1}}
+      Smart:       {"json_format_version":[1,0],"smartctl":{"version":[7,1],"svn_revision":"5022","platform_info":"x86_64-linux-4.18.0-305.10.2.el8_4.x86_64","build_info":"(local build)","argv":["smartctl","--xall","--json=c","/dev/vda"],"messages":[{"string":"/dev/vda: Unable to detect device type","severity":"error"}],"exit_status":1}}
       Vendor:      0x1af4
     Hostname:      sno
     Interfaces:
@@ -658,20 +694,44 @@ Status:
       Speed Mbps:   -1
       Vendor:       0x1af4
     Memory:
-      Physical Bytes:  34359738368
-      Usable Bytes:    33693179904
+      Physical Bytes:  68719476736
+      Usable Bytes:    67514548224
     System Vendor:
       Manufacturer:  Red Hat
       Product Name:  KVM
       Virtual:       true
   Progress:
     Current Stage:      Done
-    Stage Start Time:   2021-07-30T02:59:30Z
-    Stage Update Time:  2021-07-30T02:59:30Z
+    Stage Start Time:   2021-08-01T19:09:59Z
+    Stage Update Time:  2021-08-01T19:09:59Z
   Role:                 master
 Events:                 <none>
 ~~~
 </details>
+
+
+###### Monitor the `ClusterDeployment`
+
+The cluster deployment is responsible for the OCP cluster. You can also monitor it, as this is the element that will give you the % of progress of the cluster install.
+
+~~~
+$ oc describe ClusterDeployments sno-ztp-cluster -n sno-ztp
+
+--[cut]--
+status:
+  cliImage: >-
+    quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:5917b18697edb46458d9fd39cefab191c8324561fa83da160f6fdd0b90c55fe0
+  conditions:
+    - lastProbeTime: '2021-08-01T19:22:30Z'
+      lastTransitionTime: '2021-08-01T18:47:08Z'
+      message: >-
+        The installation is in progress: Finalizing cluster installation.
+        Cluster version status: progressing, message: Working towards 4.8.2: 640
+        of 676 done (94% complete)
+--[/cut]--
+
+~~~
+
 
 ### Accessing your cluster <a name="access"></a>
 
@@ -684,7 +744,7 @@ Note: the information will be populated only uppon successul deployment.
 ~~~
 $ oc get ClusterDeployments -n sno-ztp
 NAME               PLATFORM          REGION   CLUSTERTYPE   INSTALLED   INFRAID                                VERSION   POWERSTATE    AGE
-sno-ztp-cluster    agent-baremetal                          true        e85bc2e6-ea53-4e0a-8e68-8922307a0159             Unsupported   59m
+sno-ztp-cluster    agent-baremetal                          true        064d8242-e63a-4ba9-9eb4-aaaa773cdf32             Unsupported   59m
 
 $ oc describe ClusterDeployments sno-ztp-cluster -n sno-ztp
 Name:         sno-ztp-cluster
@@ -876,12 +936,18 @@ As I have a server with only one Interface and no console port access, I couldn'
 ~~~
 /sbin/iptables -D FORWARD -o virbr1 -p tcp -d 192.168.123.5 --dport 443 -j ACCEPT
 /sbin/iptables -t nat -D PREROUTING -p tcp --dport 443 -j DNAT --to 192.168.123.5:443
+
+/sbin/iptables -D FORWARD -o virbr1 -p tcp -d 192.168.123.5 --dport 6443 -j ACCEPT
+/sbin/iptables -t nat -D PREROUTING -p tcp --dport 6443 -j DNAT --to 192.168.123.5:6443
 ~~~
 
 ###### when is host is up
 ~~~
 /sbin/iptables -I FORWARD -o virbr1 -p tcp -d 192.168.123.5 --dport 443 -j ACCEPT
 /sbin/iptables -t nat -I PREROUTING -p tcp --dport 443 -j DNAT --to 192.168.123.5:443
+
+/sbin/iptables -I FORWARD -o virbr1 -p tcp -d 192.168.123.5 --dport 6443 -j ACCEPT
+/sbin/iptables -t nat -I PREROUTING -p tcp --dport 6443 -j DNAT --to 192.168.123.5:6443
 ~~~
 
 ##### backup

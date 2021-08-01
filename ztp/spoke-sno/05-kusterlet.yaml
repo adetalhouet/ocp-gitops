@@ -4,7 +4,7 @@ metadata:
   name: lab-spoke-adetalhouet
   namespace: sno-ztp
 spec:
-  clusterName: lab-spoke-adetalhouet
+  clusterName: sno-ztp-cluster
   clusterNamespace: sno-ztp
   clusterLabels:
     cloud: auto-detect
