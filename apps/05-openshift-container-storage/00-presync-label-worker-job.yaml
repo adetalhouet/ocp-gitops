@@ -11,7 +11,14 @@ spec:
   template:
     spec:
       containers:
-        - image: registry.redhat.io/openshift4/ose-cli:latest
+        - resources:
+            limits:
+              cpu: 500m
+              memory: 256Mi
+            requests:
+              cpu: 250m
+              memory: 128Mi
+          image: registry.redhat.io/openshift4/ose-cli:latest
           command:
             - /bin/bash
             - -c
