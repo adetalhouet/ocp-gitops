@@ -51,18 +51,18 @@ spec:
             name: 07-oauth
             wave: '7'
             path: apps/07-oauth/overlay/default
-        # - cluster: default
-        #   url: https://kubernetes.default.svc
-        #   values:
-        #     name: 08-openshift-elasticsearch
-        #     wave: '8'
-        #     path: apps/08-openshift-elasticsearch
-        # - cluster: default
-        #   url: https://kubernetes.default.svc
-        #   values:
-        #     name: 09-openshift-logging
-        #     wave: '9'
-        #     path: apps/09-openshift-logging
+        - cluster: default
+          url: https://kubernetes.default.svc
+          values:
+            name: 08-openshift-elasticsearch
+            wave: '8'
+            path: apps/08-openshift-elasticsearch
+        - cluster: default
+          url: https://kubernetes.default.svc
+          values:
+            name: 09-openshift-logging
+            wave: '9'
+            path: apps/09-openshift-logging
         - cluster: default
           url: https://kubernetes.default.svc
           values:
