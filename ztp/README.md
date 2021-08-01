@@ -20,7 +20,7 @@ Let's align on the Zero Touch Provisioning expectation:
 ### Table of Content
 
 1. [Pre-requisites](#prerequisites)
-2. [ZTP flow overview](#ztpflow)
+2. [Architecture](#ztpflow)
 3. [Install requirements on the hub cluster](#hubcluster)
     - [Assisted Service](#assistedservice)
     - [Ironic & Metal3](#bmo)
@@ -43,9 +43,9 @@ Let's align on the Zero Touch Provisioning expectation:
 - A server with at least 32GB of RAM, 8 CPUs and 120 GB of disk - this is the machine we will use for the spoke. Mine is setup with CentOS 8.4
 - Clone the git repo: `git clone https://github.com/adetalhouet/ocp-gitops`
 
-## ZTP flow overview <a name="ztpflow"></a>
+## Architecture <a name="ztpflow"></a>
 
-TBD
+![Architecture](https://github.com/adetalhouet/ocp-gitops/raw/master/ztp/doc/resources/ocp-ztp.png)
 
 ## Requirements on the hub cluster <a name="hubcluster"></a>
 The assumption is the cluster is __not__ deployed on bare metal. If that's the case skip the Ironic and Metal3 portion.
