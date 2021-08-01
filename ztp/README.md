@@ -58,7 +58,7 @@ The related manifest for the install are located in the `hub` folder. The main m
 
 We also create a `ClusterImageSet` to refer to OpenShift 4.8 version. This will be referenced by the spoke manifest to define what version of OpenShift to install.
 
-Add your private key in the `hub/03-assisted-deployment-ssh-private-key.yaml` file (us the example), and then apply the folder. The private key will be in the resulting VM, and you will use the corresponding public key to ssh, if needed.
+Add your private key in the `hub/03-assisted-deployment-ssh-private-key.yaml` file (use the example), and then apply the folder. The private key will be in the resulting VM, and you will use the corresponding public key to ssh, if needed.
 
 Everything will be installed in the `open-cluster-management` namespace.
 
@@ -80,19 +80,25 @@ So, I pulled all the manifests required for the install, and put them in the `me
 
 As Ironic will be the component instructing the remote server to download the ISO, it needs to be configured properly so the remote server can reach back to the underlying Ironic's HTTP server.
 
-The `02-ironic.yaml` manifest provides a `Service` and `Route` to expose the various services. And it also contains a `ConfigMap` called `ironic-bmo-configmap` containing all the configuration bits required for Ironic to work properly.
+The `02-ironic.yaml` manifest provides a `Service` and `Route` to expose the various services it provides. And it also contains a `ConfigMap` called `ironic-bmo-configmap` containing all the configuration bits required for Ironic to work properly.
 These elements points to my environment, so you need to customize them accordingly, by adjusting the $CLUSTER_NAME.$DOMAIN_NAME in the `Route` definition and in the `ironic-bmo-configmap` ConfigMap.
 
 In my case `$CLUSTER_NAME.$DOMAIN_NAME = hub-adetalhouet.rhlteco.io`
 
-Here is a command to help make that change; make sure to replace `$CLUSTER_NAME.$DOMAIN_NAME` with yours.
+Here is a command to help make that change; make sure to replace `$CLUSTER_NAME.$DOMAIN_NAME` with yours. If you're on a mac, using `gsed` instead of `sed` to use the GNU sed binary.
 
 ~~~
 sed -i "s/hub-adetalhouet.rhtelco.io/$CLUSTER_NAME.$DOMAIN_NAME/g" metal-provisioner/02-ironic.yaml
 ~~~
 
-Also, based on the upstream Ironic image, I had to adjust the start command of the `ironic-api` and `ironic-conductor` to alter their `ironic.conf` configuration so it would consume the exposed `Route` rather than the internal IP.
+Based on the upstream Ironic image, I had to adjust the start command of the `ironic-api` and `ironic-conductor` containers to alter their `ironic.conf` configuration so it would consume the exposed `Route` rather than the internal IP. When Ironic using the BMC to configure the server, it will instruct the server to load the boot ISO image from its http server; the Ironic http server must be reachable from the spoke server. In my case, given the hub and the spoke only share public internet as a common network, I had to expose Ironic http server. If you have a private network, the setup would work the same.
+
 In both of these containers, the `/etc/ironic/ironic.conf` configuration is created at runtime, based on the Jinja template `/etc/ironic/ironic.conf.j2`; so I modify the template to have the resulting generated config as expected.
+
+~~~
+sed -i "s/{{ env.IRONIC_URL_HOST }}:{{ env.HTTP_PORT }}/{{ env.IRONIC_HTTP_URL }}/g" /etc/ironic/ironic.conf.j2
+sed -i "s/host = {{ env.IRONIC_URL_HOST }}/host = {{ env.IRONIC_HTTP_URL }}/g" /etc/ironic/ironic.conf.j2
+~~~
 
 Finally, Ironic uses host network (although not required in our case), so I have granted the `metal-provisioner` ServiceAccount `privileged` SCC. And in the `ironic-bmo-configmap` you need to update the `PROVISIONING_INTERFACE` to reflect your node interface. This is stupid, because we don't care about this at all in our case, but Ironic will basically take the IP from this interface and use it at many places. Actually, some of the place where it uses the host ip are the places where we made the change in the `ironic.conf` in the previous section.
 
@@ -142,7 +148,7 @@ oc create ns sno-ztp
 ~~~
 
 ## Requirements on the spoke server <a name="spokecluster"></a>
-I'm assuming you have a blank server, running CentOS 8.4.
+I'm assuming you have a blank server, running CentOS 8.4, and login as `root`.
 
 ### Install libvirt <a name="libvirtinstall"></a>
 Install the required dependencies.
@@ -390,6 +396,23 @@ oc apply -k spoke-sno/
 
 It will take on average 60-ish minutes for the cluster to be ready.
 That said, to validate the cluster will get deployed properly, few tests you can do.
+
+__Let's review the manifests:__
+
+- `00-agentclusterinstall.yaml` defines the `AgentClusterInstall` is responsible for the overall cluster configuration. This is where you specify:
+    - the network requirements (clusterNetwork, serviceNetwork, machineNetwork).
+    - the OpenShift version to use, by refering to the `ClusterImageSet` name we created earlier.
+    - the overall cluster setup, i.e. how many control and worker node you want. In our case, we deploy a SNO, so only 1 control node.
+    - the pub key that goes with the private key setup earlier in the `assisted-deployment-ssh-private-key` secret
+- `01-clusterdeployment.yaml` defines the `ClusterDeployment`
+    - it references the `AgentClusterIntall` and define the `pull-secret` to use for the cluster provisioning.
+    - this is where you define the `baseDomain` and the `clusterName` to use for the spoke cluster
+- `02-spokeinfraenv.yaml` defines the `InfraEnv`. It is basically a when to customize the intial cluster setup. If you want to add/modify some files for the ignition process, you can. If you want to configure additional networking bits, this is where you can do it as well. Refer to the doc, and here is [an example](https://github.com/openshift/openshift-docs/blob/main/modules/ztp-configuring-a-static-ip.adoc).
+- `03-baremetalhost.yaml` defines the `BareMetalHost`. This is where you provide the information on:
+    - how to connect to the server through its BMC
+    - the MAC address of the provisioning interface
+- `04-assisteddeploymentpullsecret.yaml` defines your `pull-secret`
+- `05-kusterlet.yaml` tells RHACM to add this cluster as a managed cluster, and deploy the various addon agents on it.
 
 ### Few debugging tips <a name="debug"></a>
 ###### Storage

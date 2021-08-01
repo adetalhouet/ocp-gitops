@@ -17,6 +17,7 @@ spec:
   bootMACAddress: 02:04:00:00:00:66
   automatedCleaningMode: disabled
 ---
+# dummy secret - it is not used by required by assisted service and bare metal operator
 apiVersion: v1
 kind: Secret
 metadata:
