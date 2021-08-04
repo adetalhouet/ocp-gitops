@@ -506,6 +506,22 @@ make configuration changes via `machineconfig` objects:
 [core@sno ~]$
 ~~~
 
+Here are extra information to expect when you are using a bridge network. The IP of the bridged interface will be manually configured using manifest `03-nmstateconfig.yaml`. If you have DHCP for that network, that would work as well.
+You can validate the created domain has both interface, and you can look for the IP of the private network, if you want to ssh/troubleshoot.
+
+~~~
+[root@lab sno-pub]# virsh domiflist 21
+ Interface   Type      Source   Model    MAC
+------------------------------------------------------------
+ vnet19      bridge    br0      virtio   00:50:56:01:15:94
+ vnet20      network   sno      virtio   52:54:00:73:90:59
+
+[root@lab sno-pub]# virsh domifaddr 21
+ Name       MAC address          Protocol     Address
+-------------------------------------------------------------------------------
+ vnet20     52:54:00:73:90:59    ipv4         192.168.123.248/24
+ ~~~
+
 ###### Monitor the `Agent`
 Assuming the above worked, then I suggest you monitor the `Agent` that was created for your cluster deployment. This will give you an URL you can use to follow the events occuring in your cluster.
 
