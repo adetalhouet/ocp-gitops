@@ -12,5 +12,5 @@ stringData:
       bucket: acm-observability
       endpoint: s3.openshift-storage.svc.cluster.local
       insecure: true
-      access_key: WXEg8xUILXDLFtdriMLU
-      secret_key: wrnVKBM60pssGfq5jXLZ4pDGvYLcCIyb07PG6ECL
+      access_key: BNpB0WysKvrqU3GfOee3
+      secret_key: CvI2zjWvjYLCm16VOjsQfXY1sJytEYSOa8hOppus
