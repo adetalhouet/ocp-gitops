@@ -4,7 +4,7 @@ The goal is to leverage the latest capabilities from Red Hat Advanced Cluster Ma
 
 The typical Zero Touch Provisioning flow is meant to work for bare metal environment; but if like me, you don't have a bare metal environment handy, or want to optimize the only server you have, that blog is for you.
 
- RHACM works in a hub and spoke manner. So the goal here is to deploy a spoke from the hub cluster.
+RHACM works in a hub and spoke manner. So the goal here is to deploy a spoke from the hub cluster.
 
 The overall setup requires the following components:
 
@@ -418,18 +418,22 @@ virsh autostart sno
 ~~~
 Do not start the VM by yourself, it will be done later in the process, automatically. Moreover, your VM at this point has no CDROM to boot from.
 
+If you have a bridge network, you can add an additional interface to the domain definition. Please see `libvirt/sno/vm-bridge-net.xml` along with `libvirt/sno/bridge-interface.md`. And see `spoke-ztp/03-nmstateconfig.yaml` on how to configure the interface within the resulting VM.
+
 Now the environment is ready, let's create an Single Node OpenShift cluster automagically.
 
 ## Let's deploy the spoke <a name="spoke"></a>
 
-We will use all the manifests in the `spoke-sno/` folder. Simply apply the following command:
+We will use all the manifests in the `spoke-ztp/` folder. Simply apply the following command:
 ~~~
-$ oc apply -k spoke-sno/
+$ oc apply -k spoke-ztp/
 namespace/sno-ztp created
 secret/assisted-deployment-pull-secret created
 secret/sno-secret created
 infraenv.agent-install.openshift.io/sno-ztp-infraenv created
+nmstateconfig.agent-install.openshift.io/lab-spoke-adetalhouet created
 klusterletaddonconfig.agent.open-cluster-management.io/lab-spoke-adetalhouet created
+managedcluster.cluster.open-cluster-management.io/lab-spoke-adetalhouet created
 agentclusterinstall.extensions.hive.openshift.io/sno-ztp-clusteragent created
 clusterdeployment.hive.openshift.io/sno-ztp-cluster created
 baremetalhost.metal3.io/sno-ztp-bmh created
@@ -440,18 +444,26 @@ That said, to validate the cluster will get deployed properly, few tests you can
 
 __Let's review the manifests:__
 
-- `00-agentclusterinstall.yaml` defines the `AgentClusterInstall` is responsible for the overall cluster configuration. This is where you specify:
+- `00-namespace.yaml` creates the namespace where the configuration will be hosted.
+- `01-agentclusterinstall.yaml` defines the `AgentClusterInstall` is responsible for the overall cluster configuration. This is where you specify:
     - the network requirements (clusterNetwork, serviceNetwork, machineNetwork).
     - the OpenShift version to use, by refering to the `ClusterImageSet` name we created earlier.
     - the overall cluster setup, i.e. how many control and worker node you want. In our case, we deploy a SNO, so only 1 control node.
     - the pub key that goes with the private key setup earlier in the `assisted-deployment-ssh-private-key` secret
-- `01-clusterdeployment.yaml` defines the `ClusterDeployment`
+- `02-clusterdeployment.yaml` defines the `ClusterDeployment`
     - it references the `AgentClusterIntall` and define the `pull-secret` to use for the cluster provisioning.
     - this is where you define the `baseDomain` and the `clusterName` to use for the spoke cluster
-- `02-spokeinfraenv.yaml` defines the `InfraEnv`. It is basically a when to customize the intial cluster setup. If you want to add/modify some files for the ignition process, you can. If you want to configure additional networking bits, this is where you can do it as well. Refer to the doc, and here is [an example](https://github.com/openshift/openshift-docs/blob/main/modules/ztp-configuring-a-static-ip.adoc).
-- `03-baremetalhost.yaml` defines the `BareMetalHost`. This is where you provide the information on:
+- `03-nmstateconfig.yaml` is required if you are using a bridge network and want to set a static ip. See [here](https://github.com/nmstate/nmstate) along with their doc for more information / use cases.
+- `04-spokeinfraenv.yaml` defines the `InfraEnv`. It is basically a when to customize the intial cluster setup. If you want to add/modify some files for the ignition process, you can. If you want to configure additional networking bits, this is where you can do it as well. Refer to the doc, and here is [an example](https://github.com/openshift/openshift-docs/blob/main/modules/ztp-configuring-a-static-ip.adoc).
+- `05-baremetalhost.yaml` defines the `BareMetalHost`. This is where you provide the information on:
     - how to connect to the server through its BMC
     - the MAC address of the provisioning interface
+- `05-userdata.yaml` is an attempt at providing additional information but libvirt isn't liking the way that disk is provided (I didn't dig into this, so here is the error I got if you want to dig into this)
+- `06-assisteddeploymentpullsecret.yaml` is the pull-secret to download the images in the spoke cluster.
+- `07-kusterlet.yaml` setup the cluster to be imported within RHACM, and have the addon agents installed.
+~~~
+{"level":"info","ts":1628007509.626545,"logger":"provisioner.ironic","msg":"current provision state","host":"sno-ztp~sno-ztp-bmh","lastError":"Deploy step deploy.deploy failed: Redfish exception occurred. Error: Setting power state to power on failed for node 1e87eede-7ddb-4da4-bb7f-2a12037ac323. Error: HTTP POST http://148.251.12.17:8000/redfish/v1/Systems/b6c92bbb-1e87-4972-b17a-12def3948891/Actions/ComputerSystem.Reset returned code 500. Base.1.0.GeneralError: Error changing power state at libvirt URI \"qemu:///system\": internal error: qemu unexpectedly closed the monitor: 2021-08-03T16:18:17.110846Z qemu-kvm: -device isa-fdc,bootindexA=1: Device isa-fdc is not supported with machine type pc-q35-rhel8.2.0 Extended information: [{'@odata.type': '/redfish/v1/$metadata#Message.1.0.0.Message', 'MessageId': 'Base.1.0.GeneralError'}].","current":"deploy failed","target":"active"}
+~~~
 - `04-assisteddeploymentpullsecret.yaml` defines your `pull-secret`
 - `05-kusterlet.yaml` tells RHACM to add this cluster as a managed cluster, and deploy the various addon agents on it.
 

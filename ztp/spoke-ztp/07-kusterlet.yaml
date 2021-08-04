@@ -1,3 +1,12 @@
+---
+apiVersion: cluster.open-cluster-management.io/v1
+kind: ManagedCluster
+metadata:
+  name: sno-ztp-cluster
+  namespace: sno-ztp
+spec:
+  hubAcceptsClient: true
+---
 apiVersion: agent.open-cluster-management.io/v1
 kind: KlusterletAddonConfig
 metadata:
