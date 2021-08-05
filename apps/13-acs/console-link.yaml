@@ -1,7 +1,7 @@
 apiVersion: console.openshift.io/v1
 kind: ConsoleLink
 metadata:
- name: tower
+ name: acs
 spec:
  applicationMenu:
    section: Red Hat applications
