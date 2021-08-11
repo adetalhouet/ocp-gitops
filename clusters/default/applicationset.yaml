@@ -80,7 +80,7 @@ spec:
           values:
             name: 13-acs
             wave: '13'
-            path: apps/13-acs
+            path: apps/13-acs/overlay/default
   template:
     metadata:
       name: '{{values.name}}'

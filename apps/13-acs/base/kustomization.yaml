@@ -6,4 +6,6 @@ bases:
   - https://github.com/redhat-cop/gitops-catalog/acs-operator/overlays/aggregate-minimal
 
 resources:
-  - console-link.yaml
+  - 01-console-link.yaml
+  - 02-sealed-rhsso-client-secret.yaml
+  - 03-job-sso-integration.yaml
