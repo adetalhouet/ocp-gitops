@@ -21,7 +21,7 @@ Required customization:
     - Make sure to update the /spec/oidcConfig using the overlay folder
 - sealed-secrets
     - If you have pre-defined cert and key for sealed-secrets controller, then populate them [here](https://github.com/adetalhouet/ocp-gitops/blob/main/apps/02-sealed-secrets/bootstrap/02-sealed-secrets-secret-EXAMPLE.yaml) and they will get deployed as part of the bootstrap.
-    - Else, retrieve your sealed-secret cert and key. [Here](https://github.com/redhat-canada-gitops/catalog/tree/master/sealed-secrets-operator/scripts) are tips on how to do so.
+    - Else, retrieve your sealed-secret cert and key. [Here](https://github.com/redhat-cop/gitops-catalog/tree/main/sealed-secrets-operator/scripts) are tips on how to do so.
 - letsencrypt-certs (only for Route53)
     - In order to update the cluster certificate, provide your AWS creds as explained [here](https://github.com/adetalhouet/ocp-gitops/blob/main/apps/03-letsencrypt-certs/README.md). 
     - See GitHub: [OpenShift Let's Encrypt Job](https://github.com/pittar/ocp-letsencrypt-job) project reference.
