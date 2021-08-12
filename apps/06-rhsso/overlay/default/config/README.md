@@ -13,7 +13,7 @@ changes:
 - addSimpleClient:
     clientId: openshift
     publicClient: false
-    secret: YOUR_PASSWORD # change client secret accordingly in oauth app
+    secret: " " # change client secret accordingly in oauth app
     redirectUris:
       - "https://oauth-openshift.apps.hub-adetalhouet.rhtelco.io/oauth2callback/keycloak"
 - updateClient:
@@ -21,11 +21,34 @@ changes:
     standardFlowEnabled: true
     implicitFlowEnabled: false
     directAccessGrantEnabled: true
+# Stackrox
+- addSimpleClient:
+    clientId: stackrox
+    publicClient: false
+    secret: " " # change client secret accordingly in oauth app
+    redirectUris:
+      - "https://central-stackrox.apps.hub-adetalhouet.rhtelco.io/sso/providers/oidc/callback"
+      - "https://central-stackrox.apps.hub-adetalhouet.rhtelco.io/auth/response/oidc"
+- updateClient:
+    clientId: stackrox
+    standardFlowEnabled: true
+    implicitFlowEnabled: false
+    directAccessGrantEnabled: true
+- addClientScope:
+    name: groups
+- addGroupMembershipMapper:
+    clientId: stackrox
+    name: groups
+    addToAccessToken: true
+    claimName: groups
+- assignDefaultClientScope:
+    clientId: stackrox
+    clientScopeName: groups
 # Argocd client
 - addSimpleClient:
     clientId: argocd
     publicClient: false
-    secret: YOUR_PASSWORD # change client secret accordingly in argocd app
+    secret: " " # change client secret accordingly in argocd app
     redirectUris:
       - "https://openshift-gitops-server-openshift-gitops.apps.hub-adetalhouet.rhtelco.io/auth/callback"
 - updateClient:

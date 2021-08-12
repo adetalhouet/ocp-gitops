@@ -8,3 +8,10 @@ changes:
       realm: openshift
       user: adetalhouet
       group: ArgoCDAdmins
+  - addGroup:
+      realm: openshift
+      name: StackroxAdmins
+  - assignGroup:
+      realm: openshift
+      user: adetalhouet
+      group: StackroxAdmins
