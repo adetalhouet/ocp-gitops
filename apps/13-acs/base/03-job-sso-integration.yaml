@@ -61,7 +61,7 @@ spec:
               fi
 
               echo "Create keycloak SSO Provider"
-              export DATA='{"name":"keycloak","type":"oidc","uiEndpoint":"'${EXTERNAL_ROUTE}'","enabled":true,"config":{"client_id":"stackrox","client_secret":"'${CLIENT_SECRET}'","issuer":"'${ISSUER}'","mode":"post"},"validated":true,"extraUiEndpoints":[],"active":false}'
+              export DATA='{"name":"keycloak","type":"oidc","uiEndpoint":"'${EXTERNAL_ROUTE}'","enabled":true,"config":{"client_id":"stackrox","client_secret":"'${CLIENT_SECRET}'","issuer":"'${ISSUER}'","mode":"post"},"validated":true,"extraUiEndpoints":[],"active":true}'
               CLIENT_ID=$(curl -k -X POST -u "admin:$PASSWORD" -H "Content-Type: application/json" --data $DATA https://central/v1/authProviders | python -c "import sys, json; print(json.load(sys.stdin)['id'])")
 
               echo "Add role mapping to keycloak IDP for admins"
