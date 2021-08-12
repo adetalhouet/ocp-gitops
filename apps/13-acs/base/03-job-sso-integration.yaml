@@ -58,7 +58,7 @@ spec:
                 echo "OpenShift Provider already exists, exiting"
                 exit 0
               fi
-              export DATA='{"name":"keycloak","type":"oidc","uiEndpoint":"'${EXTERNAL_ROUTE}'","enabled":true,"config":{"client_id":"stackrox","client_secret":"'${CLIENT_SECRET}'","issuer":"'${ISSUER}'","mode":"post"},"validated":true,"extraUiEndpoints":[],"active":true}'
+              export DATA='{"name":"keycloak","type":"oidc","uiEndpoint":"'${EXTERNAL_ROUTE}'","enabled":true,"config":{"client_id":"stackrox","client_secret":"'${CLIENT_SECRET}'","issuer":"'${ISSUER}'","mode":"post"},"validated":true,"extraUiEndpoints":[],"active":false}'
               #echo "Posting data: ${DATA}"
               curl -k -X POST -u "admin:$PASSWORD" -H "Content-Type: application/json" --data $DATA https://central/v1/authProviders
           imagePullPolicy: Always

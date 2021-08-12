@@ -29,4 +29,4 @@ patches:
     - op: replace
       path: /spec/template/spec/containers/0/env/3/value
       value: >-
-        https://central-stackrox.apps.hub-adetalhouet.rhtelco.io
+        central-stackrox.apps.hub-adetalhouet.rhtelco.io
