@@ -22,7 +22,7 @@ spec:
             valueFrom:
               secretKeyRef:
                 name: sso-secret
-                key: client-secret
+                key: clientSecret
           - name: PASSWORD
             valueFrom:
               secretKeyRef:
