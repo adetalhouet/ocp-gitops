@@ -37,6 +37,7 @@ spec:
             - -c
             - |
               #!/usr/bin/env bash
+
               # Wait for central to be ready
               attempt_counter=0
               max_attempts=20
@@ -51,16 +52,22 @@ spec:
                   echo "Made attempt $attempt_counter, waiting..."
                   sleep 5
               done
-              echo "Configuring SSO Provider"
+
               echo "Test if SSO Provider already exists"
-              response=$(curl -k -u "admin:$PASSWORD" https://central/v1/authProviders?name=keycloak | python -c "import sys, json; print(json.load(sys.stdin)['authProviders'])")
-              if [[ "$response" != "[]" ]] ; then
+              RESPONSE=$(curl -k -u "admin:$PASSWORD" https://central/v1/authProviders?name=keycloak | python -c "import sys, json; print(json.load(sys.stdin)['authProviders'])")
+              if [[ "$RESPONSE" != "[]" ]] ; then
                 echo "OpenShift Provider already exists, exiting"
                 exit 0
               fi
+
+              echo "Create keycloak SSO Provider"
               export DATA='{"name":"keycloak","type":"oidc","uiEndpoint":"'${EXTERNAL_ROUTE}'","enabled":true,"config":{"client_id":"stackrox","client_secret":"'${CLIENT_SECRET}'","issuer":"'${ISSUER}'","mode":"post"},"validated":true,"extraUiEndpoints":[],"active":false}'
-              #echo "Posting data: ${DATA}"
-              curl -k -X POST -u "admin:$PASSWORD" -H "Content-Type: application/json" --data $DATA https://central/v1/authProviders
+              CLIENT_ID=$(curl -k -X POST -u "admin:$PASSWORD" -H "Content-Type: application/json" --data $DATA https://central/v1/authProviders | python -c "import sys, json; print(json.load(sys.stdin)['id'])")
+
+              echo "Add role mapping to keycloak IDP for admins"
+              export DATA='{"required_groups":[{"props":{"authProviderId":"'${CLIENT_ID}'","key":"groups","value":"StackroxAdmins"},"roleName":"Admin"}]}'
+              curl -k -X POST -u "admin:$PASSWORD" -H "Content-Type: application/json" --data $DATA https://central//v1/groupsbatch
+
           imagePullPolicy: Always
           name: create-sso-auth-provider
       dnsPolicy: ClusterFirst
