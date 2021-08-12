@@ -23,6 +23,54 @@ spec:
     route:
       enabled: true
   resourceCustomizations: |
+    argoproj.io/Application:
+      health.lua: |
+        hs = {}
+        hs.status = "Progressing"
+        hs.message = ""
+        if obj.status ~= nil then
+          if obj.status.health ~= nil then
+            hs.status = obj.status.health.status
+            hs.message = obj.status.health.message
+          end
+        end
+        return hs
+    operators.coreos.com/Subscription:
+      health.lua: |
+        hs = {}
+        if obj.status ~= nil then
+          if obj.status.currentCSV ~= nil and (obj.status.state == "AtLatestKnown" or obj.status.state == "UpgradeAvailable" or obj.status.state == "UpgradePending") then
+            hs.status = "Healthy"
+            hs.message = "Subcription installed"
+            return hs
+          end
+        end
+        hs.status = "Progressing"
+        hs.message = "Waiting for Subscription to complete."
+        return hs
+    platform.stackrox.io/Central:
+      health.lua: |
+        hs = {}
+        if obj.status ~= nil and obj.status.conditions ~= nil then
+            for i, condition in ipairs(obj.status.conditions) do
+              if condition.status == "True" and condition.reason == "InstallSuccessful" then
+                  hs.status = "Healthy"
+                  hs.message = "Install Successful"
+                  return hs
+              end
+            end
+        end
+        hs.status = "Progressing"
+        hs.message = "Waiting for Central to deploy."
+        return hs
+    route.openshift.io/Route:
+      ignoreDifferences: |
+        jsonPointers:
+        - /status/ingress
+    integreatly.org/GrafanaDataSource:
+      ignoreDifferences: |
+        jsonPointers:
+        - /spec/datasources/0/secureJsonData/httpHeaderValue1
     PersistentVolumeClaim:
       health.lua: |
         hs = {}
@@ -42,4 +90,26 @@ spec:
         end
         hs.status = "Progressing"
         hs.message = "Waiting for certificate"
+        return hs
+    Job:
+      health.lua: |
+        hs = {}
+        if obj.status ~= nil then
+          if obj.status.active ~= nil then
+            if obj.status.active == "1" then
+              hs.status = "Progressing"
+              hs.message = obj.status.active .. " active job(s)."
+              return hs
+            end
+          end
+          if obj.status.succeeded ~= nil then
+            if obj.status.succeeded == 1 then
+              hs.status = "Healthy"
+              hs.message = "Job completed successfully."
+              return hs
+            end
+          end
+        end
+        hs.status = "Progressing"
+        hs.message = "Waiting for Job to complete."
         return hs
