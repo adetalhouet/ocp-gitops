@@ -9,7 +9,14 @@ spec:
   template:
     spec:
       containers:
-        - image: registry.redhat.io/openshift4/ose-cli:v4.4
+        - resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 250m
+              memory: 256Mi
+          image: registry.redhat.io/openshift4/ose-cli:v4.4
           env:
           - name: CLIENT_SECRET
             valueFrom:
