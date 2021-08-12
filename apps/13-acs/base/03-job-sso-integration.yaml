@@ -65,8 +65,8 @@ spec:
               CLIENT_ID=$(curl -k -X POST -u "admin:$PASSWORD" -H "Content-Type: application/json" --data $DATA https://central/v1/authProviders | python -c "import sys, json; print(json.load(sys.stdin)['id'])")
 
               echo "Add role mapping to keycloak IDP for admins"
-              export DATA='{"props":{"authProviderId":"'${CLIENT_ID}'","key":"groups","value":"StackroxAdmins"},"roleName":"StackroxAdmins"}'
-              curl -k -X POST -u "admin:$PASSWORD" -H "Content-Type: application/json" --data $DATA https://central/v1/groups?authProviderId='${CLIENT_ID}'
+              export DATA='{"required_groups":[{"props":{"authProviderId":"'${CLIENT_ID}'","key":"","value":""},"roleName":"Admin"},{"props":{"authProviderId":"'${CLIENT_ID}'","key":"groups","value":"StackroxAdmins"},"roleName":"StackroxAdmins"}]}'
+              curl -k -X POST -u "admin:$PASSWORD" -H "Content-Type: application/json" --data $DATA https://central/v1/groupsbatch
 
           imagePullPolicy: Always
           name: create-sso-auth-provider
