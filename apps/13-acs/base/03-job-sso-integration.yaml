@@ -66,7 +66,7 @@ spec:
 
               echo "Add role mapping to keycloak IDP for admins"
               export DATA='{"required_groups":[{"props":{"authProviderId":"'${CLIENT_ID}'","key":"groups","value":"StackroxAdmins"},"roleName":"Admin"}]}'
-              curl -k -X POST -u "admin:$PASSWORD" -H "Content-Type: application/json" --data $DATA https://central//v1/groupsbatch
+              curl -k -X POST -u "admin:$PASSWORD" -H "Content-Type: application/json" --data $DATA https://central/v1/groupsbatch
 
           imagePullPolicy: Always
           name: create-sso-auth-provider
