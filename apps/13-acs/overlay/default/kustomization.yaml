@@ -4,7 +4,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 bases:
   - ../../base
 
-patchesJson6902:
+patches:
 -  target:
      kind: ConsoleLink
      name: acs
@@ -15,7 +15,7 @@ patchesJson6902:
 -  target:
      kind: Job
      name: create-sso-auth-provider
-     namespace: openshift-gitops
+     namespace: stackrox
    patch: |-
     - op: replace
       path: /spec/template/spec/containers/0/env/2/value
@@ -24,7 +24,7 @@ patchesJson6902:
 -  target:
      kind: Job
      name: create-sso-auth-provider
-     namespace: openshift-gitops
+     namespace: stackrox
    patch: |-
     - op: replace
       path: /spec/template/spec/containers/0/env/3/value
