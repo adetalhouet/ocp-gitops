@@ -78,9 +78,9 @@ spec:
         - cluster: default
           url: https://kubernetes.default.svc
           values:
-            name: 12-acs
+            name: 12-acm
             wave: '12'
-            path: apps/12-acm
+            path: apps/12-advanced-cluster-management
         - cluster: default
           url: https://kubernetes.default.svc
           values:
