@@ -63,12 +63,12 @@ spec:
         #     name: 09-openshift-logging
         #     wave: '9'
         #     path: apps/09-openshift-logging
-        # - cluster: default
-        #   url: https://kubernetes.default.svc
-        #   values:
-        #     name: 10-ansible-automation-platform
-        #     wave: '10'
-        #     path: apps/10-ansible-automation-platform/overlay/default
+        - cluster: default
+          url: https://kubernetes.default.svc
+          values:
+            name: 10-ansible-automation-platform
+            wave: '10'
+            path: apps/10-ansible-automation-platform
         - cluster: default
           url: https://kubernetes.default.svc
           values:
