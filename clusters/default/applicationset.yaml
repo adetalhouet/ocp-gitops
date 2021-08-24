@@ -78,6 +78,12 @@ spec:
         - cluster: default
           url: https://kubernetes.default.svc
           values:
+            name: 12-acs
+            wave: '12'
+            path: apps/12-acm
+        - cluster: default
+          url: https://kubernetes.default.svc
+          values:
             name: 13-acs
             wave: '13'
             path: apps/13-acs/overlay/default
