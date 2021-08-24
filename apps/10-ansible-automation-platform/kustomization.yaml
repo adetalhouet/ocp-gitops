@@ -8,6 +8,13 @@ bases:
 
 patches:
 -  target:
+     kind: Subscription
+     name: ansible-automation-platform
+   patch: |-
+    - op: replace
+      path: /metadata/namespace
+      value: 'ansible-automation-platform' 
+-  target:
      kind: ConsoleLink
      name: tower
    patch: |-
