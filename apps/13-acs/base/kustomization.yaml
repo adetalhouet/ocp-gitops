@@ -13,7 +13,7 @@ resources:
 patches:
 -  target:
      kind: Subscription
-     name: ansible-automation-platform
+     name: rhacs-operator
    patch: |-
     - op: replace
       path: /metadata/namespace
