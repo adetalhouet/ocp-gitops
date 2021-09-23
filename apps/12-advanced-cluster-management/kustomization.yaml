@@ -4,4 +4,4 @@ kind: Kustomization
 
 bases:
   - github.com/redhat-cop/gitops-catalog/advanced-cluster-management/operator/overlays/release-2.3?ref=main
-  - github.com/redhat-cop/gitops-catalog/advanced-cluster-management/instance/base?ref=main
+  # - github.com/redhat-cop/gitops-catalog/advanced-cluster-management/instance/base?ref=main
