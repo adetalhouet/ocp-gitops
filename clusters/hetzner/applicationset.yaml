@@ -45,36 +45,36 @@ spec:
           values:
             name: 07-oauth
             path: apps/07-oauth/overlay/hetzner
-        # - cluster: hetzner
-        #   url: https://kubernetes.default.svc
-        #   values:
-        #     name: 08-openshift-elasticsearch
-        #     path: apps/08-openshift-elasticsearch
-        # - cluster: hetzner
-        #   url: https://kubernetes.default.svc
-        #   values:
-        #     name: 09-openshift-logging
-        #     path: apps/09-openshift-logging
-        # - cluster: hetzner
-        #   url: https://kubernetes.default.svc
-        #   values:
-        #     name: 10-ansible-automation-platform
-        #     path: apps/10-ansible-automation-platform
-        # - cluster: hetzner
-        #   url: https://kubernetes.default.svc
-        #   values:
-        #     name: 11-quay-container-security
-        #     path: apps/11-quay-container-security
-        # - cluster: hetzner
-        #   url: https://kubernetes.default.svc
-        #   values:
-        #     name: 12-acm
-        #     path: apps/12-advanced-cluster-management
-        # - cluster: hetzner
-        #   url: https://kubernetes.default.svc
-        #   values:
-        #     name: 13-acs
-        #     path: apps/13-acs/overlay/hetzner
+        - cluster: hetzner
+          url: https://kubernetes.default.svc
+          values:
+            name: 08-openshift-elasticsearch
+            path: apps/08-openshift-elasticsearch
+        - cluster: hetzner
+          url: https://kubernetes.default.svc
+          values:
+            name: 09-openshift-logging
+            path: apps/09-openshift-logging
+        - cluster: hetzner
+          url: https://kubernetes.default.svc
+          values:
+            name: 10-ansible-automation-platform
+            path: apps/10-ansible-automation-platform
+        - cluster: hetzner
+          url: https://kubernetes.default.svc
+          values:
+            name: 11-quay-container-security
+            path: apps/11-quay-container-security
+        - cluster: hetzner
+          url: https://kubernetes.default.svc
+          values:
+            name: 12-acm
+            path: apps/12-advanced-cluster-management
+        - cluster: hetzner
+          url: https://kubernetes.default.svc
+          values:
+            name: 13-acs
+            path: apps/13-acs/overlay/hetzner
   template:
     metadata:
       name: '{{values.name}}'
