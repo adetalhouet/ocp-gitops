@@ -7,4 +7,4 @@ resources:
 - 02-localvolumediscovery.yaml
 # - 03-localvolumeset-block.yaml
 # - 04-localvolumeset-fs.yaml
-# - 05-localvolume.yaml
+- 05-localvolume.yaml

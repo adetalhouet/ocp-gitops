@@ -16,5 +16,5 @@ spec:
     - matchExpressions:
         - key: node-role.kubernetes.io/worker
           operator: Exists
-  storageClassName: localvolume-block
+  storageClassName: lso-blockclass
   volumeMode: Block

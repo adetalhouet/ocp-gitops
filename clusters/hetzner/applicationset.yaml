@@ -30,11 +30,11 @@ spec:
             name: 04-local-storage-operator
             wave: '4'
             path: apps/04-local-storage-operator
-        # - cluster: hetzner
-        #   url: https://kubernetes.default.svc
-        #   values:
-        #     name: 05-openshift-container-storage
-        #     path: apps/05-openshift-container-storage
+        - cluster: hetzner
+          url: https://kubernetes.default.svc
+          values:
+            name: 05-openshift-container-storage
+            path: apps/05-openshift-container-storage
         # - cluster: hetzner
         #   url: https://kubernetes.default.svc
         #   values:

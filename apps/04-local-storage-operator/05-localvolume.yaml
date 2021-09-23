@@ -9,15 +9,10 @@ spec:
   nodeSelector:
     nodeSelectorTerms:
     - matchExpressions:
-        - key: ran.openshift.io/lso
+        - key: node-role.kubernetes.io/worker
           operator: Exists
   storageClassDevices:
-    - storageClassName: "localvolume-fs"
-      volumeMode: Filesystem
-      fsType: xfs
-      devicePaths:
-        - /dev/nvme0n1p4
-    - storageClassName: "localvolume-block"
+    - storageClassName: "lso-blockclass"
       volumeMode: Block
       devicePaths:
-        - /dev/nvme0n1p3
+        - /dev/vdb
