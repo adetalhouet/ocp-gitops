@@ -9,3 +9,12 @@ resources:
   - 01-console-link.yaml
   - 02-sealed-rhsso-client-secret.yaml
   - 03-job-sso-integration.yaml
+
+patches:
+-  target:
+     kind: Subscription
+     name: ansible-automation-platform
+   patch: |-
+    - op: replace
+      path: /metadata/namespace
+      value: 'stackrox' 
