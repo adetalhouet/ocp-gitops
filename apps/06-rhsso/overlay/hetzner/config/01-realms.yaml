@@ -1,0 +1,5 @@
+id: add-realms
+author: adetalhouet
+changes:
+- addRealm:
+    name: openshift

@@ -1,10 +1,17 @@
 #!/bin/bash
 
 CLUSTER_NAME=$1
+DOMAIN_NAME=$2
 
 if [[ z$CLUSTER_NAME == z ]]; then
   echo " You must provide a cluster name."
-  echo "Example: ./build-cluster-config.sh CLUSTER_NAME"
+  echo "Usage: ./build-cluster-config.sh CLUSTER_NAME DOMAIN_NAME"
+  exit 1
+fi
+
+if [[ z$DOMAIN_NAME == z ]]; then
+  echo " You must provide a domain name."
+  echo "Usage: ./build-cluster-config.sh CLUSTER_NAME DOMAIN_NAME"
   exit 1
 fi
 
@@ -17,7 +24,7 @@ cp -r apps/07-oauth/overlay/default apps/07-oauth/overlay/$CLUSTER_NAME
 cp -r apps/10-ansible-automation-platform/overlay/default apps/10-ansible-automation-platform/overlay/$CLUSTER_NAME
 
 # replace fqdn cluster name
-find . -type f -path "*$CLUSTER_NAME*" -exec gsed -i "s/hub-adetalhouet/$CLUSTER_NAME/g" {} +
+find . -type f -path "*$CLUSTER_NAME*" -exec gsed -i "s/hub-adetalhouet.rhtelco.io/$CLUSTER_NAME.$DOMAIN_NAME/g" {} +
 
 # configure bootstrap
 gsed -i "s/clusters\/default/clusters\/$CLUSTER_NAME/g" bootstrap/$CLUSTER_NAME/app-of-apps.yaml
@@ -30,8 +37,3 @@ gsed -i "s/overlay\/default/overlay\/$CLUSTER_NAME/g" clusters/$CLUSTER_NAME/app
 RH_SSO_OVERLAY=apps/06-rhsso/overlay/$CLUSTER_NAME
 kustomize build $RH_SSO_OVERLAY/config > $RH_SSO_OVERLAY/config/rhsso-config.yaml
 kubeseal --cert ~/.bitnami/tls.crt --format yaml < $RH_SSO_OVERLAY/config/rhsso-config.yaml > $RH_SSO_OVERLAY/01-sealed-rhsso-config.yaml
-
-# Regenerate Tower Inventory Sealed Secret
-TOWER_OVERLAY=apps/10-ansible-automation-platform/overlay/$CLUSTER_NAME
-kustomize build $TOWER_OVERLAY/config > $TOWER_OVERLAY/config/ansible-tower-inventory.yaml
-kubeseal --cert ~/.bitnami/tls.crt --format yaml < $TOWER_OVERLAY/config/ansible-tower-inventory.yaml > $TOWER_OVERLAY/06-sealed-ansible-tower-inventory.yaml
