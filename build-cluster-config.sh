@@ -22,6 +22,7 @@ cp -r apps/01-openshift-gitops/overlay/default apps/01-openshift-gitops/overlay/
 cp -r apps/06-rhsso/overlay/default apps/06-rhsso/overlay/$CLUSTER_NAME
 cp -r apps/07-oauth/overlay/default apps/07-oauth/overlay/$CLUSTER_NAME
 cp -r apps/10-ansible-automation-platform/overlay/default apps/10-ansible-automation-platform/overlay/$CLUSTER_NAME
+cp -r apps/13-acs/overlay/default apps/13-acs/overlay/$CLUSTER_NAME
 
 # replace fqdn cluster name
 find . -type f -path "*$CLUSTER_NAME*" -exec gsed -i "s/hub-adetalhouet.rhtelco.io/$CLUSTER_NAME.$DOMAIN_NAME/g" {} +
