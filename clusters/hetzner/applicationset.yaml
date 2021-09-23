@@ -45,16 +45,16 @@ spec:
           values:
             name: 07-oauth
             path: apps/07-oauth/overlay/hetzner
-        - cluster: hetzner
-          url: https://kubernetes.default.svc
-          values:
-            name: 08-openshift-elasticsearch
-            path: apps/08-openshift-elasticsearch
-        - cluster: hetzner
-          url: https://kubernetes.default.svc
-          values:
-            name: 09-openshift-logging
-            path: apps/09-openshift-logging
+        # - cluster: hetzner
+        #   url: https://kubernetes.default.svc
+        #   values:
+        #     name: 08-openshift-elasticsearch
+        #     path: apps/08-openshift-elasticsearch
+        # - cluster: hetzner
+        #   url: https://kubernetes.default.svc
+        #   values:
+        #     name: 09-openshift-logging
+        #     path: apps/09-openshift-logging
         - cluster: hetzner
           url: https://kubernetes.default.svc
           values:
