@@ -15,4 +15,4 @@ type: Opaque
 
 Then seal the secret
 
-`kubeseal --cert ~/.bitnami/tls.crt --format yaml < rhsso-client-secret.yaml > 06-sealed-rhsso-client-secret.yaml`
+`kubeseal --cert ~/.bitnami/tls.crt --format yaml < rhsso-client-secret.yaml > 07-sealed-rhsso-client-secret.yaml`
