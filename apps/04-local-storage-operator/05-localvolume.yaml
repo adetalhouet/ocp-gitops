@@ -4,6 +4,8 @@ kind: LocalVolume
 metadata:
   name: local-disks
   namespace: openshift-local-storage
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   managementState: Managed
   nodeSelector:
