@@ -19,32 +19,32 @@ spec:
           values:
             name: 02-sealed-secrets
             path: apps/02-sealed-secrets
-        - cluster: hetzner
-          url: https://kubernetes.default.svc
-          values:
-            name: 03-letsencrypt-certs
-            path: apps/03-letsencrypt-certs
+        # - cluster: hetzner
+        #   url: https://kubernetes.default.svc
+        #   values:
+        #     name: 03-letsencrypt-certs
+        #     path: apps/03-letsencrypt-certs
         - cluster: hetzner
           url: https://kubernetes.default.svc
           values:
             name: 04-local-storage-operator
             wave: '4'
             path: apps/04-local-storage-operator
-        - cluster: hetzner
-          url: https://kubernetes.default.svc
-          values:
-            name: 05-openshift-container-storage
-            path: apps/05-openshift-container-storage
-        - cluster: hetzner
-          url: https://kubernetes.default.svc
-          values:
-            name: 06-rhsso
-            path: apps/06-rhsso/overlay/hetzner
-        - cluster: hetzner
-          url: https://kubernetes.default.svc
-          values:
-            name: 07-oauth
-            path: apps/07-oauth/overlay/hetzner
+        # - cluster: hetzner
+        #   url: https://kubernetes.default.svc
+        #   values:
+        #     name: 05-openshift-container-storage
+        #     path: apps/05-openshift-container-storage
+        # - cluster: hetzner
+        #   url: https://kubernetes.default.svc
+        #   values:
+        #     name: 06-rhsso
+        #     path: apps/06-rhsso/overlay/hetzner
+        # - cluster: hetzner
+        #   url: https://kubernetes.default.svc
+        #   values:
+        #     name: 07-oauth
+        #     path: apps/07-oauth/overlay/hetzner
         # - cluster: hetzner
         #   url: https://kubernetes.default.svc
         #   values:
