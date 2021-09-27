@@ -17,7 +17,7 @@ spec:
               storage: '1'
           storageClassName: lso-blockclass
           volumeMode: Block
-      name: ocs-deviceset-localvolume-block
+      name: ocs-deviceset-lso-blockclass
       replica: 1
   encryption:
     kms: {}
