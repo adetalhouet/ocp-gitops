@@ -30,11 +30,11 @@ spec:
             name: 04-local-storage-operator
             wave: '4'
             path: apps/04-local-storage-operator
-        # - cluster: hetzner
-        #   url: https://kubernetes.default.svc
-        #   values:
-        #     name: 05-openshift-container-storage
-        #     path: apps/05-openshift-container-storage
+        - cluster: hetzner
+          url: https://kubernetes.default.svc
+          values:
+            name: 05-openshift-container-storage
+            path: apps/05-openshift-container-storage
         # - cluster: hetzner
         #   url: https://kubernetes.default.svc
         #   values:
@@ -65,11 +65,11 @@ spec:
           values:
             name: 11-quay-container-security
             path: apps/11-quay-container-security
-        # - cluster: hetzner
-        #   url: https://kubernetes.default.svc
-        #   values:
-        #     name: 12-acm
-        #     path: apps/12-advanced-cluster-management
+        - cluster: hetzner
+          url: https://kubernetes.default.svc
+          values:
+            name: 12-acm
+            path: apps/12-advanced-cluster-management
         # - cluster: hetzner
         #   url: https://kubernetes.default.svc
         #   values:
