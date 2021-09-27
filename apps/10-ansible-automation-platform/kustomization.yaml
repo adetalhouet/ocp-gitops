@@ -20,4 +20,4 @@ patches:
    patch: |-
     - op: replace
       path: /spec/href
-      value: 'https://tower-ansible-automation-platform.apps.hub-adetalhouet.rhtelco.io'
+      value: 'https://tower-ansible-automation-platform.apps.hetzner.sandbox1091.opentlc.com'
