@@ -14,7 +14,7 @@ patches:
       value: 'https://central-stackrox.apps.hetzner.sandbox1091.opentlc.com/main/dashboard'
 -  target:
      kind: Job
-     name: create-sso-auth-provider
+     name: create-cluster-init-bundle
      namespace: stackrox
    patch: |-
     - op: replace
