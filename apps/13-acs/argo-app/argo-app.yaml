@@ -1,0 +1,33 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: 13-acs
+  namespace: openshift-gitops
+  annotations:
+    argocd.argoproj.io/compare-options: IgnoreExtraneous
+    argocd.argoproj.io/sync-wave: '13'
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+  source:
+    repoURL: https://github.com/adetalhouet/ocp-gitops.git
+    targetRevision: HEAD
+    path: apps/13-acs
+    directory:
+      recurse: false
+  syncPolicy:
+    automated: 
+      prune: false
+      selfHeal: true 
+      allowEmpty: true
+    syncOptions:
+      - Validate=false
+      - CreateNamespace=true
+    retry:
+      limit: -1
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m

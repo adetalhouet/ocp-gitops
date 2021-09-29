@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: 00-hub-cluster-manager
+  name: 00-cluster-manager
   namespace: openshift-gitops
 spec:
   destination:
