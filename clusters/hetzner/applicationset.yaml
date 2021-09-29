@@ -9,11 +9,11 @@ spec:
 # should be fixed by https://github.com/argoproj-labs/applicationset/issues/162
   - list:
       elements:
-        # - cluster: hetzner
-        #   url: https://kubernetes.default.svc
-        #   values:
-        #     name: 01-openshift-gitops
-        #     path: apps/01-openshift-gitops/overlay/hetzner
+        - cluster: hetzner
+          url: https://kubernetes.default.svc
+          values:
+            name: 01-openshift-gitops
+            path: apps/01-openshift-gitops/overlay/hetzner
         # - cluster: hetzner
         #   url: https://kubernetes.default.svc
         #   values:
