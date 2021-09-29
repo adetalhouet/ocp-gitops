@@ -39,3 +39,12 @@ patches:
       path: /spec/template/spec/containers/0/env/3/value
       value: >-
         central-stackrox.apps.hetzner.sandbox1091.opentlc.com
+-  target:
+     kind: Central
+     name: central
+     namespace: stackrox
+   patch: |-
+    - op: add
+      path: /spec/persistence/persistentVolumeClaim/storageClassName
+      value: >-
+        ocs-storagecluster-ceph-rbd
