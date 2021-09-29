@@ -4,6 +4,7 @@ kind: ClusterRole
 metadata:
   annotations:
     rbac.authorization.kubernetes.io/autoupdate: "true"
+    argocd.argoproj.io/hook: PreSync
   name: storace-cli-job-sa-role
 rules:
   - apiGroups:
@@ -18,6 +19,8 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: storace-cli-gitops-rolebinding
+  annotations:
+    argocd.argoproj.io/hook: PreSync
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -32,3 +35,5 @@ kind: ServiceAccount
 metadata:
   name: cli-job-sa
   namespace: openshift-storage
+  annotations:
+    argocd.argoproj.io/hook: PreSync
