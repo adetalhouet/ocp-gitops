@@ -21,3 +21,10 @@ patches:
     - op: replace
       path: /spec/href
       value: 'https://tower-ansible-automation-platform.apps.hetzner.sandbox1091.opentlc.com'
+-  target:
+     kind: AutomationController
+     name: tower
+   patch: |-
+    - op: add
+      path: /spec/postgres_storage_class
+      value: 'ocs-storagecluster-cephfs' 

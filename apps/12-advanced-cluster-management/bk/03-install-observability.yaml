@@ -26,6 +26,10 @@ spec:
                   -n open-cluster-management-observability \
                   --from-literal=.dockerconfigjson="$DOCKER_CONFIG_JSON" \
                   --type=kubernetes.io/dockerconfigjson
+              
+             // ACCESS_KEY=$(oc get secret noobaa-admin -n openshift-storage -o json | jq -r '.data.AWS_ACCESS_KEY_ID|@base64d')
+             // SECRET_KEY=$(oc get secret noobaa-admin -n openshift-storage -o json | jq -r '.data.AWS_SECRET_ACCESS_KEY|@base64d')
+
           imagePullPolicy: IfNotPresent
           name: sync-observability-secret
       dnsPolicy: ClusterFirst
