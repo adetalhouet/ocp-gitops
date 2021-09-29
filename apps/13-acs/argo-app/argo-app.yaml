@@ -14,7 +14,7 @@ spec:
   source:
     repoURL: https://github.com/adetalhouet/ocp-gitops.git
     targetRevision: HEAD
-    path: apps/13-acs
+    path: apps/13-acs/overlays/hetzner
     directory:
       recurse: false
   syncPolicy:
