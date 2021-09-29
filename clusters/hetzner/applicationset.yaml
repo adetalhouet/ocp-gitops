@@ -35,16 +35,16 @@ spec:
           values:
             name: 05-openshift-container-storage
             path: apps/05-openshift-container-storage
-        # - cluster: hetzner
-        #   url: https://kubernetes.default.svc
-        #   values:
-        #     name: 06-rhsso
-        #     path: apps/06-rhsso/overlay/hetzner
-        # - cluster: hetzner
-        #   url: https://kubernetes.default.svc
-        #   values:
-        #     name: 07-oauth
-        #     path: apps/07-oauth/overlay/hetzner
+        - cluster: hetzner
+          url: https://kubernetes.default.svc
+          values:
+            name: 06-rhsso
+            path: apps/06-rhsso/overlay/hetzner
+        - cluster: hetzner
+          url: https://kubernetes.default.svc
+          values:
+            name: 07-oauth
+            path: apps/07-oauth/overlay/hetzner
         # - cluster: hetzner
         #   url: https://kubernetes.default.svc
         #   values:
@@ -70,11 +70,11 @@ spec:
           values:
             name: 12-acm
             path: apps/12-advanced-cluster-management
-        # - cluster: hetzner
-        #   url: https://kubernetes.default.svc
-        #   values:
-        #     name: 13-acs
-        #     path: apps/13-acs/overlay/hetzner
+        - cluster: hetzner
+          url: https://kubernetes.default.svc
+          values:
+            name: 13-acs
+            path: apps/13-acs/overlay/hetzner
   template:
     metadata:
       name: '{{values.name}}'
