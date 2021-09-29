@@ -12,8 +12,6 @@ bases:
   ../../apps/05-openshift-container-storage/argo-app
   ../../apps/06-rhsso/argo-app
   ../../apps/07-oauth/argo-app
-  # ../../apps/08-openshift-elasticsearch/argo-app
-  # ../../apps/09-openshift-logging/argo-app
   ../../apps/10-ansible-automation-platform/argo-app
   ../../apps/11-quay-container-security/argo-app
   ../../apps/12-advanced-cluster-management/argo-app
