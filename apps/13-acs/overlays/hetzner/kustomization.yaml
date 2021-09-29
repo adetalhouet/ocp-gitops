@@ -18,6 +18,15 @@ patches:
      namespace: stackrox
    patch: |-
     - op: replace
+      path: /spec/template/spec/containers/0/image
+      value: >-
+        registry.redhat.io/openshift4/ose-cli:latest
+-  target:
+     kind: Job
+     name: create-sso-auth-provider
+     namespace: stackrox
+   patch: |-
+    - op: replace
       path: /spec/template/spec/containers/0/env/2/value
       value: >-
         https://keycloak-openshift-sso.apps.hetzner.sandbox1091.opentlc.com/auth/realms/openshift
