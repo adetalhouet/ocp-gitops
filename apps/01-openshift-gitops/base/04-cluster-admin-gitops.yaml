@@ -13,6 +13,3 @@ subjects:
   - kind: ServiceAccount
     name: openshift-gitops-argocd-application-controller
     namespace: openshift-gitops
-  - kind: ServiceAccount
-    name: openshift-gitops-argocd-server
-    namespace: openshift-gitops
