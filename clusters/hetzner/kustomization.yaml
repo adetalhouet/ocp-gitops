@@ -3,7 +3,18 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 commonLabels:
-  gitops/cluster-name: hub-adetalhouet
+  gitops/cluster-name: hetzner
 
-resources:
-  - applicationset.yaml
+bases:
+  ../../apps/01-openshift-gitops/argo-app
+  ../../apps/03-letsencrypt-certs/argo-app
+  ../../apps/04-local-storage-operator/argo-app
+  ../../apps/05-openshift-container-storage/argo-app
+  ../../apps/06-rhsso/argo-app
+  ../../apps/07-oauth/argo-app
+  # ../../apps/08-openshift-elasticsearch/argo-app
+  # ../../apps/09-openshift-logging/argo-app
+  ../../apps/10-ansible-automation-platform/argo-app
+  ../../apps/11-quay-container-security/argo-app
+  ../../apps/12-advanced-cluster-management/argo-app
+  ../../apps/13-acs/argo-app
