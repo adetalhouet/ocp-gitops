@@ -45,6 +45,6 @@ patches:
      namespace: stackrox
    patch: |-
     - op: add
-      path: /spec/persistence/persistentVolumeClaim/storageClassName
+      path: /spec/central/persistence/persistentVolumeClaim/storageClassName
       value: >-
         ocs-storagecluster-ceph-rbd
