@@ -6,7 +6,7 @@ metadata:
     argocd.argoproj.io/hook: PreSync
     argocd.argoproj.io/hook-delete-policy: HookSucceeded
   name: presync-label-storage-node
-  namespace: openshift-gitops
+  namespace: openshift-storage
 spec:
   template:
     spec:

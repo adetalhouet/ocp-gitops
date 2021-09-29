@@ -6,5 +6,6 @@ bases:
   - github.com/redhat-cop/gitops-catalog/openshift-container-storage-operator/operator/overlays/stable-4.8?ref=main
 
 resources:
-- 00-presync-label-worker-job.yaml
+- 00-cli-job-sa-and-role.yaml
+- 01-presync-label-worker-job.yaml
 - 02-ocs-lso-storagecluster.yaml
