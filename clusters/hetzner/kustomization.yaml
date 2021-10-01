@@ -8,7 +8,7 @@ commonLabels:
 bases:
   - ../../apps/01-openshift-gitops/argo-app
   - ../../apps/02-sealed-secrets/argo-app
-  - ../../apps/03-letsencrypt-certs/argo-app
+  # - ../../apps/03-letsencrypt-certs/argo-app
   - ../../apps/04-local-storage-operator/argo-app
   - ../../apps/05-openshift-container-storage/argo-app
   - ../../apps/06-rhsso/argo-app
@@ -18,4 +18,4 @@ bases:
   - ../../apps/10-ansible-automation-platform/argo-app
   - ../../apps/11-quay-container-security/argo-app
   - ../../apps/12-advanced-cluster-management/argo-app
-  - ../../apps/13-acs/argo-app
+  # - ../../apps/13-acs/argo-app
