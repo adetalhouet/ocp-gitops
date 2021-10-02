@@ -15,11 +15,8 @@ spec:
     repoURL: https://github.com/adetalhouet/ocp-gitops.git
     targetRevision: HEAD
     path: apps/04-local-storage-operator
-    directory:
-      recurse: false
   syncPolicy:
     automated: 
-      prune: false
       selfHeal: true 
       allowEmpty: true
     syncOptions:
