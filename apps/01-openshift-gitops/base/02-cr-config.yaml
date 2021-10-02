@@ -31,10 +31,46 @@ spec:
         if obj.status ~= nil then
           if obj.status.health ~= nil then
             hs.status = obj.status.health.status
-            hs.message = obj.status.health.message
+            if obj.status.health.message ~= nil then
+              hs.message = obj.status.health.message
+            end
           end
         end
         return hs
+    operators.coreos.com/Subscription
+      health.lua: |
+        health_status = {}
+        if obj.status ~= nil then
+          if obj.status.conditions ~= nil then
+            numDegraded = 0
+            numPending = 0
+            msg = ""
+            for i, condition in pairs(obj.status.conditions) do
+              msg = msg .. i .. ": " .. condition.type .. " | " .. condition.status .. "\n"
+              if condition.type == "InstallPlanPending" and condition.status == "True" then
+                numPending = numPending + 1
+              elseif (condition.type == "CatalogSourcesUnhealthy" or condition.type == "InstallPlanMissing" or condition.type == "InstallPlanFailed" or condition.type == "ResolutionFailed") and condition.status == "True" then
+                numDegraded = numDegraded + 1
+              end
+            end
+            if numDegraded == 0 and numPending == 0 then
+              health_status.status = "Healthy"
+              health_status.message = msg
+              return health_status
+            elseif numPending > 0 and numDegraded == 0 then
+              health_status.status = "Progressing"
+              health_status.message = "An install plan for a subscription is pending installation"
+              return health_status
+            else
+              health_status.status = "Degraded"
+              health_status.message = msg
+              return health_status
+            end
+          end
+        end
+        health_status.status = "Progressing"
+        health_status.message = "An install plan for a subscription is pending installation"
+        return health_status
     platform.stackrox.io/Central:
       health.lua: |
         hs = {}
@@ -54,6 +90,44 @@ spec:
       ignoreDifferences: |
         jsonPointers:
         - /status/ingress
+      health.lua:
+        health_status = {}
+        if obj.status ~= nil then
+          if obj.status.ingress ~= nil then
+            numIngressRules = 0
+            for _, ingressRules in pairs(obj.status.ingress) do
+                numIngressRules = numIngressRules + 1
+                numTrue = 0
+                numFalse = 0
+                if obj.status.ingress ~= nil then
+                  for _, condition in pairs(ingressRules.conditions) do
+                      if condition.type == "Admitted" and condition.status == "True" then
+                          numTrue = numTrue + 1
+                      elseif condition.type == "Admitted" and condition.status == "False" then
+                          numFalse = numFalse + 1
+                      end
+                  end
+                end
+                health_status.status = 'Test'
+            end
+            if numTrue == numIngressRules then
+              health_status.status = "Healthy"
+              health_status.message = "Route is healthy"
+              return health_status
+            elseif numFalse > 0 then
+              health_status.status = "Degraded"
+              health_status.message = "Route is degraded"
+              return health_status
+            else
+              health_status.status = "Progressing"
+              health_status.message = "Route is still getting admitted"
+              return health_status
+            end
+          end
+        end
+        health_status.status = "Progressing"
+        health_status.message = "Route is still getting admitted"
+        return health_status
     integreatly.org/GrafanaDataSource:
       ignoreDifferences: |
         jsonPointers:
@@ -100,3 +174,25 @@ spec:
         hs.status = "Progressing"
         hs.message = "Waiting for Job to complete."
         return hs
+    bitnami.com/SealedSecret:
+      health.lua: |
+        health_status={}
+        if obj.status ~= nil then
+            if obj.status.conditions ~= nil then
+                for i, condition in ipairs(obj.status.conditions) do
+                    if condition.type == "Synced" and condition.status == "False" then
+                        health_status.status = "Degraded"
+                        health_status.message = condition.message
+                        return health_status
+                    end
+                    if condition.type == "Synced" and condition.status == "True" then
+                        health_status.status = "Healthy"
+                        health_status.message = condition.message
+                        return health_status
+                    end
+                end
+            end
+        end
+        health_status.status = "Progressing"
+        health_status.message = "Waiting for Sealed Secret to be decrypted"
+        return health_status
