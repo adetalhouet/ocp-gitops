@@ -14,7 +14,7 @@ spec:
   source:
     repoURL: https://github.com/adetalhouet/acm-playground.git
     targetRevision: HEAD
-    path: apps/14-advanced-cluster-management-apps
+    path: apps
   syncPolicy:
     automated: 
       selfHeal: true 
