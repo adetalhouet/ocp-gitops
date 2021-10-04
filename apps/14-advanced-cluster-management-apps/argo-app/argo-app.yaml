@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: 12-advanced-cluster-management-apps
+  name: 14-advanced-cluster-management-apps
   namespace: openshift-gitops
   annotations:
     argocd.argoproj.io/compare-options: IgnoreExtraneous
@@ -14,7 +14,7 @@ spec:
   source:
     repoURL: https://github.com/adetalhouet/acm-playground.git
     targetRevision: HEAD
-    path: apps/12-advanced-cluster-management-apps
+    path: apps/14-advanced-cluster-management-apps
   syncPolicy:
     automated: 
       selfHeal: true 
