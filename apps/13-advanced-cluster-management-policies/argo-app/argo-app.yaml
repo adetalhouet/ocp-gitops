@@ -14,6 +14,7 @@ spec:
   source:
     repoURL: https://github.com/adetalhouet/acm-playground.git
     targetRevision: HEAD
+    path: 
   syncPolicy:
     automated: 
       selfHeal: true 
