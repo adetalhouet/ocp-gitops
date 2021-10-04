@@ -2,19 +2,19 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: 13-acs
+  name: 12-advanced-cluster-management-apps
   namespace: openshift-gitops
   annotations:
     argocd.argoproj.io/compare-options: IgnoreExtraneous
-    argocd.argoproj.io/sync-wave: '13'
+    argocd.argoproj.io/sync-wave: '14'
 spec:
   project: default
   destination:
     server: https://kubernetes.default.svc
   source:
-    repoURL: https://github.com/adetalhouet/ocp-gitops.git
+    repoURL: https://github.com/adetalhouet/acm-playground.git
     targetRevision: HEAD
-    path: apps/13-acs/overlays/hetzner
+    path: apps/12-advanced-cluster-management-apps
   syncPolicy:
     automated: 
       selfHeal: true 

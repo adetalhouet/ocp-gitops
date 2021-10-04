@@ -18,4 +18,6 @@ bases:
   - ../../apps/10-ansible-automation-platform/argo-app
   - ../../apps/11-quay-container-security/argo-app
   - ../../apps/12-advanced-cluster-management/argo-app
-  # - ../../apps/13-acs/argo-app
+  - ../../apps/13-advanced-cluster-management-policies/argo-app
+  - ../../apps/14-advanced-cluster-management-apps/argo-app
+  # - ../../apps/15-acs/argo-app
