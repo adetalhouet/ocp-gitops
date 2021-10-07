@@ -13,7 +13,13 @@ patches:
    patch: |-
     - op: replace
       path: /metadata/namespace
-      value: 'ansible-automation-platform' 
+      value: 'ansible-automation-platform'
+    - op: add
+      path: /spec/startingCSV
+      value: ansible-automation-platform-operator.v2.0.0
+    - op: add
+      path: /spec/installPlanApproval
+      value: Manual
 -  target:
      kind: ConsoleLink
      name: tower
@@ -27,4 +33,4 @@ patches:
    patch: |-
     - op: add
       path: /spec/postgres_storage_class
-      value: 'ocs-storagecluster-cephfs' 
+      value: 'ocs-storagecluster-cephfs'
