@@ -6,7 +6,6 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
-spec:
   availabilityConfig: High
   imagePullPolicy: Always
   imagePullSecret: multiclusterhub-operator-pull-secret
