@@ -17,6 +17,7 @@ rules:
       - ""
     resources:
       - secrets
+      - ObjectBucketClaim
     verbs:
       - get
       - list
