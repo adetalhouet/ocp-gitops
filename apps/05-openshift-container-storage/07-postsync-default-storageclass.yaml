@@ -5,7 +5,7 @@ metadata:
   annotations:
     argocd.argoproj.io/hook: PostSync
     argocd.argoproj.io/hook-delete-policy: HookSucceeded
-  name: presync-label-storage-node
+  name: postsync-default-storageclass
   namespace: openshift-storage
 spec:
   template:
@@ -25,7 +25,7 @@ spec:
             - |
               kubectl patch storageclass ocs-storagecluster-ceph-rbd -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
           imagePullPolicy: IfNotPresent
-          name: presync-label-storage-node
+          name: postsync-default-storageclass
       dnsPolicy: ClusterFirst
       restartPolicy: OnFailure
       serviceAccount: cli-job-sa
