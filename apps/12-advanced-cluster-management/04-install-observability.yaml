@@ -17,6 +17,14 @@ rules:
       - ""
     resources:
       - secrets
+    verbs:
+      - get
+      - list
+      - create
+      - patch
+  - apiGroups:
+      - objectbucket.io
+    resources:
       - objectbucketclaims
     verbs:
       - get
