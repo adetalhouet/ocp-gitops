@@ -9,7 +9,7 @@ metadata:
 rules:
   - apiGroups:
     - "*"
-    resources: ["nodes"]
+    resources: ["nodes", "storageclass"]
     verbs:
     - list
     - get
