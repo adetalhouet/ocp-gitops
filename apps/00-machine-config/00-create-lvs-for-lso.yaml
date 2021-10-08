@@ -1,0 +1,34 @@
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+metadata:
+  name: 50-master-create-lvs-for-lso
+  labels:
+    machineconfiguration.openshift.io/role: master
+spec:
+  config:
+    ignition:
+      version: 3.2.0
+    storage:
+      files:
+        - contents:
+            source: >-
+              data:text/plain;charset=utf-8;base64,IyEvYmluL2Jhc2gKIyBCYXNlZCBvbiBodHRwczovL2dpc3QuZ2l0aHViLmNvbS9tdmF6cXVlemMvYTVkNjlmOTk2YjdhYjQzYzFlYTI0YTExOTQ2NzI1OTcKCkRFVklDRT0vZGV2LyR7MX0KTlVNX0xWUz0kezJ9ClNJWkVfTFZTPSR7M30KCmhlbHAoKQp7CiAgZWNobyAiUnVuIHRoZSBzY3JpcHQgYXMgZm9sbG93czogJHswfSA8ZGV2aWNlPiA8bnVtX2x2c190b19jcmVhdGU+IDxzaXplX29mX3RoZV9sdnM+IgogIGVjaG8gIkV4YW1wbGU6ICR7MH0gc2RiIDEwIDMwICB8IFRoaXMgd2lsbCBjcmVhdGUgMTAgbHZzIG9mIDMwRyBlYWNoIgp9CgpjaGVja3MoKQp7CiAgaWYgW1sgJChpZCAtdSkgIT0gIjAiIF1dCiAgdGhlbgogICAgZWNobyAiVGhpcyBzY3JpcHQgbXVzdCBiZSBydW4gYXMgcm9vdCIKICAgIGV4aXQgMQogIGZpCgogIGlmIFtbICR7REVWSUNFfSA9PSAiL2Rldi8iIF1dCiAgdGhlbgogICAgZWNobyAiWW91IG11c3QgcHJvdmlkZSBhIGRldmljZSIKICAgIGhlbHAKICAgIGV4aXQgMQogIGZpCgogIGlmIFtbIC16ICR7TlVNX0xWU30gXV0KICB0aGVuCiAgICBlY2hvICJZb3UgbXVzdCBwcm92aWRlIHRoZSBudW1iZXIgb2YgTFZzIgogICAgaGVscAogICAgZXhpdCAxCiAgZmkKCiAgaWYgW1sgLXogJHtTSVpFX0xWU30gXV0KICB0aGVuCiAgICBlY2hvICJZb3UgbXVzdCBwcm92aWRlIHRoZSBzaXplIGZvciB0aGUgTFZzIgogICAgaGVscAogICAgZXhpdCAxCiAgZmkKCiAgaWYgW1sgISAtYiAke0RFVklDRX0gXV0KICB0aGVuCiAgICBlY2hvICIke0RFVklDRX0gbm90IGZvdW5kIgogICAgZXhpdCAxCiAgZmkKfQoKcHJlcGFyZVBWKCkKewogIGlmIFtbICQocHZkaXNwbGF5ICR7REVWSUNFfSAyPi9kZXYvbnVsbHwgd2MgLWwpID09ICIwIiBdXQogIHRoZW4KICAgIGVjaG8gIkluaXRpYWxpemluZyBQViIKICAgIHB2Y3JlYXRlICR7REVWSUNFfQogIGZpCn0KCnByZXBhcmVWRygpCnsKICBpZiBbWyAkKHZnZGlzcGxheSBhdXRvcGFydCAyPi9kZXYvbnVsbCB8IHdjIC1sKSA9PSAiMCIgXV0KICB0aGVuCiAgICBlY2hvICJJbml0aWFsaXppbmcgVkciCiAgICB2Z2NyZWF0ZSBhdXRvcGFydCAke0RFVklDRX0KICBmaQp9CgpjcmVhdGVMVigpCnsKICBTSVpFPSR7MX0KICBWRz0kezJ9CiAgTEFTVF9MVj0kKGx2cyBhdXRvcGFydCAtLW5vLWhlYWRpbmdzIC0tc2VwYXJhdG9yICwgMj4vZGV2L251bGwgfCBhd2sgLUYgIiwiICd7cHJpbnQgJDF9JyB8IGF3ayAtRiAibHZfIiAne3ByaW50ICQyfScgfCBzb3J0IC1uIHwgdGFpbCAtMSkKICBORVdfTFY9JCgoTEFTVF9MViArIDEpKQogIGx2Y3JlYXRlIC1MICR7U0laRX1HIC0tbmFtZSBsdl8ke05FV19MVn0gJHtWR30KfQoKbWFpbigpCnsKICBjaGVja3MKICBwcmVwYXJlUFYKICBwcmVwYXJlVkcKCiAgZm9yICgoIHBhcnQ9MTsgcGFydDw9JHtOVU1fTFZTfTsgcGFydCsrICkpCiAgZG8KICAgIGNyZWF0ZUxWICR7U0laRV9MVlN9IGF1dG9wYXJ0CiAgZG9uZSAgCn0KCm1haW4=
+          mode: 493
+          overwrite: true
+          path: /usr/local/bin/create-lvs-for-lso.sh
+    systemd:
+      units:
+        - contents: |
+            [Unit]
+            Description=Create LVS partitions for LSO
+            Wants=network-online.target
+            After=network-online.target ignition-firstboot-complete.service
+            [Service]
+            Type=oneshot
+            RemainAfterExit=yes
+            EnvironmentFile=
+            ExecStart=/bin/bash -c "/usr/local/bin/create-lvs-for-lso.sh vdb 6 20"
+            [Install]
+            WantedBy=multi-user.target
+          enabled: true
+          name: create-lvs-for-lso.service
