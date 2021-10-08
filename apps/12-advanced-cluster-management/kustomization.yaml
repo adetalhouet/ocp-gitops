@@ -9,6 +9,6 @@ bases:
 resources:
 - 01-sealed-tower-secret.yaml
 - 02-cluster-curator.yaml
-- 03-acm-observability-bucket
+- 03-acm-observability-bucket.yaml
 - 04-install-observability.yaml
 - 05-multiclusterobservability.yaml
