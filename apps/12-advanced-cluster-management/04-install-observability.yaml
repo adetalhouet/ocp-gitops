@@ -69,8 +69,8 @@ spec:
               while [[ z$ACCESS_KEY == z ]]; do
                  echo "Wait for acm-observability bucket to be created, sleep 3 seconds"
                  sleep 3
-                 ACCESS_KEY=$(oc get secret acm-observability -n open-cluster-management-observability -o json | jq -r '.data.AWS_ACCESS_KEY_ID|@base64d')
-                 SECRET_KEY=$(oc get secret acm-observability -n open-cluster-management-observability -o json | jq -r '.data.AWS_SECRET_ACCESS_KEY|@base64d')
+                 ACCESS_KEY=$(oc get secret acm-observability -n open-cluster-management-observability --template={{.data.AWS_ACCESS_KEY_ID}} | base64 -D)
+                 SECRET_KEY=$(oc get secret acm-observability -n open-cluster-management-observability --template={{.data.AWS_SECRET_ACCESS_KEY}} | base64 -D)
               done;
 
               echo "---
