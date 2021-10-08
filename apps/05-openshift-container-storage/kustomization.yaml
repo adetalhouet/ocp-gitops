@@ -7,6 +7,7 @@ bases:
 
 resources:
 - 00-cli-job-sa-and-role.yaml
+- 01-presync-csi-tolerations.yaml
 - 01-presync-label-worker-job.yaml
 - 02-ocs-lso-storagecluster.yaml
 - 07-default-storageclass.yaml

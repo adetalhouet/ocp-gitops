@@ -1,0 +1,24 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+  name: rook-ceph-operator-config
+  namespace: openshift-storage
+data:
+  CSI_LOG_LEVEL: '5'
+  CSI_PLUGIN_TOLERATIONS: |-
+
+    - key: node-role.kubernetes.io/master
+      operator: Exists
+      effect: NoSchedule
+    - key: node.ocs.openshift.io/storage
+      operator: Equal
+      value: "true"
+      effect: NoSchedule
+  CSI_PROVISIONER_TOLERATIONS: |-
+
+    - key: node.ocs.openshift.io/storage
+      operator: Equal
+      value: "true"
+      effect: NoSchedule
