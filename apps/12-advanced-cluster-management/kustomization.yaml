@@ -7,4 +7,5 @@ bases:
   - github.com/redhat-cop/gitops-catalog/advanced-cluster-management/instance/base?ref=main
 
 resources:
-- sealed-tower-secret.yaml
+- 01-sealed-tower-secret.yaml
+- 02-cluster-curator.yaml
