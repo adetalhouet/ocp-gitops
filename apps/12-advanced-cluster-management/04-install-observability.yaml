@@ -73,6 +73,8 @@ spec:
                  SECRET_KEY=$(oc get secret acm-observability -n open-cluster-management-observability --template={{.data.AWS_SECRET_ACCESS_KEY}} | base64 -d)
               done;
 
+              BUCKET_NAME=$(oc get ObjectBucketClaim acm-observability -n  open-cluster-management-observability --template={{.spec.bucketName}})
+
               echo "---
               apiVersion: v1
               kind: Secret
@@ -84,7 +86,7 @@ spec:
                 thanos.yaml: |
                   type: s3
                   config:
-                    bucket: acm-observability
+                    bucket: $BUCKET_NAME
                     endpoint: s3.openshift-storage.svc:443
                     insecure: true
                     access_key: $ACCESS_KEY
