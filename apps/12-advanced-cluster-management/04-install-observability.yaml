@@ -64,13 +64,13 @@ spec:
                   --from-literal=.dockerconfigjson="$DOCKER_CONFIG_JSON" \
                   --type=kubernetes.io/dockerconfigjson
 
-              ACCESS_KEY-""
+              ACCESS_KEY=""
               SECRET_KEY=""
               while [[ z$ACCESS_KEY == z ]]; do
                  echo "Wait for acm-observability bucket to be created, sleep 3 seconds"
                  sleep 3
-                 ACCESS_KEY=$(oc get secret acm-observability -n open-cluster-management-observability --template={{.data.AWS_ACCESS_KEY_ID}} | base64 -D)
-                 SECRET_KEY=$(oc get secret acm-observability -n open-cluster-management-observability --template={{.data.AWS_SECRET_ACCESS_KEY}} | base64 -D)
+                 ACCESS_KEY=$(oc get secret acm-observability -n open-cluster-management-observability --template={{.data.AWS_ACCESS_KEY_ID}} | base64 -d)
+                 SECRET_KEY=$(oc get secret acm-observability -n open-cluster-management-observability --template={{.data.AWS_SECRET_ACCESS_KEY}} | base64 -d)
               done;
 
               echo "---
