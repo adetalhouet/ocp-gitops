@@ -97,7 +97,6 @@ spec:
                   config:
                     bucket: $BUCKET_NAME
                     endpoint: s3.openshift-storage.svc:443
-                    insecure: true
                     access_key: $ACCESS_KEY
                     secret_key: $SECRET_KEY" | oc create -f -
 
