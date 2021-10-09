@@ -1,8 +1,0 @@
-apiVersion: config.openshift.io/v1
-kind: FeatureGate
-metadata:
-    name: open-cluster-management-single-node-openshift
-    labels:
-        console.open-cluster-management.io: ""
-spec:
-    featureSet: open-cluster-management-single-node-openshift
