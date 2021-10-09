@@ -73,7 +73,7 @@ spec:
                   --from-literal=.dockerconfigjson="$DOCKER_CONFIG_JSON" \
                   --type=kubernetes.io/dockerconfigjson
 
-              echo -n "Retreive `acm-observability` bucket ACCESS_KEY and SECRET_KEY"
+              echo -n "Retreive acm-observability bucket ACCESS_KEY and SECRET_KEY"
               ACCESS_KEY=""
               SECRET_KEY=""
               while [[ z$ACCESS_KEY == z ]]; do
