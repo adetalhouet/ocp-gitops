@@ -66,30 +66,30 @@ spec:
             - -c
             - |
 
-              echo -n "Define pull-secret for MultiClusterHub Operator"
+              echo "Define pull-secret for MultiClusterHub Operator"
               DOCKER_CONFIG_JSON=`oc extract secret/pull-secret -n openshift-config --to=-`
               oc create secret generic multiclusterhub-operator-pull-secret \
                   -n open-cluster-management-observability \
                   --from-literal=.dockerconfigjson="$DOCKER_CONFIG_JSON" \
                   --type=kubernetes.io/dockerconfigjson
 
-              echo -n "Retreive acm-observability bucket ACCESS_KEY and SECRET_KEY\n"
+              echo "Retreive acm-observability bucket ACCESS_KEY and SECRET_KEY"
               ACCESS_KEY=""
               SECRET_KEY=""
               while [[ z$ACCESS_KEY == z ]]; do
-                 echo -n "Wait for acm-observability bucket to be created, sleep 3 seconds\n"
+                 echo "Wait for acm-observability bucket to be created, sleep 3 seconds"
                  sleep 3
                  ACCESS_KEY=$(oc get secret acm-observability -n open-cluster-management-observability --template={{.data.AWS_ACCESS_KEY_ID}} | base64 -d)
                  SECRET_KEY=$(oc get secret acm-observability -n open-cluster-management-observability --template={{.data.AWS_SECRET_ACCESS_KEY}} | base64 -d)
               done;
 
-              echo -n "Retreive bucket NAME\n"
+              echo "Retreive bucket NAME"
               BUCKET_NAME=$(oc get ObjectBucketClaim acm-observability -n  open-cluster-management-observability --template={{.spec.bucketName}})
 
               oc get secret thanos-object-storage -n open-cluster-management-observability
               if [[ $? == 1 ]]
               then
-                echo -n "Create thanos object storage configuration\n"
+                echo "Create thanos object storage configuration"
 
                 echo "---
                 apiVersion: v1
