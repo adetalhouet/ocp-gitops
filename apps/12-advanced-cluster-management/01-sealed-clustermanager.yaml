@@ -1,0 +1,20 @@
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  creationTimestamp: null
+  name: cluster-manager
+  namespace: acm-credentials
+spec:
+  encryptedData:
+    ocmAPIToken: AgA/216svmTBMCWGVMEFJ+wHgoSGHgDRoCxUymOVqwFndwc+TdlHFwdLi2cGtWL5RA4GAC9Q81GF43AXdl3K1YEg7noPTn6wbd27+nTMtlEoFNvIUAM18vQNF4DeN7vcuXO/sTsw8CBDXnHCF6ebyzKTCME90iiJutWTjoRan4Pu3lPjxBokx06hzgrrzD7cjefxQHN/JMC3R/GpWMkXjXllMkTLAlHdSMRzlstTlZmcVcV+Wcj3hwIKLZL/iyvthlgqbJD5+3eWdRHQ3jIk6pYY4hUiMJPHa/YphBzI/shBnFn55Ea87Ve5sS+lZe05oKR7vJv+KIusSKvZjgLrCcUXBtb9LPxu2gyE6HCY+y6LUbbtAR+nN0su4BHERaXXO6WpYDvOEgcL6MSXYV9AGTQtjfJmMhiPQtWodi+DUBOPWvD2Ww2bgN+IVuMGDwyyNfEalPhvzl7mIkPa8Rx8LsKJPgGAvqdi6djmw4EC3C3TV0XiwBlDN3nvn2RFidw2Z+JEzmVNm1sjGjZtZRDK7Ee6Npmoktx1Hdk2A0N3lIa2QQcBIvDofjBQe4wA0ylEupzMbVWzvroBdhX2+TpLg8UKyt/tk9ugdSFMD8BHG16+zuiW2NG9s78IgevxaC0TzuQ9XoP+mSRmejqgGqUm/MfnBm7S0b77iMxTxd8vJAinhiTnA+hU4quxkHlt0cy7+Oqvi9PPN20Ujn/fiAfzq/ErDWBopeM/vC1SK/b9dw5zsyLbmJ6i/Q3Drgwj/9jYNZqJgj2+IDiQxXjYfRPGJJ7GIaZIlPx4K9oAh3pXFz9cWcmnipTFvrWSax+P7ugSwvuTbIgxOV7Vhdcl6nOwNH+ZiQsqtf00tNwK1PZ+1YlvfjDU5LJ4xSUg2azXTiT836goPPKTFtnWSLXW38+9rYIyJK5pMtWbGN2h4fgPn6AoZwEjCO5OUzjq5KoUk9VlTsrRBzr25pKkEKT5zQzSWt1eSYcG84lYUPV0KqT6n1sVW19msy5DQjcfXML2TnNBG1lMGWRVxOskMlSERijriekGQEV3MsjXv7/7IIy/QJv8Sj+X0v86ZZZIP15eCnkxW0perQGtpfiX9dOxsJCwyzOTi7JlClsA9y5hmtqC9ac4zcNTuK/j0RJP+Z3XD1J2HPNpGRJAEYzqdD22c/E65mhe2qMo3LnhlIp2RRaiUg481s2ybnJwQ8aQxvz84ww5CzRfuCUtAZ9BkeNUuT7SQLc6OMRB0zjhyIHEALuTSv/KvcFuYI9PI09zkarXBjpOTqVRPJvzAT345Yfu0kM3Xib3vyjaRL0dEcQu4TI4LNKtFkDHl3VkZHSAsFhEUo4j5R1Rc1OT9z0qc4z4UFetnDhs2Ej0WLHotfxQcR8pfxpqWaWqg3l0k5TTPYK/bkrK0EnH+9dvvEQtVAClbPL4/XA40z5xxXxD5UBbweKt0SuMTraS1fHA8pDyd1zoEDguERKULf5AQQIjoQ8FwuY5ca3haic4IrxgPEXhdIIH81Nbq0uqT04FNQ4SOemA1iCf6RKCOl4XubyvlJqVDWm7t/VAEIX70r2liG46JWUpQMgj/mz4Hslv4RjbrXDzX2pvIe33oWJIbcCA+W/hNvIHB+bN6HTACtvu7IzWC+oycKV6IXde0qi/
+  template:
+    data: null
+    metadata:
+      creationTimestamp: null
+      labels:
+        cluster.open-cluster-management.io/credentials: ""
+        cluster.open-cluster-management.io/type: rhocm
+      name: cluster-manager
+      namespace: acm-credentials
+    type: Opaque
+

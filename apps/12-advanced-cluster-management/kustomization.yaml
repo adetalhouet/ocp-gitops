@@ -7,7 +7,9 @@ bases:
   - github.com/redhat-cop/gitops-catalog/advanced-cluster-management/instance/base?ref=main
 
 resources:
-- 01-sealed-tower-secret.yaml
+- 01-sealed-aws-creds.yaml
+- 01-sealed-clustermanager.yaml
+- 01-sealed-credentials.yaml
 - 02-cluster-curator.yaml
 - 03-acm-observability-bucket.yaml
 - 04-install-observability.yaml
