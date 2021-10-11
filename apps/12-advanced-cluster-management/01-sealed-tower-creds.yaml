@@ -1,0 +1,21 @@
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  creationTimestamp: null
+  name: toweraccess
+  namespace: acm-credentials
+spec:
+  encryptedData:
+    host: AgAW9SMbmgSjO8gES3fSlhkaQTiHavurx1yH7qo+Ptkt6VVGzviDgDvKbRvTv4g6PxKrvG7tGNFds4p2+KzzOALgj9cgAjUefRXUlQCAY9N7BnqVbTdgWQ9yNHQe4Mr6nRYGcaYGy1caAIyoQKPKpfQUpzDtpwNezdOrkcaPxnXjPlZEY1IekGMd3OBr4lR+1PvyLScV+4i0YrRYX+acOwrS+pC2QZu7GhcJ6f/hKEf05RDMvGLuz+DMl3BnXxyV0e+V9hvDTaV0mldS/WWDUkMA2SeOHYngqHwMpouMVY5bxjeS5DwqOqJuLsc1onmASBKjSIyBhje3lHduZ/2T17rZZFl095pzhobWkCymyF+tqVLbgXsYQIDq1Gjj4+z9pIYfaBCCTz9WaiI/MOwc7/Zj5eptpDDzrwxPruWYNcjHU2JgN3GGn6HQ3uxlwD5FsnYjjS/PWYTRe4yflFvpoWqaH70fT3y822aXeNeMWty6UhfNIa4nKzel8DH3lJYLC/LRvbZBsnR9kVEz5ersimW301CRXtHgoxjEvumNUGgfrnAiBhsQWhu1bfXEclT0kh1LOALSgXs5fBCxRbAQX26NxTFpYsU4RHDkM/xTigcKSbcldc2trSPDMNFOVwcO57qttTttesmuujA/MxQn7Hz+2gxfDh+yQO5bL9wK/4X4zf5ENaU38t/xJvvavR1Nh2kkZIMNuHeOOc3WW1GZkEUPsY84sp7n67hLlLVkrn+OnZpebr+RYMfBT3O0/B/FKv/rMetiseT4puSdsfQ/RMMsFLzlYa4WFzUFAXQrrBQ=
+    token: AgBVc4491YrlC6nK2/9U28rIwYXQzPMqMIzzEMo6gg31NCIzJmp0jeybESUHLOGE8g1phJb2Sn+tZB9nsh7fsRrd6a7cj3Xg1itQCJZHKsRdbkcUgOu6BnGdtql8+mQdGtts11RylsYphrvdut8v1x2qe6Zd+GX2AvTyQC+2MQoaYnRnpTmhdoahbypODwrs9eA3raNvgmA0dNUeYvMeqeF4rDZujhhDp44RvsBAfSetIoXmaJSLxCfOk7KjkE82p1x7jrvsEbai0qJdzGftP57f8BvTKuU7sYamvWacK6tt6OGouX1dYZ/I+TiFs+ZC1ROsfvgshYWxIsuRWF0r0jtZpOO/K8++ELKCHDVyH/OZ9AOTb5xqS8l+Fim6k2ZIBg5B8Ag5Kx9eotJ1bWEFP33laZAzilwU+55S+YKIfHtNWHUMubDl28aq7kwaJgG8UBTN6lb8zLdER1PnyDy31J6DP6OECoXdM2bo5WW25geCb2QU5nRi9hkGcKTSY7G7YgFIXYrkVPY42MZam7uRpRmBI0BntT8u0LlZsqQ+ZN/ETh0RisPOlQSLr/4xaJQTejX5409XdbomNSG6vAT6BOlYGeKjz6M0KfZPzg4cSLe/IyoBU8lJmDr1tv86f0x373xFNK6L5YbhLtxCp8yrzjhjAaUHfF3BpMtJCGYZvHDD+zDKLdEBPCLdW1zYnHofCVmm9pKiMeoldsTeGese902GseC4swWJiBC9Szch5gE=
+  template:
+    data: null
+    metadata:
+      creationTimestamp: null
+      labels:
+        cluster.open-cluster-management.io/credentials: ""
+        cluster.open-cluster-management.io/type: ans
+      name: toweraccess
+      namespace: acm-credentials
+    type: Opaque
+
