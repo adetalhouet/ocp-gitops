@@ -7,6 +7,7 @@ bases:
   - github.com/redhat-cop/gitops-catalog/advanced-cluster-management/instance/base?ref=main
 
 resources:
+- 00-install-creds.yaml
 - 01-sealed-aws-creds.yaml
 - 01-sealed-clustermanager.yaml
 - 01-sealed-credentials.yaml
