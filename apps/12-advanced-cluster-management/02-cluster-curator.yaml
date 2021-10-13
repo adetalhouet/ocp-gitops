@@ -13,7 +13,7 @@ spec:
       - extra_vars:
           message: RHACM_CLUSTER_DELETION_STATED
         name: send-slack-message-cluster-deploy
-    towerAuthSecret: tower
+    towerAuthSecret: toweraccess
   install:
     posthook:
       - extra_vars:
@@ -23,7 +23,7 @@ spec:
       - extra_vars:
           message: RHACM_CLUSTER_DEPLOYMENT_STATED
         name: send-slack-message-cluster-deploy
-    towerAuthSecret: tower
+    towerAuthSecret: toweraccess
   scale:
     posthook:
       - extra_vars:
@@ -33,7 +33,7 @@ spec:
       - extra_vars:
           message: RHACM_CLUSTER_SCALE_STATED
         name: send-slack-message-cluster-deploy
-    towerAuthSecret: tower
+    towerAuthSecret: toweraccess
   upgrade:
     posthook:
       - extra_vars:
@@ -43,4 +43,4 @@ spec:
       - extra_vars:
           message: RHACM_CLUSTER_UPGRADE_STATED
         name: send-slack-message-cluster-deploy
-    towerAuthSecret: tower
+    towerAuthSecret: toweraccess
