@@ -162,3 +162,7 @@ spec:
         health_status.status = "Progressing"
         health_status.message = "Waiting for Sealed Secret to be decrypted"
         return health_status
+    cluster.open-cluster-management.io/ClusterCurator:
+      ignoreDifferences: |
+        jsonPointers:
+        - /
