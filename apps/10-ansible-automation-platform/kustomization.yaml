@@ -1,6 +1,11 @@
 kind: Kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 
+# Remote base.  Use the configuration from the Red Hat Canada GitOps repo (unofficial).
+bases:
+  - github.com/redhat-cop/gitops-catalog/ansible-automation-platform/operator/overlays/early-access?ref=main
+  - github.com/redhat-cop/gitops-catalog/ansible-automation-platform/instance/overlays/default?ref=main
+
 patches:
 -  target:
      kind: Subscription
@@ -22,3 +27,10 @@ patches:
     - op: replace
       path: /spec/href
       value: 'https://tower-ansible-automation-platform.apps.hetzner.sandbox1091.opentlc.com'
+-  target:
+     kind: AutomationController
+     name: tower
+   patch: |-
+    - op: add
+      path: /spec/postgres_storage_class
+      value: 'ocs-storagecluster-cephfs'
