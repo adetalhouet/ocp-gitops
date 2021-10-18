@@ -6,12 +6,12 @@ bases:
   - github.com/redhat-cop/gitops-catalog/advanced-cluster-management/operator/overlays/release-2.3?ref=main
   - github.com/redhat-cop/gitops-catalog/advanced-cluster-management/instance/base?ref=main
 
-resources:
-- 00-install-creds.yaml
-- 01-sealed-aws-creds.yaml
-- 01-sealed-clustermanager.yaml
+# resources:
+# - 00-install-creds.yaml
+# - 01-sealed-aws-creds.yaml
+# - 01-sealed-clustermanager.yaml
 # - 01-sealed-tower-creds.yaml
-- 02-cluster-curator.yaml
-- 03-acm-observability-bucket.yaml
-- 04-install-observability.yaml
-- 05-multiclusterobservability.yaml
+# - 02-cluster-curator.yaml
+# - 03-acm-observability-bucket.yaml
+# - 04-install-observability.yaml
+# - 05-multiclusterobservability.yaml

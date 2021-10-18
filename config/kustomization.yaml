@@ -1,0 +1,20 @@
+kind: Kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+
+# https://issues.redhat.com/browse/AAP-512
+
+patches:
+-  target:
+     kind: KubeAPIServer
+     name: cluster
+   patch: |-
+    - op: add
+      path: /spec/unsupportedConfigOverrides/apiServerArguments/feature-gates/
+      value: false
+-  target:
+     kind: KubeControllerManager
+     name: cluster
+   patch: |-
+    - op: add
+      path: /spec/unsupportedConfigOverrides/apiServerArguments/feature-gates/
+      value: false
