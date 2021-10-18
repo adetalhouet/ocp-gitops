@@ -2,11 +2,11 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: 15-acs
+  name: 16-acs
   namespace: openshift-gitops
   annotations:
     argocd.argoproj.io/compare-options: IgnoreExtraneous
-    argocd.argoproj.io/sync-wave: '15'
+    argocd.argoproj.io/sync-wave: '16'
 spec:
   project: default
   destination:
@@ -14,7 +14,7 @@ spec:
   source:
     repoURL: https://github.com/adetalhouet/ocp-gitops.git
     targetRevision: HEAD
-    path: apps/15-acs/overlays/hetzner
+    path: apps/16-acs/overlays/hetzner
   syncPolicy:
     automated: 
       selfHeal: true 
