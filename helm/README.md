@@ -7,7 +7,4 @@ tar -cvzf ocp-gitops-1.0.0.tgz helm .helm-chart-released
 cr upload -r ocp-gitops -o adetalhouet --package-path .helm-chart-released -t $AUTH_TOKEN
 
 ### Create/update index
-cr index  -c https://github.com/adetalhouet/ocp-gitops/tree/ocp-gitops-1.0.0/.helm-chart-released -r ocp-gitops -o adetalhouet --package-path .helm-chart-released -i .helm-chart-released -t $AUTH_TOKEN
-
-helm package helm
-helm repo index --url https://adetalhouet.github.io/ocp-gitops/ .helm-chart-released
+cr index  -c https://github.com/adetalhouet/ocp-gitops/tree/ocp-gitops-1.0.0/.helm-chart-released -r ocp-gitops -o adetalhouet --package-path .helm-chart-released -i .
