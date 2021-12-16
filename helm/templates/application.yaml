@@ -17,7 +17,11 @@ spec:
   source:
     repoURL: {{ $.Values.config.repoURL }}
     targetRevision: HEAD
+{{ if $val.overlays }}
     path: apps/{{ $key }}/overlays/{{ $.Values.config.overlay }}
+{{ else }}
+    path: apps/{{ $key }}
+{{ end }}
   syncPolicy:
     automated: 
       selfHeal: true 

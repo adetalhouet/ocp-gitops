@@ -1,5 +1,3 @@
-# THIS IS AN EXAMPLE FILE - MODIFY AS NEEDED
-
 config:
   repoURL: https://github.com/adetalhouet/ocp-gitops.git
   overlay: ca-central
@@ -7,6 +5,7 @@ config:
 applications:
   01-openshift-gitops:
     enabled: true
+    overlays: true
   02-sealed-secrets:
     enabled: true
   03-letsencrypt-certs:
@@ -17,14 +16,17 @@ applications:
     enabled: true
   06-rhsso:
     enabled: true
+    overlays: true
   07-oauth:
     enabled: true
+    overlays: true
   08-openshift-elasticsearch:
     enabled: true
   09-openshift-logging:
     enabled: true
   10-ansible-automation-platform:
     enabled: true
+    overlays: true
   11-quay-container-security:
     enabled: true
   12-advanced-cluster-management:
