@@ -9,7 +9,7 @@ metadata:
   namespace: openshift-gitops
   annotations:
     argocd.argoproj.io/compare-options: IgnoreExtraneous
-    argocd.argoproj.io/sync-wave: {{ $c }}
+    argocd.argoproj.io/sync-wave: {{ quote $c |}}
 spec:
   project: default
   destination:
