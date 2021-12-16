@@ -1,0 +1,1 @@
+This chart is used to generate all the ArgoCD Application required for a specific cluster.

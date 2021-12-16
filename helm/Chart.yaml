@@ -1,0 +1,4 @@
+apiVersion: v2
+description: Alexis de Talhouët clusters config
+name: ocp-gitops
+version: 1.0.0
