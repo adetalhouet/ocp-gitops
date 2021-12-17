@@ -122,7 +122,7 @@ The bootstrap will take care of the following:
 
 To achieve the app-of-apps pattern, few solutions exist:
 - using `ApplicationSet` (but the [lack of SyncWaves support](https://github.com/argoproj-labs/applicationset/issues/221}) makes it difficult to adopt)
-- using an `Application` for each app/overlay. This makes things very verbose due to the repetition of the `Application` + `kustomization.yaml` requirement.
+- using an `Application` for each app/overlay. This makes things very verbose due to the repetition of the `Application` + `kustomization.yaml` requirement. See the number of files removed [in this commit](https://github.com/adetalhouet/ocp-gitops/commit/d9ae7ab6fb5ed0dc2e098563ee6a1c5a154ae6d1) when I moved to helm-based app-of-apps.
 - using a Helm Chart with `Application` defined as a template. In my opinion, this makes the deployment elegant and remove all the boilerplate of managing `Application` per app/overlay.
 
 After experiencing all the above, I ended up building a Helm Chart to defined the ArgoCD `Application`. It can be found in the [helm](helm) folder.
