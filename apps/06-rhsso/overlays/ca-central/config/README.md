@@ -34,8 +34,6 @@ changes:
     standardFlowEnabled: true
     implicitFlowEnabled: false
     directAccessGrantEnabled: true
-- addClientScope:
-    name: groups
 - addGroupMembershipMapper:
     clientId: stackrox
     name: groups
