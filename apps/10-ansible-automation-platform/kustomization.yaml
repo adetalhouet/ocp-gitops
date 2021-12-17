@@ -3,23 +3,23 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 
 # Remote base.  Use the configuration from the Red Hat Canada GitOps repo (unofficial).
 bases:
-  - github.com/redhat-cop/gitops-catalog/ansible-automation-platform/operator/overlays/early-access?ref=main
+  - github.com/redhat-cop/gitops-catalog/ansible-automation-platform/operator/overlays/stable-2.1-cluster-scoped?ref=main
   - github.com/redhat-cop/gitops-catalog/ansible-automation-platform/instance/overlays/default?ref=main
 
 patches:
--  target:
-     kind: Subscription
-     name: ansible-automation-platform
-   patch: |-
-    - op: replace
-      path: /metadata/namespace
-      value: 'ansible-automation-platform'
-    - op: add
-      path: /spec/startingCSV
-      value: ansible-automation-platform-operator.v2.0.0
-    - op: add
-      path: /spec/installPlanApproval
-      value: Manual
+# -  target:
+#      kind: Subscription
+#      name: ansible-automation-platform
+#    patch: |-
+#     - op: replace
+#       path: /metadata/namespace
+#       value: 'ansible-automation-platform'
+#     - op: add
+#       path: /spec/startingCSV
+#       value: ansible-automation-platform-operator.v2.0.0
+#     - op: add
+#       path: /spec/installPlanApproval
+#       value: Manual
 -  target:
      kind: ConsoleLink
      name: tower
