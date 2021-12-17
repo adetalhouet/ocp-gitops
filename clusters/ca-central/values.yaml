@@ -23,7 +23,7 @@ ocp-gitops:
     09-openshift-logging:
       enabled: false
     10-ansible-automation-platform:
-      enabled: false
+      enabled: true
     11-quay-container-security:
       enabled: true
     12-advanced-cluster-management:
