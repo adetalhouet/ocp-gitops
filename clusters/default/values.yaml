@@ -1,0 +1,37 @@
+ocp-gitops:
+  config:
+    repoURL: https://github.com/adetalhouet/ocp-gitops.git
+    overlay: default
+  applications:
+    01-openshift-gitops:
+      enabled: true
+    02-sealed-secrets:
+      enabled: true
+    03-letsencrypt-certs:
+      enabled: true
+    04-local-storage-operator:
+      enabled: false
+    05-openshift-container-storage:
+      enabled: false
+    06-rhsso:
+      enabled: false
+    07-oauth:
+      enabled: false
+    08-openshift-elasticsearch:
+      enabled: false
+    09-openshift-logging:
+      enabled: false
+    10-ansible-automation-platform:
+      enabled: false
+    11-quay-container-security:
+      enabled: true
+    12-advanced-cluster-management:
+      enabled: false
+    13-advanced-cluster-management-policies:
+      enabled: false
+    14-advanced-cluster-management-apps:
+      enabled: false
+    15-advanced-cluster-managment-observability:
+      enabled: false
+    16-acs:
+      enabled: false

@@ -1,0 +1,10 @@
+apiVersion: v2
+description: Alexis de Talhouët clusters config
+name: default-cluster
+version: 1.0.0
+
+dependencies:
+  - name: ocp-gitops
+    version: 1.0.0
+    repository: https://adetalhouet.github.io/ocp-gitops/
+    # repository: file://../../helm
