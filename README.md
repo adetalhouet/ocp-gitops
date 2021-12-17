@@ -131,9 +131,13 @@ After experiencing all the above, I ended up building a Helm Chart to defined th
 
 If you are familiar with Helm, it should be very easy, because my chart is very simple.
 
-I have only one [template](helm/templates) to define `Application` manifest.
+I have only one [template](helm/templates) to generate AgoCD `Application` manifests.
 
-The template basically goes over the defined application in the [values.yaml](helm/values.yaml) file
+The template goes over the defined application in the [values.yaml](helm/values.yaml) file, and create an `Application` for each.
+
+All my apps are prefixed with a number, so when helm is rendering the templates, it keeps that ordering, that I can then use as index to defined the application `sync-wave` value.
+
+Finally, some of my application don't have any overlay, so I added the option to specify whether or not to look for overlay.
 
 ## Helm chart repository
 
