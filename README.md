@@ -4,6 +4,17 @@ This repository contains all the cluster and application configuration for my va
 
 All the applications can be customized using overlay, following the kustomize practice.
 
+## Table of Contents
+
+<!-- TOC -->
+- [Create new cluster configuration](#create-new-cluster-configuration)
+- [Required customization](#required-customization)
+- [Deploy the cluster configuration](#deploy-the-cluster-configuration)
+- [Helm packaging for app-of-apps](#helm-packaging-for-app-of-apps)
+- [Helm chart repository](#helm-chart-repository)
+- [Helm chart release process](#helm-chart-release-process)
+<!-- TOC -->
+
 ## Create new cluster configuration
 
 In order to provision a new cluster, few things needs to be adjusted in the various applications. In order to do so, the script `build-cluster.config.sh` can be used.
@@ -24,23 +35,73 @@ Once the boilerplate is created, I recommand going over the required customizati
 
 ### openshift-gitops
 The installation assumes OIDC will be use as external SSO provider (in this case, RH-SSO). So the user of this application needs to:
-- create the RH-SSO client-secret, and seal it, as explained [here](https://github.com/adetalhouet/ocp-gitops/blob/main/apps/01-openshift-gitops/base/README.md)
-- create or update the kustommize oveerlay with the OIDC issuer URL at `/spec/oidcConfig`. See example [here](https://github.com/adetalhouet/ocp-gitops/blob/main/apps/01-openshift-gitops/overlays/default/kustomization.yaml#L17)
+- create the RH-SSO client-secret
+    Create a file named rhsso-client-secret.yaml with the following
+    ~~~
+    apiVersion: v1
+    data:
+      oidc.keycloak.clientSecret: YOUR_SECRET_HERE
+    kind: Secret
+    metadata:
+      name: argocd-secret-oidc
+      namespace: openshift-gitops
+    type: Opaque
+    ~~~
+- seal the secret
+    ~~~
+    kubeseal --cert ~/.bitnami/tls.crt --format yaml < rhsso-client-secret.yaml > apps/01-openshift-gitops/base/07-sealed-rhsso-client-secret.yaml
+    ~~~
+- create or update the kustommize overlay with the OIDC issuer URL at `/spec/oidcConfig`. 
+See example [here](apps/01-openshift-gitops/overlays/default/kustomization.yaml#L17)
 
 ### sealed-secret
 If you have pre-defined cert and key for sealed-secrets controller, then populate them [here](https://github.com/adetalhouet/ocp-gitops/blob/main/apps/02-sealed-secrets/bootstrap/02-sealed-secrets-secret-EXAMPLE.yaml) and they will get deployed as part of the bootstrap.
 Else, retrieve your sealed-secret cert and key. [Here](https://github.com/redhat-cop/gitops-catalog/tree/main/sealed-secrets-operator/scripts) are tips on how to do so.
 
 ### letsencrypt-certs (only for Route53)
-In order to update the cluster certificate, provide your AWS creds as explained [here](https://github.com/adetalhouet/ocp-gitops/blob/main/apps/03-letsencrypt-certs/README.md). 
-See GitHub: [OpenShift Let's Encrypt Job](https://github.com/pittar/ocp-letsencrypt-job) project reference.
+In order to update the cluster certificate, provide your AWS creds.
+
+Create a file named aws-credentials.yaml with the following
+~~~
+apiVersion: v1
+kind: Secret
+metadata:
+  name: cloud-dns-credentials
+  namespace: letsencrypt-job
+type: Opaque 
+stringData: 
+  AWS_ACCESS_KEY_ID: "YOUR_ACCESS_ID"
+  AWS_SECRET_ACCESS_KEY: "YOUR_ACCESS_KEY_"
+  AWS_DNS_SLOWRATE: "1"
+~~~
+Then seal the secret
+~~~
+kubeseal --cert ~/.bitnami/tls.crt --format yaml < aws-credentials.yaml > apps/03-letsencrypt-certs/05-sealed-aws-credentials.yaml
+~~~
+
+For additional details regarding this solution, see GitHub: [OpenShift Let's Encrypt Job](https://github.com/pittar/ocp-letsencrypt-job) project reference.
 
 ### Red Hat Single Sign-On
 Create the realms, clients and users according to your desire setup. 
 Look [here](https://github.com/adetalhouet/ocp-gitops/blob/main/apps/06-rhsso/overlays/default/config/README.md) for example on how to then seal the information.
 
-### oauth
-Create the RH SSO client-secret, and seal it, as explained [here](https://github.com/adetalhouet/ocp-gitops/blob/main/apps/07-oauth/base/README.md)
+### OpenShift OAuth
+Create the RH SSO client-secret, and seal it
+
+~~~
+apiVersion: v1
+kind: Secret
+metadata:
+  name: keycloack-openshit-client-secret
+  namespace: openshift-config
+type: Opaque
+data:
+  clientSecret: YOUR_SECRET_HERE
+~~~
+
+~~~
+kubeseal --cert ~/.bitnami/tls.crt --format yaml < rhsso-client-secret.yaml > apps/07-oauth/02-sealed-rhsso-client-secret.yaml
+~~~
 
 ## Deploy the cluster configuration
 
@@ -57,7 +118,7 @@ The bootstrap will take care of the following:
 ./bootstrap/bootstrap.sh $CLUSTER_NAME
 ~~~
 
-## Helm packing for app-of-apps
+## Helm packaging for app-of-apps
 
 To achieve the app-of-apps pattern, few solutions exist:
 - using `ApplicationSet` (but the [lack of SyncWaves support](https://github.com/argoproj-labs/applicationset/issues/221}) makes it difficult to adopt)
@@ -66,10 +127,18 @@ To achieve the app-of-apps pattern, few solutions exist:
 
 After experiencing all the above, I ended up building a Helm Chart to defined the ArgoCD `Application`. It can be found in the [helm](helm) folder.
 
+### How it works
+
+If you are familiar with Helm, it should be very easy, because my chart is very simple.
+
+I have only one [template](helm/templates) to define `Application` manifest.
+
+The template basically goes over the defined application in the [values.yaml](helm/values.yaml) file
+
 ## Helm chart repository
 
 In order to use that chart from AgoCD, it must be available through a helm repository. Hence I made this Github repository a helm repository, using Github pages.
-It is serving the release charts defined in the [index.yaml](https://github.com/adetalhouet/ocp-gitops/blob/main/index.yaml) file.
+It is serving the release charts defined in the [index.yaml](index.yaml) file.
 
 In order to consume the helm chart, simply add the following dependency in yours:
 
