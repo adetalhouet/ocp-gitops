@@ -11,13 +11,13 @@ ocp-gitops:
     03-letsencrypt-certs:
       enabled: true
     04-local-storage-operator:
-      enabled: false
+      enabled: true
     05-openshift-container-storage:
-      enabled: false
+      enabled: true
     06-rhsso:
-      enabled: false
+      enabled: true
     07-oauth:
-      enabled: false
+      enabled: true
     08-openshift-elasticsearch:
       enabled: false
     09-openshift-logging:
