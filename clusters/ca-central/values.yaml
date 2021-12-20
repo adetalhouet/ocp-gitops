@@ -35,4 +35,4 @@ ocp-gitops:
     15-advanced-cluster-managment-observability:
       enabled: false
     16-acs:
-      enabled: false
+      enabled: true
