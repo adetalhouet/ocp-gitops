@@ -1,1 +1,0 @@
-Content has been moved here: https://github.com/adetalhouet/ocp-ztp

@@ -1,6 +1,0 @@
-kind: Kustomization
-apiVersion: kustomize.config.k8s.io/v1beta1
-
-resources:
-  - 01-sealed-secret-namespace.yaml
-  - 02-sealed-secrets-secret.yaml
