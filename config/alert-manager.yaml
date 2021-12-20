@@ -1,7 +1,7 @@
 global:
   resolve_timeout: 5m
   slack_api_url: >-
-    https://hooks.slack.com/services/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
+    https://hooks.slack.com/services/$HOOK_TO_ENTER_CAN_BE_FOUND_HERE: https://functionalhops.slack.com/services/B02GAFSTE3V
 inhibit_rules:
   - equal:
       - namespace
