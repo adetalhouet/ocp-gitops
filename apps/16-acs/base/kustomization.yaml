@@ -9,3 +9,5 @@ resources:
   - 01-console-link.yaml
   - 02-sealed-rhsso-client-secret.yaml
   - 03-job-sso-integration.yaml
+  - 04-job-anotate-secret.yaml
+  - 05-acs-everywhere.yaml
