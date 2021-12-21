@@ -30,8 +30,5 @@ spec:
   - status: "True"
     type: ManagedClusterConditionAvailable
   clusterSelector:
-    matchExpressions:
-    - key: acs-enabled
-      operator: In
-      values:
-      - "True"
+    matchLabels:
+      acs-enabled: "True"
