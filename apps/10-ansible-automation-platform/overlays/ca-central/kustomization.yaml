@@ -11,9 +11,6 @@ patches:
      kind: Subscription
      name: ansible-automation-platform
    patch: |-
-    - op: replace
-      path: /spec/channel
-      value: 'early-access-cluster-scoped'
 #     - op: replace
 #       path: /metadata/namespace
 #       value: 'ansible-automation-platform'
