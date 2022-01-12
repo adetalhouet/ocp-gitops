@@ -7,10 +7,13 @@ bases:
   # - github.com/redhat-cop/gitops-catalog/ansible-automation-platform/instance/overlays/default?ref=main
 
 patches:
-# -  target:
-#      kind: Subscription
-#      name: ansible-automation-platform
-#    patch: |-
+-  target:
+     kind: Subscription
+     name: ansible-automation-platform
+   patch: |-
+    - op: replace
+      path: /spec/channel
+      value: 'early-access-cluster-scoped'
 #     - op: replace
 #       path: /metadata/namespace
 #       value: 'ansible-automation-platform'
