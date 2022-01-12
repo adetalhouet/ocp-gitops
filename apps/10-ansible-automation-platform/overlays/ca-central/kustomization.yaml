@@ -6,7 +6,7 @@ bases:
   - github.com/redhat-cop/gitops-catalog/ansible-automation-platform/operator/overlays/stable-2.1-cluster-scoped?ref=main
   # - github.com/redhat-cop/gitops-catalog/ansible-automation-platform/instance/overlays/default?ref=main
 
-# patches:
+patches:
 # -  target:
 #      kind: Subscription
 #      name: ansible-automation-platform
