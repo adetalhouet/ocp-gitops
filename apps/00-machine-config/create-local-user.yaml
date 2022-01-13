@@ -1,0 +1,39 @@
+#
+#
+# IF YOU DO THIS - ALL SUPPORT WILL BE INVALIDATED. MAKE SURE TO TALK WITH YOUR ACCOUNT TEAM FIRST
+#
+#
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+metadata:
+  name: 99-create-local-user
+  labels:
+    machineconfiguration.openshift.io/role: worker
+spec:
+  config:
+    ignition:
+      version: 3.2.0
+    storage:
+      files:
+        - contents:
+            source: >-
+              data:text/plain;charset=utf-8;base64,IyEvYmluL2Jhc2gKCnVzZXJhZGQgdGVzdAplY2hvIHRlc3QgfCBwYXNzd2QgdGVzdCAtLXN0ZGluCg==
+          mode: 493
+          overwrite: true
+          path: /usr/local/bin/create-local-user.sh
+    systemd:
+      units:
+        - contents: |
+            [Unit]
+            Description=Create local users
+            Wants=network-online.target
+            After=network-online.target ignition-firstboot-complete.service
+            [Service]
+            Type=oneshot
+            RemainAfterExit=yes
+            EnvironmentFile=
+            ExecStart=/bin/bash -c "/usr/local/bin/create-local-user.sh"
+            [Install]
+            WantedBy=multi-user.target
+          enabled: true
+          name: create-local-user.service
