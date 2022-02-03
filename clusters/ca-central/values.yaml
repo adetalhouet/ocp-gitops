@@ -28,6 +28,10 @@ ocp-gitops:
       enabled: true
     12-advanced-cluster-management:
       enabled: true
+    13-advanced-cluster-management-policies:
+      enabled: false
+    14-advanced-cluster-management-apps:
+      enabled: false
     15-advanced-cluster-managment-observability:
       enabled: true
     16-acs:
