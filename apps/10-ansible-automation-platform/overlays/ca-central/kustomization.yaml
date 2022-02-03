@@ -26,10 +26,10 @@ patches:
    patch: |-
     - op: replace
       path: /spec/href
-      value: 'https://tower-ansible-automation-platform.apps.ca-central.adetalhouet.ca'
+      value: 'https://controller-ansible-automation-platform.apps.ca-central.adetalhouet.ca'
 -  target:
      kind: AutomationController
-     name: tower
+     name: controller
    patch: |-
     - op: add
       path: /spec/postgres_storage_class
