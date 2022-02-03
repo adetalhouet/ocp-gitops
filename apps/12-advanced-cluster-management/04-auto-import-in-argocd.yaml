@@ -3,6 +3,8 @@ apiVersion: cluster.open-cluster-management.io/v1alpha1
 kind: ManagedClusterSet
 metadata:
   name: 5g-core
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec: {}
 ---
 apiVersion: cluster.open-cluster-management.io/v1alpha1
@@ -10,6 +12,8 @@ kind: ManagedClusterSetBinding
 metadata:
   name: 5g-core
   namespace: openshift-gitops
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   clusterSet: 5g-core
 ---
@@ -18,6 +22,8 @@ kind: Placement
 metadata:
   name: 5g-core-clusters
   namespace: openshift-gitops
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   predicates:
   - requiredClusterSelector:
@@ -30,6 +36,8 @@ kind: GitOpsCluster
 metadata:
   name: argo-acm-clusters
   namespace: openshift-gitops
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   argoServer:
     cluster: local-cluster
