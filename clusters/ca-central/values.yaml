@@ -27,13 +27,9 @@ ocp-gitops:
     11-quay-container-security:
       enabled: true
     12-advanced-cluster-management:
-      enabled: false
-    13-advanced-cluster-management-policies:
-      enabled: false
-    14-advanced-cluster-management-apps:
-      enabled: false
+      enabled: true
     15-advanced-cluster-managment-observability:
-      enabled: false
+      enabled: true
     16-acs:
       enabled: true
       overlays: true
