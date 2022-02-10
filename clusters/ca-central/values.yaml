@@ -25,7 +25,7 @@ ocp-gitops:
     10-ansible-automation-platform:
       enabled: true
     11-quay-container-security:
-      enabled: true
+      enabled: false
     12-advanced-cluster-management:
       enabled: true
     13-advanced-cluster-management-policies:
