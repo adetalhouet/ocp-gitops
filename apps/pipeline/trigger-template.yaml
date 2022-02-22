@@ -103,7 +103,7 @@ spec:
     spec:
       serviceAccountName: pipeline
       pipelineRef:
-        name: build-and-deploy
+        name: sanitize
       params:
       - name: git-repo-name
         value: $(tt.params.git-repo-name)
