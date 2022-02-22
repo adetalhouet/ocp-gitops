@@ -11,6 +11,6 @@ secretGenerator:
   files:
   - keycloak-changelog.yml
   - 01-realms.yaml
-  - 02-clients.yaml
-  - 03-users.yaml
+  # - 02-clients.yaml
+  # - 03-users.yaml
   - 04-groups.yaml
