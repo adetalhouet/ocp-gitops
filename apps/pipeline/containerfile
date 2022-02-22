@@ -1,0 +1,11 @@
+FROM registry.redhat.io/openshift4/ose-cli:latest
+
+RUN dnf install -y --setopt=tsflags=nodocs --nogpgcheck --disableplugin=subscription-manager git tar wget 
+
+RUN wget https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv4.5.2/kustomize_v4.5.2_linux_amd64.tar.gz && tar xzf ./kustomize_v4.5.2_linux_amd64.tar.gz 
+          
+RUN wget https://raw.githubusercontent.com/redhat-cop/gitops-catalog/main/hack/validate_manifests.sh
+
+ENV KUSTOMIZE=/kustomize 
+          
+RUN chmod +x kustomize validate_manifests.sh

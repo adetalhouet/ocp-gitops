@@ -1,0 +1,168 @@
+
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: sanitize-yaml
+  namespace: pipeline-demo
+spec:
+  workspaces:
+  - name: source
+  steps:
+    - name: validate-manifests
+      image: quay.io/adetalho/tekton-task:latest
+      workingDir: /workspace/source
+      command: ["/bin/bash", "-c"]
+      args:
+        - |-
+          cd / && ./validate_manifests.sh
+---
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: sanitize
+  namespace: pipeline-demo
+spec:
+  workspaces:
+  - name: shared-workspace
+  params:
+  - name: git-url
+    type: string
+    description: url of the git repo for the code of deployment
+  - name: git-revision
+    type: string
+    description: revision to be used from repo of the code for deployment
+    default: "main"
+  tasks:
+  - name: fetch-repository
+    taskRef:
+      name: git-clone
+      kind: ClusterTask
+    workspaces:
+    - name: output
+      workspace: shared-workspace
+    params:
+    - name: url
+      value: $(params.git-url)
+    - name: subdirectory
+      value: ""
+    - name: deleteExisting
+      value: "true"
+    - name: revision
+      value: $(params.git-revision)
+  - name: sanitize
+    taskRef:
+      name: sanitize-yaml
+    workspaces:
+    - name: source
+      workspace: shared-workspace
+    runAfter:
+    - fetch-repository
+---
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerBinding
+metadata:
+  name: sanitize-yaml-binding
+  namespace: pipeline-demo
+spec:
+  params:
+  - name: git-repo-url
+    value: $(body.repository.url)
+  - name: git-repo-name
+    value: $(body.repository.name)
+  - name: commit.id
+    value: $(body.head_commit.id)
+  - name: commit.message
+    value: $(body.head_commit.message)
+  - name: commit.author
+    value: $(body.head_commit.author.name)
+---
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerTemplate
+metadata:
+  name: sanitize-yaml-tt
+  namespace: pipeline-demo
+spec:
+  params:
+  - name: git-repo-url
+    description: The git repository url
+  - name: git-repo-name
+    description: The name of the deployment to be created / patched
+  - name: commit-id
+    description: The git commit id
+  - name: commit-message
+    description: The git commit message
+  - name: commit-author
+    description: The git commit author
+
+  resourcetemplates:
+  - apiVersion: tekton.dev/v1beta1
+    kind: PipelineRun
+    metadata:
+      generateName: sanitize-yaml-$(tt.params.git-repo-name)-$(tt.params.commit-id)
+      namespace: pipeline-demo
+    spec:
+      serviceAccountName: pipeline
+      pipelineRef:
+        name: build-and-deploy
+      params:
+      - name: git-repo-name
+        value: $(tt.params.git-repo-name)
+      - name: git-url
+        value: $(tt.params.git-repo-url)
+      - name: commit-id
+        value: $(tt.params.commit-id)
+      - name: commit-message
+        value: $(tt.params.commit-message)
+      - name: commit-author
+        value: $(tt.params.commit-author)
+      workspaces:
+      - name: shared-workspace
+        volumeClaimTemplate:
+          spec:
+            accessModes:
+              - ReadWriteOnce
+            resources:
+              requests:
+                storage: 500Mi
+---
+apiVersion: triggers.tekton.dev/v1beta1
+kind: Trigger
+metadata:
+  name: sanitize-yaml-t
+  namespace: pipeline-demo
+spec:
+  serviceAccountName: pipeline
+  interceptors:
+    - ref:
+        name: "github"
+      params:
+        - name: "eventTypes"
+          value: ["push"]
+  bindings:
+    - ref: sanitize-yaml-binding
+  template:
+    ref: sanitize-yaml-tt
+---
+apiVersion: triggers.tekton.dev/v1beta1
+kind: EventListener
+metadata:
+  name: sanitize-yaml-el
+  namespace: pipeline-demo
+spec:
+  serviceAccountName: pipeline
+  triggers:
+    - triggerRef: sanitize-yaml-t
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    eventlistener: sanitize-yaml-el
+  name: sanitize-yaml-route
+  namespace: pipeline-demo
+spec:
+  port:
+    targetPort: http-listener
+  to:
+    kind: Service
+    name: el-sanitize-yaml-el
