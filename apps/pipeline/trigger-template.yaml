@@ -98,7 +98,7 @@ spec:
   - apiVersion: tekton.dev/v1beta1
     kind: PipelineRun
     metadata:
-      generateName: sanitize-yaml-$(tt.params.git-repo-name)-$(tt.params.commit-id)
+      generateName: sanitize-yaml-$(tt.params.git-repo-name)-
       namespace: pipeline-demo
     spec:
       serviceAccountName: pipeline
