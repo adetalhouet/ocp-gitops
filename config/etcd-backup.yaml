@@ -58,7 +58,7 @@ metadata:
   labels:
     app: openshift-backup
 spec:
-  schedule: "* * * * *"
+  schedule: "0 0 * * *"
   concurrencyPolicy: Forbid
   successfulJobsHistoryLimit: 5
   failedJobsHistoryLimit: 5
