@@ -55,7 +55,7 @@ spec:
         - name: STATE
           value: "pending"
         - name: TARGET_URL
-          value: https://youcantaccess.it
+          value: https://console-openshift-console.apps.ca-central.adetalhouet.ca/k8s/ns/pipeline-demo/tekton.dev~v1beta1~PipelineRun/sanitize-yaml-$(params.pr-revision)/
         - name: GITHUB_TOKEN_SECRET_NAME
           value: github
         - name: GITHUB_TOKEN_SECRET_KEY

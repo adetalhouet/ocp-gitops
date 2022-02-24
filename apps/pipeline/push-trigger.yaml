@@ -1,21 +1,3 @@
-
-apiVersion: tekton.dev/v1beta1
-kind: Task
-metadata:
-  name: sanitize-yaml
-  namespace: pipeline-demo
-spec:
-  workspaces:
-  - name: source
-  steps:
-    - name: validate-manifests
-      image: quay.io/adetalho/tekton-task:latest
-      workingDir: /workspace/source
-      command: ["/bin/bash", "-c"]
-      args:
-        - |-
-          cd / && ./validate_manifests.sh
----
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
