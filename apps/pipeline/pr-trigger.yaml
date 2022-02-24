@@ -186,7 +186,7 @@ kind: Route
 metadata:
   labels:
     eventlistener: eventlistener-git-pr-status-github-pr
-  name: sanitize-yaml-route
+  name: eventlistener-git-pr-status
   namespace: pipeline-demo
 spec:
   port:

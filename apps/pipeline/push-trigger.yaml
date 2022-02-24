@@ -158,7 +158,7 @@ kind: Route
 metadata:
   labels:
     eventlistener: eventlistener-git-push-status-github
-  name: sanitize-yaml-route
+  name: eventlistener-git-push-status-route
   namespace: pipeline-demo
 spec:
   port:
