@@ -1,0 +1,5 @@
+kubectl apply -f https://raw.githubusercontent.com/tektoncd/catalog/main/task/github-set-status/0.4/github-set-status.yaml -n pipeline-demo
+
+
+
+kubectl create secret generic github --from-literal token="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" -n pipeline-demo

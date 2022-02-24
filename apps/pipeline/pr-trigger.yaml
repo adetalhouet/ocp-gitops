@@ -1,0 +1,196 @@
+
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: sanitize-yaml
+  namespace: pipeline-demo
+spec:
+  workspaces:
+    - name: output
+  results:
+    - name: status
+      description: Execution Status
+  steps:
+    - name: validate-manifests
+      image: quay.io/adetalho/tekton-task:latest
+      workingDir: /workspace/source
+      command: ["/bin/bash", "-c"]
+      args:
+        - |-
+          cd / && ./validate_manifests.sh
+          if [[ $? == 0 ]]
+          then 
+            echo -n "success" | tee $(results.status.path)
+          else
+            echo -n "failure" | tee $(results.status.path)
+          fi
+---
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: pipeline-git-pr-status
+  namespace: pipeline-demo
+spec:
+  params:
+    - name: pr-repository
+      description: The source git repo for the PullRequest
+      default: ""
+    - name: pr-revision
+      description: the commit id/sha for the PullRequest
+      default: ""
+  workspaces:
+    - name: pipeline-ws
+  tasks:
+    - name: set-git-commit-pending
+      taskRef:
+        name: github-set-status
+        kind: Task
+      params:
+        - name: REPO_FULL_NAME
+          value: adetalhouet/ocp-gitops
+        - name: SHA
+          value: $(params.pr-revision)
+        - name: DESCRIPTION
+          value: "Build is starting"
+        - name: STATE
+          value: "pending"
+        - name: TARGET_URL
+          value: https://youcantaccess.it
+        - name: GITHUB_TOKEN_SECRET_NAME
+          value: github
+        - name: GITHUB_TOKEN_SECRET_KEY
+          value: token
+    - name: git-clone
+      taskRef:
+        name: git-clone
+        kind: ClusterTask
+      runAfter: [set-git-commit-pending]
+      params:
+        - name: url
+          value: $(params.pr-repository)
+        - name: subdirectory
+          value: ""
+        - name: deleteExisting
+          value: "true"
+        - name: revision
+          value: $(params.pr-revision)
+      workspaces:
+        - name: output
+          workspace: pipeline-ws
+    - name: sanitize
+      runAfter: [git-clone]
+      taskRef:
+        name: sanitize-yaml
+      workspaces:
+        - name: output
+          workspace: pipeline-ws
+  finally:
+    - name: set-git-commit-status
+      taskRef:
+        name: github-set-status
+        kind: Task
+      params:
+        - name: REPO_FULL_NAME
+          value: adetalhouet/ocp-gitops
+        - name: SHA
+          value: $(params.pr-revision)
+        - name: DESCRIPTION
+          value: "Build is finished"
+        - name: STATE
+          value: $(tasks.sanitize.results.status)
+        - name: TARGET_URL
+          value: https://console-openshift-console.apps.ca-central.adetalhouet.ca/k8s/ns/pipeline-demo/tekton.dev~v1beta1~PipelineRun/sanitize-yaml-$(params.pr-revision)/
+        - name: GITHUB_TOKEN_SECRET_NAME
+          value: github
+        - name: GITHUB_TOKEN_SECRET_KEY
+          value: token
+---
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerTemplate
+metadata:
+  namespace: pipeline-demo
+  name: triggertemplate-git-pr-status
+spec:
+  params:
+    - name: pr-repository
+      description: The source git repo for the PullRequest
+      default: "https://github.com/adetalhouet/ocp-gitops"
+    - name: pr-revision
+      description: the commit id/sha for the PullRequest
+      default: " "
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1beta1
+      kind: PipelineRun
+      metadata:
+        name: sanitize-yaml-$(tt.params.pr-revision)
+      spec:
+        pipelineRef:
+          name: pipeline-git-pr-status
+        params:
+          - name: pr-repository
+            value: $(tt.params.pr-repository)
+          - name: pr-revision
+            value: $(tt.params.pr-revision)
+        workspaces:
+          - name: pipeline-ws
+            volumeClaimTemplate:
+              spec:
+                accessModes:
+                  - ReadWriteOnce
+                resources:
+                  requests:
+                    storage: 500Mi
+---
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerBinding
+metadata:
+  namespace: pipeline-demo
+  name: triggerbinding-git-pr-status-github-pr
+spec:
+  params:
+    - name: pr-repository
+      value: "$(body.pull_request.head.repo.clone_url)"
+    - name: pr-revision
+      value: "$(body.pull_request.head.sha)"
+---
+apiVersion: triggers.tekton.dev/v1beta1
+kind: Trigger
+metadata:
+  name: trigger-git-pr-status-github-pr
+  namespace: pipeline-demo
+spec:
+  serviceAccountName: pipeline
+  interceptors:
+    - ref:
+        name: "github"
+      params:
+        - name: "eventTypes"
+          value: ["pull_request"]
+  bindings:
+    - ref: triggerbinding-git-pr-status-github-pr
+  template:
+    ref: triggertemplate-git-pr-status
+---
+apiVersion: triggers.tekton.dev/v1beta1
+kind: EventListener
+metadata:
+  namespace: pipeline-demo
+  name: eventlistener-git-pr-status-github-pr
+spec:
+  serviceAccountName: pipeline
+  triggers:
+    - triggerRef: trigger-git-pr-status-github-pr
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    eventlistener: eventlistener-git-pr-status-github-pr
+  name: sanitize-yaml-route
+  namespace: pipeline-demo
+spec:
+  port:
+    targetPort: http-listener
+  to:
+    kind: Service
+    name: el-eventlistener-git-pr-status-github-pr
