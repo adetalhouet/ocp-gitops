@@ -1,9 +1,10 @@
-test23hy
 # GitOps cluster and application configuration
 
 This repository contains all the cluster and application configuration for my various lab environments.
 
 All the applications can be customized using overlay, following the kustomize practice.
+
+Any commit is validated against a tekton pipeline that sanitize the code.
 
 ## Table of Contents
 
