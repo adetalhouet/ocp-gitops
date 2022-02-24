@@ -11,6 +11,9 @@ patches:
      kind: Subscription
      name: ansible-automation-platform
    patch: |-
+    - op: replace
+      path: /spec/channel
+      value: 'early-access'
     - op: add
       path: /spec/startingCSV
       value: ansible-automation-platform-operator.v2.0.0
