@@ -85,7 +85,7 @@ spec:
     spec:
       serviceAccountName: pipeline
       pipelineRef:
-        name: sanitize
+        name: pipeline-git-push-status
       params:
       - name: git-repo-name
         value: $(tt.params.git-repo-name)
