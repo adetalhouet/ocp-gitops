@@ -35,7 +35,7 @@ spec:
     taskRef:
       name: sanitize-yaml
     workspaces:
-    - name: source
+    - name: output
       workspace: shared-workspace
     runAfter:
     - fetch-repository
