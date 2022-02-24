@@ -19,7 +19,7 @@ spec:
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  name: sanitize
+  name: pipeline-git-push-status
   namespace: pipeline-demo
 spec:
   workspaces:
@@ -61,7 +61,7 @@ spec:
 apiVersion: triggers.tekton.dev/v1beta1
 kind: TriggerBinding
 metadata:
-  name: sanitize-yaml-binding
+  name: triggerbinding-git-push-status
   namespace: pipeline-demo
 spec:
   params:
@@ -79,7 +79,7 @@ spec:
 apiVersion: triggers.tekton.dev/v1beta1
 kind: TriggerTemplate
 metadata:
-  name: sanitize-yaml-tt
+  name: triggertemplate-git-push-status
   namespace: pipeline-demo
 spec:
   params:
@@ -128,7 +128,7 @@ spec:
 apiVersion: triggers.tekton.dev/v1beta1
 kind: Trigger
 metadata:
-  name: sanitize-yaml-t
+  name: trigger-git-push-status-github
   namespace: pipeline-demo
 spec:
   serviceAccountName: pipeline
@@ -139,25 +139,25 @@ spec:
         - name: "eventTypes"
           value: ["push"]
   bindings:
-    - ref: sanitize-yaml-binding
+    - ref: triggerbinding-git-push-status
   template:
-    ref: sanitize-yaml-tt
+    ref: triggertemplate-git-push-status
 ---
 apiVersion: triggers.tekton.dev/v1beta1
 kind: EventListener
 metadata:
-  name: sanitize-yaml-el
+  name: eventlistener-git-push-status-github
   namespace: pipeline-demo
 spec:
   serviceAccountName: pipeline
   triggers:
-    - triggerRef: sanitize-yaml-t
+    - triggerRef: trigger-git-push-status-github
 ---
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
   labels:
-    eventlistener: sanitize-yaml-el
+    eventlistener: eventlistener-git-push-status-github
   name: sanitize-yaml-route
   namespace: pipeline-demo
 spec:
@@ -165,4 +165,4 @@ spec:
     targetPort: http-listener
   to:
     kind: Service
-    name: el-sanitize-yaml-el
+    name: el-eventlistener-git-push-status-github
