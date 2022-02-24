@@ -15,9 +15,6 @@ patches:
       path: /spec/channel
       value: 'early-access'
     - op: add
-      path: /spec/startingCSV
-      value: ansible-automation-platform-operator.v2.0.0
-    - op: add
       path: /spec/installPlanApproval
       value: Manual
 -  target:
