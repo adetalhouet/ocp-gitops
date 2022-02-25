@@ -1,5 +1,7 @@
 # GitOps cluster and application configuration
 
+Demo for Shaw
+
 This repository contains all the cluster and application configuration for my various lab environments.
 
 All the applications can be customized using overlay, following the kustomize practice.
