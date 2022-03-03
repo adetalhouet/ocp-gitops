@@ -24,7 +24,7 @@ spec:
           volumeMode: Block
       count: 1
       replica: 3
-    - count: 2
+    - count: 1
       dataPVCTemplate:
         spec:
           accessModes:
@@ -35,4 +35,4 @@ spec:
           storageClassName: lso-blockclass
           volumeMode: Block
       name: ocs-deviceset2-lso-blockclass
-      replica: 1
+      replica: 2
