@@ -14,7 +14,7 @@ data:
           storageClassName: ocs-storagecluster-ceph-rbd
           resources:
             requests:
-              storage: 40Gi
+              storage: 10Gi
     alertmanagerMain:
       volumeClaimTemplate:
         metadata:
@@ -23,4 +23,4 @@ data:
           storageClassName: ocs-storagecluster-ceph-rbd
           resources:
             requests:
-              storage: 40Gi
+              storage: 10Gi
