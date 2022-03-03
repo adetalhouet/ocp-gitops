@@ -5,6 +5,16 @@ kind: Kustomization
 bases:
   - github.com/redhat-cop/gitops-catalog/openshift-container-storage-operator/operator/overlays/stable-4.8?ref=main
 
+patches:
+  - target:
+      kind: Subscription
+      name: ocs-operator
+      namespace: openshift-storage
+    patch: |-
+      - op: replace
+        path: /spec/channel
+        value: 'stable-4.9'
+
 resources:
 - 00-cli-job-sa-and-role.yaml
 - 01-presync-csi-tolerations.yaml
