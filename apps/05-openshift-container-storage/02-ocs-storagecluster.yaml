@@ -23,4 +23,16 @@ spec:
           storageClassName: gp2
           volumeMode: Block
       count: 1
-      replica: 5
+      replica: 3
+    - count: 2
+      dataPVCTemplate:
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: '1'
+          storageClassName: lso-blockclass
+          volumeMode: Block
+      name: ocs-deviceset2-lso-blockclass
+      replica: 1
