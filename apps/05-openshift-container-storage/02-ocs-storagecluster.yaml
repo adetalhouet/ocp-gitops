@@ -23,4 +23,4 @@ spec:
           storageClassName: gp2
           volumeMode: Block
       count: 1
-      replica: 3
+      replica: 5
