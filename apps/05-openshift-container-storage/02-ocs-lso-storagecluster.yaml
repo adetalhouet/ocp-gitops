@@ -7,7 +7,7 @@ metadata:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   storageDeviceSets:
-    - count: 5
+    - count: 3
       dataPVCTemplate:
         spec:
           accessModes:
@@ -18,6 +18,18 @@ spec:
           storageClassName: lso-blockclass
           volumeMode: Block
       name: ocs-deviceset-lso-blockclass
+      replica: 1
+    - count: 2
+      dataPVCTemplate:
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: '1'
+          storageClassName: lso-blockclass
+          volumeMode: Block
+      name: ocs-deviceset2-lso-blockclass
       replica: 1
   encryption:
     kms: {}
