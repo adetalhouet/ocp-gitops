@@ -1,7 +1,6 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  creationTimestamp: "2021-12-13T19:15:13Z"
   name: open-cluster-management:subscription-admin
 roleRef:
   apiGroup: rbac.authorization.k8s.io
