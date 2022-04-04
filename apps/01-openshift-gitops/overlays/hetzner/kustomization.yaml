@@ -4,17 +4,3 @@ kind: Kustomization
 
 bases:
   - ../../base
-
-patches:
--  target:
-     kind: ArgoCD
-     name: openshift-gitops
-   patch: |-
-    - op: replace
-      path: /spec/oidcConfig
-      value: |
-          name: Keycloak
-          issuer: https://keycloak-openshift-sso.apps.hetzner.sandbox1091.opentlc.com/auth/realms/openshift
-          clientID: argocd 
-          clientSecret: $oidc.keycloak.clientSecret 
-          requestedScopes: ["openid", "profile", "email", "groups"]
