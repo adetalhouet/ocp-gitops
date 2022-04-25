@@ -8,15 +8,12 @@ bases:
 
 patches:
 -  target:
-     kind: Subscription
-     name: ansible-automation-platform
+     kind: OperatorGroup
+     name: ansible-automation-platform-operator
    patch: |-
     - op: replace
-      path: /spec/channel
-      value: 'early-access'
-    - op: add
-      path: /spec/installPlanApproval
-      value: Manual
+      path: /spec/targetNamespaces
+      value: []
 -  target:
      kind: ConsoleLink
      name: controller
