@@ -12,9 +12,6 @@ spec:
   observabilityAddonSpec:
     enableMetrics: true
     interval: 300
-  retentionResolution1h: 30d
-  retentionResolution5m: 14d
-  retentionResolutionRaw: 5d
   storageConfig:
     alertmanagerStorageSize: 1Gi
     compactStorageSize: 100Gi
