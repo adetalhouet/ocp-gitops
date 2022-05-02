@@ -6,16 +6,22 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
+  enableDownsampling: true
   imagePullPolicy: Always
   imagePullSecret: multiclusterhub-operator-pull-secret
   observabilityAddonSpec:
     enableMetrics: true
+    interval: 300
   retentionResolution1h: 30d
   retentionResolution5m: 14d
   retentionResolutionRaw: 5d
   storageConfig:
+    alertmanagerStorageSize: 1Gi
+    compactStorageSize: 100Gi
     metricObjectStorage:
       key: thanos.yaml
       name: thanos-object-storage
-    statefulSetStorageClass: ocs-storagecluster-ceph-rbd
-
+    receiveStorageSize: 100Gi
+    ruleStorageSize: 1Gi
+    storageClass: ocs-storagecluster-ceph-rbd
+    storeStorageSize: 10Gi
