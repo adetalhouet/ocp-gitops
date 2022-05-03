@@ -14,3 +14,12 @@ resources:
 - 05-ocs-internal-registry.yaml
 - 06-metrics-use-ocs.yaml
 - 07-postsync-default-storageclass.yaml
+
+patches:
+  - target:
+      kind: Subscription
+      name: odf-operator
+    patch: |-
+      - op: replace
+        path: /spec/channel
+        value: 'stable-4.10'

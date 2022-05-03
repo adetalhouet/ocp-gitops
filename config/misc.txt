@@ -1,0 +1,5 @@
+```
+oc patch clusterversion version --type json -p '[{"op": "add", "path": "/spec/overrides", "value": [{"kind": "ClusterOperator", "group": "config.openshift.io", "namespace": "default", "name": "kube-apiserver", "unmanaged": true}]}]'
+
+oc patch clusterversion version --type json -p '[{"op": "remove", "path": "/spec/overrides"}]'
+```
