@@ -5,7 +5,7 @@ ocp-gitops:
 
   applications:
     01-openshift-gitops:
-      enabled: false
+      enabled: true
     02-sealed-secrets:
       enabled: true
     03-letsencrypt-certs:
