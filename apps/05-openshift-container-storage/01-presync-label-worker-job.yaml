@@ -3,8 +3,6 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   annotations:
-    argocd.argoproj.io/hook: PreSync
-    argocd.argoproj.io/hook-delete-policy: HookSucceeded
   name: presync-label-storage-node
   namespace: openshift-storage
 spec:

@@ -13,6 +13,26 @@ spec:
       kinds:
       - TaskRun
       - PipelineRun
+  image: quay.io/jfischer-redhat/argocd
+  initialSSHKnownHosts:
+    keys: |
+      "test.org ssh-rsa test"
+  route:
+    enabled: true
+    tls:
+      insecureEdgeTerminationPolicy: Redirect
+      termination: edge
+  controller:
+    env:
+      - name: ARGOCD_K8S_CLIENT_BURST
+        value: '500'
+      - name: ARGOCD_K8S_CLIENT_QPS
+        value: '500'
+  rbac:
+    policy: |
+      g, system:cluster-admins, role:admin
+      g, ArgoCDAdmins, role:admin
+    scopes: '[groups]'
   dex:
     openShiftOAuth: true
   server:
