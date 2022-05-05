@@ -5,5 +5,4 @@ kind: Kustomization
 resources:
   - 02-cr-config.yaml
   - 04-cluster-admin-gitops.yaml
-  - 05-argocd-rbac-cm.yaml
   - 06-argocdadmins-group-base.yaml
