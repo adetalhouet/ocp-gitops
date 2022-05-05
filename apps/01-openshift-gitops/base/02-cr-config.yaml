@@ -13,7 +13,6 @@ spec:
       kinds:
       - TaskRun
       - PipelineRun
-  image: quay.io/jfischer-redhat/argocd:v2.2.8-1
   initialSSHKnownHosts:
     keys: |
       "test.org ssh-rsa test"
