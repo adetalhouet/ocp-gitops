@@ -1,0 +1,33 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+  name: mcp-worker-resume-job
+  namespace: openshift-gitops
+spec:
+  template:
+    spec:
+      containers:
+        - image: registry.redhat.io/openshift4/ose-cli:v4.4
+          command:
+            - /bin/bash
+            - -c
+            - |
+              echo -n "Waiting for the MCP $MCP to converge."
+              sleep $SLEEP
+              echo $(oc patch --type=merge --patch='{"spec":{"paused":false}}' machineconfigpool/$MCP)
+              echo "DONE"
+          imagePullPolicy: Always
+          name: mcp-worker-resume-job
+          env:
+          - name: SLEEP
+            value: "5"
+          - name: MCP 
+            value: worker
+      dnsPolicy: ClusterFirst
+      restartPolicy: OnFailure
+      serviceAccount: sync-job-sa
+      serviceAccountName: sync-job-sa
+      terminationGracePeriodSeconds: 30

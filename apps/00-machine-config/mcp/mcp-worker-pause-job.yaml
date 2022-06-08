@@ -1,0 +1,30 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+  name: mcp-worker-pause-job
+  namespace: openshift-gitops
+spec:
+  template:
+    spec:
+      containers:
+        - image: registry.redhat.io/openshift4/ose-cli:v4.4
+          command:
+            - /bin/bash
+            - -c
+            - |
+              echo -n "Waiting for the MCP $MCP to converge."
+              echo $(oc patch --type=merge --patch='{"spec":{"paused":true}}' machineconfigpool/$MCP)
+              sleep $SLEEP
+              echo "DONE"
+          imagePullPolicy: IfNotPresent
+          name: mcp-worker-pause-job
+          env:
+          - name: SLEEP
+            value: "10"
+          - name: MCP 
+            value: worker
+      restartPolicy: Never
+      serviceAccount: sync-job-sa
