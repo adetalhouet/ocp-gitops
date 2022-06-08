@@ -16,11 +16,6 @@ spec:
   initialSSHKnownHosts:
     keys: |
       adetalhouet-t640-1 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCXBlG+5FRGFwLAxhk88Nce10VwN7W0N9+aBKzoXWx/Y3h5eJmwdy3apo+kBxEbf+GW01u9EFSV3MZR+uaufvT0t0fF1zyFV2pB+HNVBPoOKs7ZGaqNzWi4uR0REBH+rIeoY7eR528kSbxHZNWjzxB6jc/PCmF7gM/MWnNFieZKLBwoLpC3rOEorF6Q5GRj0c7EOYn0sdK149i1BUhJFWEJfxXSS5pkArIa4TCW2hgO06TN41UpCPa17KDG+rxrrgs0i9J//RTke/w4PnddlY0ETASZXgNbDOJwldTGlmQTjzrjrBMgzf950xLnHiB2qX7SgZL2xrC4pO3i2RZezeIPujO3RAQjP+LAkUgG41Ui0d8v2dkZ53/OSfTXx3GB2eIUTGLVK2iK3uKzKys178dwuSvFON60YPi/n/TX8va+XaJzc4JImFNFQW4wF+RlAc3v1hNGOKQhGODtaDZ7oU0BDd4ddXe8ownN7W0LSWufxyJ9x8jH+DiUAI1jDHvhtH0=
-  route:
-    enabled: true
-    tls:
-      insecureEdgeTerminationPolicy: Redirect
-      termination: edge
   controller:
     env:
       - name: ARGOCD_K8S_CLIENT_BURST
@@ -181,3 +176,30 @@ spec:
       ignoreDifferences: |
         jsonPointers:
         - /
+    nmstate.io/NodeNetworkConfigurationPolicy:
+      health.lua: |
+        hs = {}
+        if obj.status ~= nil then
+          if obj.status.conditions ~= nil then
+            for i, condition in ipairs(obj.status.conditions) do
+              if condition.type == "Degraded" and condition.status == "False" then
+                hs.status = "Degraded"
+                hs.message = condition.message
+                return hs
+              end
+              if condition.type == "Available" and condition.status == "False" then
+                hs.status = "Degraded"
+                hs.message = condition.message
+                return hs
+              end
+              if condition.type == "Available" and condition.status == "True" and condition.reason == "SuccessfullyConfigured" then
+                hs.status = "Healthy"
+                hs.message = condition.message
+                return hs
+              end
+            end
+          end
+        end
+        hs.status = "Progressing"
+        hs.message = "Waiting for NodeNetworkConfigurationPolicy"
+        return hs
