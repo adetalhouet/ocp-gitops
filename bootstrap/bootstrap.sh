@@ -17,7 +17,7 @@ CSV_STATUS="Pausing $SLEEP seconds..."
 while [ "$CSV_STATUS" != "Succeeded" ]; do
   echo "Waiting for the GitOps Operator to be ready. ($CSV_STATUS)"
   sleep $SLEEP
-  CSV_STATUS=$( oc get csv -n openshift-operators -l operators.coreos.com/openshift-gitops-operator.openshift-operators='' -o jsonpath={..status.phase} )
+  CSV_STATUS=$( oc get csv -n openshift-gitops-operator -l operators.coreos.com/openshift-gitops-operator.openshift-gitops-operator='' -o jsonpath={..status.phase} )
 done
 
 #Then apply the app-of-apps that will control everything
