@@ -14,3 +14,12 @@ resources:
 # - 02-cluster-curator.yaml
 - 03-subscription-admin.yaml
 # - 04-auto-import-in-argocd.yaml
+
+patches:
+  - target:
+      kind: Subscription
+      name: advanced-cluster-management
+    patch: |-
+      - op: replace
+        path: /spec/channel
+        value: 'release-2.5'

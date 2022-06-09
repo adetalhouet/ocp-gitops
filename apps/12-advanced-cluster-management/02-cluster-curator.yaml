@@ -2,7 +2,7 @@ apiVersion: cluster.open-cluster-management.io/v1beta1
 kind: ClusterCurator
 metadata:
   name: cluster-automation
-  namespace: acm-credentials
+  namespace: acm-playground
 spec:
   destroy:
     posthook:
