@@ -9,23 +9,23 @@ ocp-gitops:
     02-sealed-secrets:
       enabled: true
     03-letsencrypt-certs:
-      enabled: true
+      enabled: false
     04-local-storage-operator:
       enabled: true
     05-openshift-container-storage:
       enabled: true
     06-rhsso:
-      enabled: true
+      enabled: false
     07-oauth:
-      enabled: true
+      enabled: false
     08-openshift-elasticsearch:
       enabled: false
     09-openshift-logging:
       enabled: false
     10-ansible-automation-platform:
-      enabled: true
+      enabled: false
     11-quay-container-security:
-      enabled: true
+      enabled: false
     12-advanced-cluster-management:
       enabled: true
     13-advanced-cluster-management-policies:
@@ -35,5 +35,5 @@ ocp-gitops:
     15-advanced-cluster-managment-observability:
       enabled: true
     16-acs:
-      enabled: true
-      overlays: true
+      enabled: false
+      overlays: false
