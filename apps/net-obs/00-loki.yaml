@@ -32,7 +32,7 @@ spec:
     - name: loki
       image: grafana/loki
       volumeMounts:
-        - mountPath: "/loki"
+        - mountPath: "/loki-store"
           name: loki-store
 ---
 apiVersion: v1
