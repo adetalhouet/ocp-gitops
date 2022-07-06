@@ -22,6 +22,12 @@ spec:
       storage:
         size: 20G
         storageClassName: ocs-storagecluster-ceph-rbd
+      resources:
+        limits:
+          memory: 4Gi
+        requests:
+          cpu: 200m
+          memory: 4Gi
     retentionPolicy:
       application:
         maxAge: 15d
