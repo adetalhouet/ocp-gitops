@@ -19,9 +19,9 @@ ocp-gitops:
     07-oauth:
       enabled: false
     08-openshift-elasticsearch:
-      enabled: true
+      enabled: false
     09-openshift-logging:
-      enabled: true
+      enabled: false
     10-ansible-automation-platform:
       enabled: false
     11-quay-container-security:
