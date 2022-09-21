@@ -18,7 +18,7 @@ metadata:
   name: container-security-operator
   namespace: quay-operator
 spec:
-  channel: stable-3.6
+  channel: stable-3.7
   installPlanApproval: Automatic
   name: container-security-operator
   source: redhat-operators
