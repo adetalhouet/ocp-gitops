@@ -11,8 +11,8 @@ resources:
 - 01-presync-csi-tolerations.yaml
 - 01-presync-label-worker-job.yaml
 - 02-ocs-lso-storagecluster.yaml
-- 04-registry-pvc-create.yaml
-- 05-ocs-internal-registry.yaml
+# - 04-registry-pvc-create.yaml
+# - 05-ocs-internal-registry.yaml
 - 06-metrics-use-ocs.yaml
 - 07-postsync-default-storageclass.yaml
 
