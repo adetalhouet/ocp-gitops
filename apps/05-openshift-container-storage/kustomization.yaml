@@ -2,10 +2,11 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-bases:
-  - github.com/redhat-cop/gitops-catalog/openshift-data-foundation-operator/operator/overlays/stable-4.10?ref=main
+# bases:
+  #  - github.com/redhat-cop/gitops-catalog/openshift-data-foundation-operator/operator/overlays/stable-4.10?ref=main
 
 resources:
+- 00-install.yaml
 - 00-cli-job-sa-and-role.yaml
 - 01-presync-csi-tolerations.yaml
 - 01-presync-label-worker-job.yaml
@@ -15,7 +16,7 @@ resources:
 - 06-metrics-use-ocs.yaml
 - 07-postsync-default-storageclass.yaml
 
-# patches:
+patches:
 #   - target:
 #       kind: Subscription
 #       name: odf-operator
