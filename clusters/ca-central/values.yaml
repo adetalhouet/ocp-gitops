@@ -36,4 +36,4 @@ ocp-gitops:
       enabled: true
     16-acs:
       enabled: true
-      overlays: false
+      overlays: true
