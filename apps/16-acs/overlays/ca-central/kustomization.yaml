@@ -30,3 +30,12 @@ patches:
       path: /spec/template/spec/containers/0/env/3/value
       value: >-
         central-stackrox.apps.ca-central.adetalhouet.ca
+-  target:
+     kind: Job
+     name: create-cluster-init-bundle
+     namespace: stackrox
+   patch: |-
+    - op: replace
+      path: /spec/template/spec/containers/0/image
+      value: >-
+        registry.redhat.io/openshift4/ose-cli:latest
