@@ -1,0 +1,6 @@
+apiVersion: nodetopology.openshift.io/v1alpha1
+kind: NUMAResourcesScheduler
+metadata:
+  name: numaresourcesscheduler
+spec:
+  imageSpec: "registry.redhat.io/openshift4/noderesourcetopology-scheduler-container-rhel8:v4.11"
