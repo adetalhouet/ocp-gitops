@@ -31,12 +31,10 @@ applications:
     enabled: true
   12-advanced-cluster-management:
     enabled: true
-  13-advanced-cluster-management-policies:
-    enabled: true
-  14-advanced-cluster-management-apps:
-    enabled: true
   15-advanced-cluster-managment-observability:
     enabled: true
   16-acs:
     enabled: true
     overlays: true
+  17-net-obs:
+    enabled: true

@@ -1,5 +1,10 @@
 ---
 apiVersion: v1
+kind: Namespace
+metadata:
+  name: network-observability
+---
+apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: loki-store
