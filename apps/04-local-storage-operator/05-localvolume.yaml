@@ -18,3 +18,4 @@ spec:
       volumeMode: Block
       devicePaths:
         - /dev/vdb
+        - /dev/vdc
