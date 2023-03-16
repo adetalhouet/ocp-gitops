@@ -33,7 +33,7 @@ ocp-gitops:
     14-advanced-cluster-management-apps:
       enabled: false
     15-advanced-cluster-managment-observability:
-      enabled: true
+      enabled: false
     16-acs:
       enabled: false
       overlays: true
