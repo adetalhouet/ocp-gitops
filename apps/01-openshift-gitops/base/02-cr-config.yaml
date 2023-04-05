@@ -22,6 +22,13 @@ spec:
         value: '500'
       - name: ARGOCD_K8S_CLIENT_QPS
         value: '500'
+    resources:
+      limits:
+        cpu: "4"
+        memory: 4Gi
+      requests:
+        cpu: 250m
+        memory: 1Gi
   rbac:
     policy: |
       g, system:cluster-admins, role:admin
