@@ -13,7 +13,7 @@ ocp-gitops:
     04-local-storage-operator:
       enabled: true
     05-openshift-container-storage:
-      enabled: false
+      enabled: true
     06-rhsso:
       enabled: true
     07-oauth:
