@@ -13,7 +13,7 @@ resources:
 - 02-ocs-lso-storagecluster.yaml
 # - 04-registry-pvc-create.yaml
 # - 05-ocs-internal-registry.yaml
-- 06-metrics-use-ocs.yaml
+# - 06-metrics-use-ocs.yaml
 - 07-postsync-default-storageclass.yaml
 
 patches:
