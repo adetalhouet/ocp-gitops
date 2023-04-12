@@ -7,5 +7,5 @@ spec:
   additionalConfig:
     bucketclass: noobaa-default-bucket-class
   generateBucketName: acm-observability
-  objectBucketName: obc-openshift-storage-acm-observability
+  objectBucketName: obc-open-cluster-management-observability-acm-observability
   storageClassName: openshift-storage.noobaa.io
