@@ -11,9 +11,9 @@ ocp-gitops:
     03-letsencrypt-certs:
       enabled: true
     04-local-storage-operator:
-      enabled: false
+      enabled: true
     05-openshift-container-storage:
-      enabled: false
+      enabled: true
     06-rhsso:
       enabled: true
     07-oauth:
@@ -35,5 +35,5 @@ ocp-gitops:
     15-advanced-cluster-managment-observability:
       enabled: false
     16-acs:
-      enabled: false
+      enabled: true
       overlays: true
