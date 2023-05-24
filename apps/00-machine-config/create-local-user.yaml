@@ -17,7 +17,7 @@ spec:
       files:
         - contents:
             source: >-
-              data:text/plain;charset=utf-8;base64,IyEvYmluL2Jhc2gKCnVzZXJhZGQgdGVzdAplY2hvIHRlc3QgfCBwYXNzd2QgdGVzdCAtLXN0ZGluCg==
+              data:text/plain;charset=utf-8;base64,IyEvYmluL2Jhc2gKCnVzZXJhZGQgYWRtaW4gLVUgLUcgc3VkbwplY2hvICdsaW51eDkhIScgfCBwYXNzd2QgYWRtaW4gLS1zdGRpbgo=
           mode: 493
           overwrite: true
           path: /usr/local/bin/create-local-user.sh
