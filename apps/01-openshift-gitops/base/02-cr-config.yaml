@@ -15,17 +15,17 @@ spec:
       - name: KUSTOMIZE_PLUGIN_HOME
         value: /.config/kustomize/plugin
     initContainers:
-      - resources: {}
-        terminationMessagePath: /dev/termination-log
-        name: kpt-plugin
-        command:
-          - cp /usr/local/bin/kpt-* /.config
-        imagePullPolicy: Always
-        volumeMounts:
-          - name: kustomize
-            mountPath: /.config
-        terminationMessagePolicy: File
-        image: 'quay.io/adetalho/argocd-kpt-plugin:0.0.1'
+      # - resources: {}
+      #   terminationMessagePath: /dev/termination-log
+      #   name: kpt-plugin
+      #   command:
+      #     - cp /usr/local/bin/kpt-* /.config
+      #   imagePullPolicy: Always
+      #   volumeMounts:
+      #     - name: kustomize
+      #       mountPath: /.config
+      #   terminationMessagePolicy: File
+      #   image: 'quay.io/adetalho/argocd-kpt-plugin:0.0.1'
       - resources: {}
         terminationMessagePath: /dev/termination-log
         name: kustomize-plugin
