@@ -5,9 +5,61 @@ metadata:
   name: openshift-gitops
   namespace: openshift-gitops
 spec:
-  configManagementPlugins: "- name: kpt-repo\n  generate:\n    command: [\"/usr/local/bin/kpt-repo\"]\n
-    \ lockRepo: true\n- name: kpt-render\n  generate: \n    command: [\"/usr/local/bin/kpt-render\"]
-    \n  lockRepo: true \n"
+  repo:
+    env:
+      - name: ARGOCD_EXEC_TIMEOUT
+        value: 360s
+      - name: KUSTOMIZE_PLUGIN_HOME
+        value: /.config/kustomize/plugin
+    initContainers:
+      - resources: {}
+        terminationMessagePath: /dev/termination-log
+        name: kpt-plugin
+        command:
+          - cp /usr/local/bin/kpt-repo /usr/local/bin/kpt-render /.kpt
+        imagePullPolicy: Always
+        volumeMounts:
+          - mountPath: /.kpt
+            name: kpt
+        terminationMessagePolicy: File
+        image: 'quay.io/adetalho/argocd-kpt-plugin:0.0.1'
+      - resources: {}
+        terminationMessagePath: /dev/termination-log
+        name: kustomize-plugin
+        command:
+          - /exportkustomize.sh
+        imagePullPolicy: Always
+        volumeMounts:
+          - mountPath: /.config
+            name: kustomize
+        terminationMessagePolicy: File
+        image: 'quay.io/openshift-kni/ztp-site-generator:latest'
+        args:
+          - /.config
+    resources:
+      limits:
+        cpu: '8'
+        memory: 16Gi
+      requests:
+        cpu: '1'
+        memory: 2Gi
+    volumeMounts:
+      - mountPath: /.config
+        name: kustomize
+      - mountPath: /.kpt
+        name: kpt
+    volumes:
+      - name: kustomize
+      - name: kpt
+  configManagementPlugins: |
+    - name: kpt-repo
+      generate:
+        command: ["/.kpt/kpt-repo"]
+      lockRepo: true
+    - name: kpt-render
+      generate: 
+        command: ["/.kpt/kpt-render"] 
+      lockRepo: true 
   resourceExclusions: |
     - apiGroups:
       - tekton.dev
