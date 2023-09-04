@@ -7,8 +7,10 @@ metadata:
 spec:
   repo:
     volume:
-      - name: kustomize
-        emptyDir: {}
+    - name: kustomize
+      emptyDir: {}
+    - name: plugins
+      emptyDir: {}      
     env:
       - name: ARGOCD_EXEC_TIMEOUT
         value: 360s
@@ -49,11 +51,11 @@ spec:
   configManagementPlugins: |
     - name: kpt-repo
       generate:
-        command: ["/var/run/argocd/kpt-repo"]
+        command: ["/home/argocd/cmp-server/plugins/kpt-repo"]
       lockRepo: true
     - name: kpt-render
       generate: 
-        command: ["/var/run/argocd/kpt-render"] 
+        command: ["/home/argocd/cmp-server/plugins/kpt-render"] 
       lockRepo: true 
   resourceExclusions: |
     - apiGroups:
