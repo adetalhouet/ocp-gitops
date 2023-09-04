@@ -16,11 +16,11 @@ spec:
         terminationMessagePath: /dev/termination-log
         name: kpt-plugin
         command:
-          - cp /usr/local/bin/kpt-repo /usr/local/bin/kpt-render /.kpt
+          - mkdir /.config/kpt && cp /usr/local/bin/kpt-repo /usr/local/bin/kpt-render /.config/kpt
         imagePullPolicy: Always
         volumeMounts:
-          - mountPath: /.kpt
-            name: kpt
+          - mountPath: /.config
+            name: kustomize
         terminationMessagePolicy: File
         image: 'quay.io/adetalho/argocd-kpt-plugin:0.0.1'
       - resources: {}
@@ -46,19 +46,16 @@ spec:
     volumeMounts:
       - mountPath: /.config
         name: kustomize
-      - mountPath: /.kpt
-        name: kpt
     volumes:
       - name: kustomize
-      - name: kpt
   configManagementPlugins: |
     - name: kpt-repo
       generate:
-        command: ["/.kpt/kpt-repo"]
+        command: ["/.config/kpt/kpt-repo"]
       lockRepo: true
     - name: kpt-render
       generate: 
-        command: ["/.kpt/kpt-render"] 
+        command: ["/.config/kpt/kpt-render"] 
       lockRepo: true 
   resourceExclusions: |
     - apiGroups:
