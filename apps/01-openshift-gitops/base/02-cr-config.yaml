@@ -16,7 +16,7 @@ spec:
         terminationMessagePath: /dev/termination-log
         name: kpt-plugin
         command:
-          - cp -r /usr/local/bin/kpt-* /.config && chmod 1001 /.config/kpt-*
+          - cp /usr/local/bin/kpt-* /.config
         imagePullPolicy: Always
         volumeMounts:
           - name: kustomize
