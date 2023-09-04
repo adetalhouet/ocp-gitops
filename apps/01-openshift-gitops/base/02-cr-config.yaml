@@ -5,6 +5,12 @@ metadata:
   name: openshift-gitops
   namespace: openshift-gitops
 spec:
+  configManagementPlugins: "- name: kpt-repo\n  generate:\n    command: [\"/usr/local/bin/kpt-repo\"]\n
+    \ lockRepo: true\n- name: kpt-render\n  generate: \n    command: [\"/usr/local/bin/kpt-render\"]
+    \n  lockRepo: true \n"
+  repo: 
+    image: quay.io/adetalho/argocd-kpt-plugin:0.0.1
+    mountsatoken: true
   resourceExclusions: |
     - apiGroups:
       - tekton.dev
