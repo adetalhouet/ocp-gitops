@@ -16,7 +16,7 @@ spec:
         terminationMessagePath: /dev/termination-log
         name: kpt-plugin
         command:
-          - mkdir /.config/kpt && cp /usr/local/bin/kpt-repo /usr/local/bin/kpt-render /.config/kpt
+          - cp /usr/local/bin/kpt-repo /usr/local/bin/kpt-render /.config
         imagePullPolicy: Always
         volumeMounts:
           - mountPath: /.config
@@ -51,11 +51,11 @@ spec:
   configManagementPlugins: |
     - name: kpt-repo
       generate:
-        command: ["/.config/kpt/kpt-repo"]
+        command: ["/.config/kpt-repo"]
       lockRepo: true
     - name: kpt-render
       generate: 
-        command: ["/.config/kpt/kpt-render"] 
+        command: ["/.config/kpt-render"] 
       lockRepo: true 
   resourceExclusions: |
     - apiGroups:
