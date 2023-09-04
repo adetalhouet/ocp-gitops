@@ -6,7 +6,7 @@ metadata:
   namespace: openshift-gitops
 spec:
   repo:
-    volume:
+    volumes:
     - name: kustomize
       emptyDir: {}
     - name: plugins
