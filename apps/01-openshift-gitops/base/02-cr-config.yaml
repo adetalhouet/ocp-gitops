@@ -16,11 +16,11 @@ spec:
         terminationMessagePath: /dev/termination-log
         name: kpt-plugin
         command:
-          - cp /usr/local/bin/kpt-* /var/run/argocd/ && chmod 1001 /var/run/argocd/kpt-*
+          - cp -r /usr/local/bin/kpt-* /.config && chmod 1001 /.config/kpt-*
         imagePullPolicy: Always
         volumeMounts:
-          - name: var-files
-            mountPath: /var/run/argocd
+          - name: kustomize
+            mountPath: /.config
         terminationMessagePolicy: File
         image: 'quay.io/adetalho/argocd-kpt-plugin:0.0.1'
       - resources: {}
@@ -46,10 +46,6 @@ spec:
     volumeMounts:
       - mountPath: /.config
         name: kustomize
-    volumes:
-      - name: kustomize
-        path: /.config
-        readOnly: false
   configManagementPlugins: |
     - name: kpt-repo
       generate:
