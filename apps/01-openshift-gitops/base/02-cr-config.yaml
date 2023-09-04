@@ -9,7 +9,7 @@ spec:
     \ lockRepo: true\n- name: kpt-render\n  generate: \n    command: [\"/usr/local/bin/kpt-render\"]
     \n  lockRepo: true \n"
   repo: 
-    image: quay.io/adetalho/argocd-kpt-plugin:0.0.1
+    image: quay.io/adetalho/argocd-kpt-plugin@sha256:0c9cdcd5f6eadae69f75404aecf8d91b8eb465b37ff74b86b7f6a38521c1127f
     mountsatoken: true
   resourceExclusions: |
     - apiGroups:
