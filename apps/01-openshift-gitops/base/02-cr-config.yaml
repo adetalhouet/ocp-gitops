@@ -6,6 +6,9 @@ metadata:
   namespace: openshift-gitops
 spec:
   repo:
+    volume:
+      - name: kustomize
+        emptyDir: {}
     env:
       - name: ARGOCD_EXEC_TIMEOUT
         value: 360s
