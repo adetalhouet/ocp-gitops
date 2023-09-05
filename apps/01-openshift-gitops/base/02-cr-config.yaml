@@ -9,25 +9,26 @@ spec:
     volumes:
     - name: kustomize
       emptyDir: {}
-    # - name: plugins
-    #   emptyDir: {}      
     env:
       - name: ARGOCD_EXEC_TIMEOUT
         value: 360s
       - name: KUSTOMIZE_PLUGIN_HOME
         value: /.config/kustomize/plugin
     initContainers:
-      # - resources: {}
-      #   terminationMessagePath: /dev/termination-log
-      #   name: kpt-plugin
-      #   command:
-      #     - cp /usr/local/bin/kpt-* /tmp
-      #   imagePullPolicy: Always
-      #   volumeMounts:
-      #     - name: plugins
-      #       mountPath: /tmp
-      #   terminationMessagePolicy: File
-      #   image: 'quay.io/adetalho/argocd-kpt-plugin:0.0.1'
+      - resources: {}
+        terminationMessagePath: /dev/termination-log
+        name: kpt-plugin
+        command:
+          - /bin/sh
+        args:
+          - '-c'
+          - cp /usr/local/bin/kpt-* /tmp
+        imagePullPolicy: Always
+        volumeMounts:
+          - name: plugins
+            mountPath: /tmp
+        terminationMessagePolicy: File
+        image: 'quay.io/adetalho/argocd-kpt-plugin:0.0.1'
       - resources: {}
         terminationMessagePath: /dev/termination-log
         name: kustomize-plugin
