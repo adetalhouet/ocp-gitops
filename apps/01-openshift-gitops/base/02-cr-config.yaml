@@ -6,8 +6,35 @@ metadata:
   namespace: openshift-gitops
 spec:
   repo:
+    sidecarContainers:
+      - command:
+          - /var/run/argocd/argocd-cmp-server
+        image: index.docker.io/bluebrown/argocd-cmp-kpt
+        name: cmp-kpt
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 256Mi
+          requests:
+            cpu: 10m
+            memory: 32Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          readOnlyRootFilesystem: true
+        volumeMounts:
+          - mountPath: /var/run/argocd
+            name: var-files
+          - mountPath: /home/argocd/cmp-server/plugins
+            name: plugins
+          - mountPath: /tmp
+            name: cmp-tmp
     volumes:
     - name: kustomize
+      emptyDir: {}
+    - name: cmp-tmp
       emptyDir: {}
     env:
       - name: ARGOCD_EXEC_TIMEOUT
@@ -50,6 +77,13 @@ spec:
         cpu: '1'
         memory: 2Gi
   configManagementPlugins: |
+    - name: kpt
+      discover:
+        fileName: Kptfile
+      lockRepo: true
+      generate:
+        command:
+          - cmp-generate
     - name: kpt-repo
       generate:
         command: ["/home/argocd/cmp-server/plugins/kpt-repo"]
