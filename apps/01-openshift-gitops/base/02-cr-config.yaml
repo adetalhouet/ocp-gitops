@@ -10,6 +10,7 @@ spec:
       - command:
           - /var/run/argocd/argocd-cmp-server
         image: quay.io/adetalho/argocd-ktp-nephio-cmd:0.0.1
+        imagePullPolicy: Always
         name: cmp-kpt
         resources:
           limits:
