@@ -31,10 +31,14 @@ spec:
             name: plugins
           - mountPath: /tmp
             name: cmp-tmp
+          - mountPath: /.kpt
+            name: kpt-cache
     volumes:
     - name: kustomize
       emptyDir: {}
     - name: cmp-tmp
+      emptyDir: {}
+    - name: kpt-cache
       emptyDir: {}
     env:
       - name: ARGOCD_EXEC_TIMEOUT
