@@ -9,7 +9,7 @@ spec:
     sidecarContainers:
       - command:
           - /var/run/argocd/argocd-cmp-server
-        image: index.docker.io/bluebrown/argocd-cmp-kpt
+        image: quay.io/adetalho/argocd-ktp-nephio-cmd:0.0.1
         name: cmp-kpt
         resources:
           limits:
