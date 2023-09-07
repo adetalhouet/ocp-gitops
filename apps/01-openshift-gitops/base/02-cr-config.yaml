@@ -60,7 +60,7 @@ spec:
           - name: plugins
             mountPath: /tmp
         terminationMessagePolicy: File
-        image: 'quay.io/adetalho/argocd-kpt-plugin:0.0.3'
+        image: 'quay.io/adetalho/argocd-kpt-plugin:0.0.4'
       - resources: {}
         terminationMessagePath: /dev/termination-log
         name: kustomize-plugin
