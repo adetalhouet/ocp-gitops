@@ -6,40 +6,8 @@ metadata:
   namespace: openshift-gitops
 spec:
   repo:
-    sidecarContainers:
-      - command:
-          - /var/run/argocd/argocd-cmp-server
-        image: quay.io/adetalho/argocd-ktp-nephio-cmd:0.0.1
-        imagePullPolicy: Always
-        name: cmp-kpt
-        resources:
-          limits:
-            cpu: 1000m
-            memory: 256Mi
-          requests:
-            cpu: 10m
-            memory: 32Mi
-        securityContext:
-          allowPrivilegeEscalation: false
-          capabilities:
-            drop:
-              - ALL
-          readOnlyRootFilesystem: true
-        volumeMounts:
-          - mountPath: /var/run/argocd
-            name: var-files
-          - mountPath: /home/argocd/cmp-server/plugins
-            name: plugins
-          - mountPath: /tmp
-            name: cmp-tmp
-          - mountPath: /.kpt
-            name: kpt-cache
     volumes:
     - name: kustomize
-      emptyDir: {}
-    - name: cmp-tmp
-      emptyDir: {}
-    - name: kpt-cache
       emptyDir: {}
     env:
       - name: ARGOCD_EXEC_TIMEOUT
@@ -67,14 +35,6 @@ spec:
       requests:
         cpu: '1'
         memory: 2Gi
-  configManagementPlugins: |
-    - name: kpt
-      discover:
-        fileName: Kptfile
-      lockRepo: true
-      generate:
-        command:
-          - cmp-generate
   resourceExclusions: |
     - apiGroups:
       - tekton.dev
