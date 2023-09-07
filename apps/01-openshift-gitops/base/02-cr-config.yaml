@@ -49,20 +49,6 @@ spec:
     initContainers:
       - resources: {}
         terminationMessagePath: /dev/termination-log
-        name: kpt-plugin
-        command:
-          - /bin/sh
-        args:
-          - '-c'
-          - cp /usr/local/bin/kpt-* /tmp
-        imagePullPolicy: Always
-        volumeMounts:
-          - name: plugins
-            mountPath: /tmp
-        terminationMessagePolicy: File
-        image: 'quay.io/adetalho/argocd-kpt-plugin:0.0.4'
-      - resources: {}
-        terminationMessagePath: /dev/termination-log
         name: kustomize-plugin
         command:
           - /exportkustomize.sh
@@ -89,14 +75,6 @@ spec:
       generate:
         command:
           - cmp-generate
-    - name: kpt-repo
-      generate:
-        command: ["/home/argocd/cmp-server/plugins/kpt-repo"]
-      lockRepo: true
-    - name: kpt-render
-      generate: 
-        command: ["/home/argocd/cmp-server/plugins/kpt-render"] 
-      lockRepo: true 
   resourceExclusions: |
     - apiGroups:
       - tekton.dev
