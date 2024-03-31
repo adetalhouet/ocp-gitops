@@ -19,7 +19,7 @@ metadata:
   name: openshift-sso
   namespace: openshift-sso
 spec:
-  channel: alpha
+  channel: stable
   installPlanApproval: Automatic
   name: rhsso-operator
   source: redhat-operators
